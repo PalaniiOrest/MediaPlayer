@@ -12,6 +12,13 @@ using namespace Microsoft::UI::Xaml;
 
 namespace winrt::MediaPlayer::implementation
 {
+
+    MainWindow::MainWindow()
+        : session("D:\\Work\\Projects\\MediaPlayer\\MediaPlayer\\Assets\\coca.mp4")
+    {
+        
+    }
+
     int32_t MainWindow::MyProperty()
     {
         throw hresult_not_implemented();
@@ -22,8 +29,10 @@ namespace winrt::MediaPlayer::implementation
         throw hresult_not_implemented();
     }
 
-    void MainWindow::myButton_Click(IInspectable const&, RoutedEventArgs const&)
+    void MainWindow::playButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        myButton().Content(box_value(L"Clicked"));
+        playButton().Content(box_value(L"Playing"));
+        session.play();
     }
+
 }
