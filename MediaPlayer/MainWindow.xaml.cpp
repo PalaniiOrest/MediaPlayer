@@ -22,6 +22,8 @@ namespace winrt::MediaPlayer::implementation
 
 	void MainWindow::init()
 	{
+		swapChainPanel().SizeChanged({ this, &MainWindow::OnSwapChainPanelSizeChanged });
+
 		m_deviceResources = std::make_shared<DeviceResources>();
 		m_deviceResources->SetSwapChainPanel(swapChainPanel());
 
@@ -34,6 +36,13 @@ namespace winrt::MediaPlayer::implementation
 		playButton().Content(box_value(L"Clicked"));
 
 		
+	}
+
+	void MainWindow::OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args)
+	{
+		auto newSize = args.NewSize();
+
+		m_deviceResources->SetLogicalSize(newSize);
 	}
 
 

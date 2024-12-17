@@ -22,6 +22,7 @@ namespace winrt::MediaPlayer::implementation
 
         
     private:
+        void OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args);
         std::shared_ptr<::MediaPlayerMain> m_mediaPlayer;
         std::shared_ptr<DeviceResources> m_deviceResources{ nullptr };
     };
