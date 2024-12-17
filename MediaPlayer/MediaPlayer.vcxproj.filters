@@ -12,13 +12,63 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="DXRender.cpp">
+      <Filter>Video</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceResources.cpp">
+      <Filter>Video</Filter>
+    </ClCompile>
+    <ClCompile Include="Converter.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioRenderer.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="dx11_basic.cpp">
+      <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoTexture.cpp">
+      <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="Converter.h" />
+    <ClInclude Include="DXRender.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectsManager.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceResources.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="Converter.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioRenderer.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="dx11_basic.h">
+      <Filter>Example</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoTexture.h">
+      <Filter>Example</Filter>
+    </ClInclude>
+    <ClInclude Include="clock.h" />
+    <ClInclude Include="MediaPlayer.h" />
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DXHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -46,6 +96,18 @@
   <ItemGroup>
     <Filter Include="Assets">
       <UniqueIdentifier>{0f71e644-3fa5-4603-bd50-bbf5c89dceb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Video">
+      <UniqueIdentifier>{96e1f3b1-c529-4cf8-add0-329b05c42ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{bb32f895-2fbe-4315-b23e-8373cfb45f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{17aed779-b974-48ec-89d2-c0db4fde88ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Example">
+      <UniqueIdentifier>{3f78e702-781c-490e-b472-3b9c3c720759}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

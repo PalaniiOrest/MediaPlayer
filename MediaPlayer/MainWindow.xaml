@@ -9,7 +9,17 @@
     mc:Ignorable="d"
     Title="MediaPlayer">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="playButton" Click="playButton_Click">Play</Button>
-    </StackPanel>
+    <!-- Use a Grid as a container for multiple child elements -->
+    <Grid>
+        <SwapChainPanel x:Name="swapChainPanel">
+            <TextBlock Text="Hello from XAML!"
+                 HorizontalAlignment="Right"
+                 VerticalAlignment="Top"
+                 FontSize="30" />
+        </SwapChainPanel>
+
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="playButton" Click="playButton_Click">Play</Button>
+        </StackPanel>
+    </Grid>
 </Window>

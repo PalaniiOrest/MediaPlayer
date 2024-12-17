@@ -89,6 +89,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpplatest</LanguageStandard>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
@@ -108,7 +111,14 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioRenderer.h" />
     <ClInclude Include="Converter.h" />
+    <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="dx11_basic.h" />
+    <ClInclude Include="DXHelper.h" />
+    <ClInclude Include="DXRender.h" />
+    <ClInclude Include="EffectsManager.h" />
+    <ClInclude Include="MediaPlayerMain.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -116,14 +126,20 @@
     <ClInclude Include="MainWindow.xaml.h">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="Session.h" />
+    <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="VideoTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
     <Page Include="MainWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioRenderer.cpp" />
     <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="dx11_basic.cpp" />
+    <ClCompile Include="DXRender.cpp" />
+    <ClCompile Include="MediaPlayerMain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -134,7 +150,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="VideoTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl">
