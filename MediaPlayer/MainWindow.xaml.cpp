@@ -25,7 +25,7 @@ namespace winrt::MediaPlayer::implementation
 		swapChainPanel().SizeChanged({ this, &MainWindow::OnSwapChainPanelSizeChanged });
 
 		m_deviceResources = std::make_shared<DeviceResources>();
-		m_deviceResources->SetSwapChainPanel(swapChainPanel());
+		m_deviceResources->init(swapChainPanel());
 
 		m_mediaPlayer = std::make_shared<MediaPlayerMain>(m_deviceResources);
 		m_mediaPlayer->startRenderLoop();
@@ -33,16 +33,53 @@ namespace winrt::MediaPlayer::implementation
 
 	void MainWindow::playButton_Click(IInspectable const&, RoutedEventArgs const&)
 	{
-		playButton().Content(box_value(L"Clicked"));
+		auto currentContent = unbox_value<hstring>(playButton().Content());
 
-		
+		if (currentContent == L"Play")
+		{
+			playButton().Content(box_value(L"Pause"));
+			m_isPlaying = true;
+			m_mediaPlayer->play();
+		}
+		else
+		{
+			playButton().Content(box_value(L"Play"));
+			m_isPlaying = false;
+			m_mediaPlayer->pause();
+		}
+
+	}
+
+	void MainWindow::OnSelectVideoButtonClick(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::RoutedEventArgs const&)
+	{
+		PickVideoFileAsync();
 	}
 
 	void MainWindow::OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args)
 	{
 		auto newSize = args.NewSize();
 
-		m_deviceResources->SetLogicalSize(newSize);
+		//m_deviceResources->SetLogicalSize(newSize);
+	}
+
+	winrt::fire_and_forget MainWindow::PickVideoFileAsync()
+	{
+		winrt::Windows::Storage::Pickers::FileOpenPicker picker;
+		picker.SuggestedStartLocation(winrt::Windows::Storage::Pickers::PickerLocationId::VideosLibrary);
+		picker.FileTypeFilter().Append(L".mp4");
+		picker.FileTypeFilter().Append(L".avi");
+		picker.FileTypeFilter().Append(L".mkv");
+
+		auto initializeWithWindow = picker.as<::IInitializeWithWindow>();
+		HWND hwnd = GetActiveWindow(); 
+		winrt::check_hresult(initializeWithWindow->Initialize(hwnd));
+
+		winrt::Windows::Storage::StorageFile file = co_await picker.PickSingleFileAsync();
+		if (file != nullptr)
+		{
+			auto videoPath = file.Path();
+			m_mediaPlayer->selectVideo(videoPath.c_str());
+		}
 	}
 
 

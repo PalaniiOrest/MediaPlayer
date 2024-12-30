@@ -12,63 +12,52 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="DXRender.cpp">
-      <Filter>Video</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceResources.cpp">
+    <ClCompile Include="VideoRender.cpp">
       <Filter>Video</Filter>
     </ClCompile>
     <ClCompile Include="Converter.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="AudioRenderer.cpp">
+    <ClCompile Include="MediaPlayerMain.cpp" />
+    <ClCompile Include="DeviceResources.cpp">
       <Filter>Content</Filter>
     </ClCompile>
-    <ClCompile Include="Session.cpp">
-      <Filter>Content</Filter>
+    <ClCompile Include="DXHelper.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="dx11_basic.cpp">
-      <Filter>Example</Filter>
+    <ClCompile Include="VideoFrame.cpp">
+      <Filter>Video</Filter>
     </ClCompile>
-    <ClCompile Include="VideoTexture.cpp">
-      <Filter>Example</Filter>
+    <ClCompile Include="VideoDecoder.cpp">
+      <Filter>Video</Filter>
     </ClCompile>
-    <ClCompile Include="MediaPlayer.cpp" />
+    <ClCompile Include="TimeLineController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="DXRender.h">
-      <Filter>Video</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectsManager.h">
-      <Filter>Video</Filter>
-    </ClInclude>
-    <ClInclude Include="DeviceResources.h">
+    <ClInclude Include="VideoRender.h">
       <Filter>Video</Filter>
     </ClInclude>
     <ClInclude Include="Converter.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="AudioRenderer.h">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="Session.h">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="dx11_basic.h">
-      <Filter>Example</Filter>
-    </ClInclude>
-    <ClInclude Include="VideoTexture.h">
-      <Filter>Example</Filter>
-    </ClInclude>
-    <ClInclude Include="clock.h" />
-    <ClInclude Include="MediaPlayer.h" />
     <ClInclude Include="StepTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="DXHelper.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="MediaPlayerMain.h" />
+    <ClInclude Include="DeviceResources.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoFrame.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoDecoder.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeLineController.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -105,9 +94,6 @@
     </Filter>
     <Filter Include="Content">
       <UniqueIdentifier>{17aed779-b974-48ec-89d2-c0db4fde88ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Example">
-      <UniqueIdentifier>{3f78e702-781c-490e-b472-3b9c3c720759}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -111,13 +111,12 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioRenderer.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="DeviceResources.h" />
-    <ClInclude Include="dx11_basic.h" />
     <ClInclude Include="DXHelper.h" />
-    <ClInclude Include="DXRender.h" />
-    <ClInclude Include="EffectsManager.h" />
+    <ClInclude Include="TimeLineController.h" />
+    <ClInclude Include="VideoDecoder.h" />
+    <ClInclude Include="VideoRender.h" />
     <ClInclude Include="MediaPlayerMain.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
@@ -127,18 +126,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="StepTimer.h" />
-    <ClInclude Include="VideoTexture.h" />
+    <ClInclude Include="VideoFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
     <Page Include="MainWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioRenderer.cpp" />
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
-    <ClCompile Include="dx11_basic.cpp" />
-    <ClCompile Include="DXRender.cpp" />
+    <ClCompile Include="DXHelper.cpp" />
+    <ClCompile Include="TimeLineController.cpp" />
+    <ClCompile Include="VideoDecoder.cpp" />
+    <ClCompile Include="VideoRender.cpp" />
     <ClCompile Include="MediaPlayerMain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -150,7 +150,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="VideoTexture.cpp" />
+    <ClCompile Include="VideoFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl">

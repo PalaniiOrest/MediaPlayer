@@ -12,13 +12,15 @@
     <!-- Use a Grid as a container for multiple child elements -->
     <Grid>
         <SwapChainPanel x:Name="swapChainPanel">
-            <TextBlock Text="Hello from XAML!"
-                 HorizontalAlignment="Right"
-                 VerticalAlignment="Top"
-                 FontSize="30" />
         </SwapChainPanel>
 
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Button Click="OnSelectVideoButtonClick"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="10">
+                    Select Video</Button>
+
             <Button x:Name="playButton" Click="playButton_Click">Play</Button>
         </StackPanel>
     </Grid>
