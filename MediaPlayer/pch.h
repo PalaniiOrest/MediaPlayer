@@ -50,3 +50,7 @@
 #include <ppltasks.h>
 
 #include <shobjidl_core.h>
+
+#include <xaudio2.h>
+
+#include <algorithm>

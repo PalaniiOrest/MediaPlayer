@@ -1,33 +1,18 @@
 #pragma once
-#include "DeviceResources.h"
+#include "MediaDecoder.h"
 #include "VideoFrame.h"
-#include <string>
 
-class VideoDecoder
-{
+class VideoDecoder : public MediaDecoder {
 public:
-	VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources);
-	VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources, const std::wstring& videoPath);
-	~VideoDecoder();
+    VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources);
+    virtual void loadMedia(const std::wstring& mediaPath) override;
+    void decodeFrame(VideoFrame& frame);
+    uint32_t getVideoWidth() const { return m_videoWidth; }
+    uint32_t getVideoHeight() const { return m_videoHeight; }
 
-	void loadVideo(const std::wstring& videoPath);
-	void decodeFrame(VideoFrame& frame);
-	void createBitmapFromBuffer(VideoFrame& frame, const BYTE* data, uint32_t pitch);
-	void seekToTime(uint64_t timeInTicks);
-	uint32_t getVideoWidth() { return m_videoWidth; }
-	uint32_t getVideoHeight() { return m_videoHeight; }
-	uint64_t getFrameDuration() { return m_frameDuration; }
-	uint64_t getLastFrameTime() { return m_lastFrameTime; }
+private:
+    void configureVideoStream();
 
-protected:
-	std::shared_ptr<DeviceResources> m_deviceResources;
-	winrt::com_ptr<IMFSourceReader> m_sourceReader;
-
-	uint32_t m_videoWidth = 0;
-	uint32_t m_videoHeight = 0;
-	uint64_t m_frameDuration = 0;
-	uint64_t m_lastFrameTime = 0;
-
-	bool m_isEndOfVideo = false;
+    uint32_t m_videoWidth = 0;
+    uint32_t m_videoHeight = 0;
 };
-

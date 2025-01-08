@@ -31,7 +31,24 @@
     <ClCompile Include="VideoDecoder.cpp">
       <Filter>Video</Filter>
     </ClCompile>
-    <ClCompile Include="TimeLineController.cpp" />
+    <ClCompile Include="AudioFrame.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioRender.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDecoder.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaDecoder.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamingVoiceContext.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectsManager.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -57,7 +74,24 @@
     <ClInclude Include="VideoDecoder.h">
       <Filter>Video</Filter>
     </ClInclude>
-    <ClInclude Include="TimeLineController.h" />
+    <ClInclude Include="AudioFrame.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioRender.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDecoder.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaDecoder.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamingVoiceContext.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectsManager.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -94,6 +128,12 @@
     </Filter>
     <Filter Include="Content">
       <UniqueIdentifier>{17aed779-b974-48ec-89d2-c0db4fde88ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{3609aac3-4f49-4dbe-91b0-db936e66d4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{4d018d10-e65e-47b7-8672-dd04d721a7f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

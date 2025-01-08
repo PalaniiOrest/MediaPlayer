@@ -4,7 +4,7 @@
 #include "StepTimer.h"
 #include <ppl.h>
 #include "VideoRender.h"
-#include "AudioRenderer.h"
+#include "AudioRender.h"
 
 class MediaPlayerMain
 {
@@ -19,15 +19,18 @@ public:
 	void play();
 	void pause();
 	void selectVideo(const std::wstring& videoPath);
+	void seekToTime(uint64_t timeInTicks);
+
+	uint64_t getVideoDuration();
 
 private:
 	void update();
 	bool render() const;
-	
+
 
 	std::shared_ptr<DeviceResources> m_deviceResources;
 	std::unique_ptr<VideoRender> m_video;
-	std::unique_ptr<AudioRenderer> m_audioRenderer;
+	std::unique_ptr<AudioRender> m_audio;
 
 	std::mutex m_mutex;
 	winrt::Windows::Foundation::IAsyncAction m_renderLoopWorker;
@@ -35,4 +38,3 @@ private:
 	StepTimer m_timer;
 	float m_pointerLocationX;
 };
-

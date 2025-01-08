@@ -8,14 +8,15 @@ using namespace Windows::Foundation;
 MediaPlayerMain::MediaPlayerMain(const std::shared_ptr<DeviceResources>& deviceResources)
 	: m_deviceResources(deviceResources)
 	, m_video(std::make_unique<VideoRender>(deviceResources))
-	, m_audioRenderer(std::make_unique<AudioRenderer>())
+	, m_audio(std::make_unique<AudioRender>(deviceResources))
 	, m_pointerLocationX(0.0f)
 {
+	winrt::check_hresult(MFStartup(MF_VERSION));
 }
 
 MediaPlayerMain::~MediaPlayerMain()
 {
-	
+	winrt::check_hresult(MFShutdown());
 }
 
 void MediaPlayerMain::CreateWindowSizeDependentResources()
@@ -56,9 +57,10 @@ void MediaPlayerMain::stopRenderLoop() const
 void MediaPlayerMain::update()
 {
 	m_timer.Tick([&]()
-	{
+		{
 			m_video->update(m_timer);
-	});
+			m_audio->update(m_timer);
+		});
 }
 
 bool MediaPlayerMain::render() const
@@ -69,6 +71,7 @@ bool MediaPlayerMain::render() const
 	}
 
 	m_video->render();
+	m_audio->render();
 
 	return true;
 }
@@ -76,14 +79,28 @@ bool MediaPlayerMain::render() const
 void MediaPlayerMain::play()
 {
 	m_video->play();
+	m_audio->play();
 }
 
 void MediaPlayerMain::pause()
 {
 	m_video->pause();
+	m_audio->pause();
 }
 
 void MediaPlayerMain::selectVideo(const std::wstring& videoPath)
 {
 	m_video->loadVideo(videoPath);
+	m_audio->loadVideo(videoPath);
+}
+
+void MediaPlayerMain::seekToTime(uint64_t timeInTicks)
+{
+	m_video->seekToTime(timeInTicks);
+	m_audio->seekToTime(timeInTicks);
+}
+
+uint64_t MediaPlayerMain::getVideoDuration()
+{
+	return m_video->getVideoDuration();
 }

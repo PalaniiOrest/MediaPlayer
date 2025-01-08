@@ -2,49 +2,42 @@
 #include "VideoDecoder.h"
 #include <iostream>
 
+
 VideoDecoder::VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
-    : m_deviceResources(deviceResources)
+    : MediaDecoder(deviceResources)
 {
-    winrt::check_hresult(MFStartup(MF_VERSION));
+    
 }
 
-VideoDecoder::VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources, const std::wstring& videoPath)
-    : VideoDecoder(deviceResources)
+void VideoDecoder::loadMedia(const std::wstring& mediaPath)
 {
-    loadVideo(videoPath);
+    MediaDecoder::loadMedia(mediaPath);
+    configureVideoStream();
 }
 
-VideoDecoder::~VideoDecoder()
+void VideoDecoder::configureVideoStream()
 {
-}
+    winrt::com_ptr<IMFMediaType> videoMediaType;
+    winrt::check_hresult(MFCreateMediaType(videoMediaType.put()));
+    winrt::check_hresult(videoMediaType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video));
+    winrt::check_hresult(videoMediaType->SetGUID(MF_MT_SUBTYPE, MFVideoFormat_RGB32));
+    winrt::check_hresult(m_sourceReader->SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, nullptr, videoMediaType.get()));
 
-void VideoDecoder::loadVideo(const std::wstring& videoPath)
-{
-    winrt::com_ptr<IMFAttributes> attributes;
-    winrt::check_hresult(MFCreateAttributes(attributes.put(), 1));
-    winrt::check_hresult(attributes->SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, TRUE));
-    winrt::check_hresult(MFCreateSourceReaderFromURL(videoPath.c_str(), attributes.get(), m_sourceReader.put()));
-
-    winrt::com_ptr<IMFMediaType> mediaType;
-    winrt::check_hresult(MFCreateMediaType(mediaType.put()));
-    winrt::check_hresult(mediaType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video));
-    winrt::check_hresult(mediaType->SetGUID(MF_MT_SUBTYPE, MFVideoFormat_RGB32));
-    winrt::check_hresult(m_sourceReader->SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, nullptr, mediaType.get()));
-
-    winrt::com_ptr<IMFMediaType> nativeType;
-    winrt::check_hresult(m_sourceReader->GetNativeMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, nativeType.put()));
-    winrt::check_hresult(MFGetAttributeSize(nativeType.get(), MF_MT_FRAME_SIZE, &m_videoWidth, &m_videoHeight));
+    winrt::com_ptr<IMFMediaType> nativeVideoType;
+    winrt::check_hresult(m_sourceReader->GetNativeMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, nativeVideoType.put()));
+    winrt::check_hresult(MFGetAttributeSize(nativeVideoType.get(), MF_MT_FRAME_SIZE, &m_videoWidth, &m_videoHeight));
 
     uint32_t frameRateNumerator = 0, frameRateDenominator = 0;
-    winrt::check_hresult(MFGetAttributeRatio(nativeType.get(), MF_MT_FRAME_RATE, &frameRateNumerator, &frameRateDenominator));
+    winrt::check_hresult(MFGetAttributeRatio(nativeVideoType.get(), MF_MT_FRAME_RATE, &frameRateNumerator, &frameRateDenominator));
     if (frameRateDenominator != 0) {
         m_frameDuration = 10'000'000 * frameRateDenominator / frameRateNumerator;
     }
 }
 
+
+
 void VideoDecoder::decodeFrame(VideoFrame& frame)
 {
-
     DWORD flags = 0;
     winrt::com_ptr<IMFSample> sample;
     HRESULT hr = m_sourceReader->ReadSample(
@@ -56,11 +49,13 @@ void VideoDecoder::decodeFrame(VideoFrame& frame)
         sample.put()
     );
 
-    if (flags & MF_SOURCE_READERF_ENDOFSTREAM) {
-        m_isEndOfVideo = true;
+    if (flags & MF_SOURCE_READERF_ENDOFSTREAM) 
+    {
+        m_isEndOfStream = true;
+        return;
     }
 
-    if (FAILED(hr) || !sample)
+    if (FAILED(hr) || !sample) 
     {
         std::cerr << "Failed to read video frame or end of stream." << std::endl;
         return;
@@ -70,41 +65,13 @@ void VideoDecoder::decodeFrame(VideoFrame& frame)
     winrt::check_hresult(sample->ConvertToContiguousBuffer(buffer.put()));
 
     BYTE* data = nullptr;
-    DWORD maxLength = 0, currentLength = 0;
-    winrt::check_hresult(buffer->Lock(&data, &maxLength, &currentLength));
+    DWORD currentLength = 0;
+    winrt::check_hresult(buffer->Lock(&data, nullptr, &currentLength));
 
-    createBitmapFromBuffer(frame, data, m_videoWidth * 4);
+    std::vector<byte> videoData(currentLength);
+    memcpy_s(videoData.data(), currentLength, data, currentLength);
+
+    frame.setVideoData(videoData);
 
     winrt::check_hresult(buffer->Unlock());
-}
-
-void VideoDecoder::createBitmapFromBuffer (VideoFrame& frame, const BYTE* data, uint32_t pitch)
-{
-    auto context = m_deviceResources->getD2DDeviceContext();
-
-    D2D1_BITMAP_PROPERTIES bitmapProperties = {
-        { DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE },
-        96.0f,
-        96.0f
-    };
-
-    D2D1_SIZE_U size = { m_videoWidth, m_videoHeight };
-
-    winrt::check_hresult(context->CreateBitmap(
-        size,
-        data,
-        pitch,
-        &bitmapProperties,
-        frame.getFrameBitmap().put()
-    ));
-}
-
-void VideoDecoder::seekToTime(uint64_t timeInTicks)
-{
-    PROPVARIANT var;
-    PropVariantInit(&var);
-    var.vt = VT_I8;
-    var.hVal.QuadPart = timeInTicks;
-
-    winrt::check_hresult(m_sourceReader->SetCurrentPosition(GUID_NULL, var));
 }

@@ -111,10 +111,15 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioDecoder.h" />
+    <ClInclude Include="AudioFrame.h" />
+    <ClInclude Include="AudioRender.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="DXHelper.h" />
-    <ClInclude Include="TimeLineController.h" />
+    <ClInclude Include="EffectsManager.h" />
+    <ClInclude Include="MediaDecoder.h" />
+    <ClInclude Include="StreamingVoiceContext.h" />
     <ClInclude Include="VideoDecoder.h" />
     <ClInclude Include="VideoRender.h" />
     <ClInclude Include="MediaPlayerMain.h" />
@@ -133,10 +138,15 @@
     <Page Include="MainWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioDecoder.cpp" />
+    <ClCompile Include="AudioFrame.cpp" />
+    <ClCompile Include="AudioRender.cpp" />
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="DXHelper.cpp" />
-    <ClCompile Include="TimeLineController.cpp" />
+    <ClCompile Include="EffectsManager.cpp" />
+    <ClCompile Include="MediaDecoder.cpp" />
+    <ClCompile Include="StreamingVoiceContext.cpp" />
     <ClCompile Include="VideoDecoder.cpp" />
     <ClCompile Include="VideoRender.cpp" />
     <ClCompile Include="MediaPlayerMain.cpp" />

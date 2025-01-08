@@ -18,6 +18,8 @@ public:
     void pause() { m_isPlaying = false; }
     void seekToTime(uint64_t timeInTicks);
 
+    uint64_t getVideoDuration();
+
 
 private:
     void updateTime();
@@ -35,4 +37,3 @@ private:
     bool m_isPlaying = false;
     bool isVideoEnd = false;
 };
-

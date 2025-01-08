@@ -17,7 +17,7 @@ namespace winrt::MediaPlayer::implementation
 
 	MainWindow::MainWindow()
 	{
-		
+
 	}
 
 	void MainWindow::init()
@@ -71,7 +71,7 @@ namespace winrt::MediaPlayer::implementation
 		picker.FileTypeFilter().Append(L".mkv");
 
 		auto initializeWithWindow = picker.as<::IInitializeWithWindow>();
-		HWND hwnd = GetActiveWindow(); 
+		HWND hwnd = GetActiveWindow();
 		winrt::check_hresult(initializeWithWindow->Initialize(hwnd));
 
 		winrt::Windows::Storage::StorageFile file = co_await picker.PickSingleFileAsync();
@@ -80,6 +80,13 @@ namespace winrt::MediaPlayer::implementation
 			auto videoPath = file.Path();
 			m_mediaPlayer->selectVideo(videoPath.c_str());
 		}
+
+		ProgressSlider().Value(0);
+		ProgressSlider().Maximum(m_mediaPlayer->getVideoDuration() / 10000000.0);
+
+		playButton().Content(box_value(L"Play"));
+		m_isPlaying = false;
+		m_mediaPlayer->pause();
 	}
 
 
@@ -93,4 +100,9 @@ namespace winrt::MediaPlayer::implementation
 	{
 		throw hresult_not_implemented();
 	}
+}
+
+void winrt::MediaPlayer::implementation::MainWindow::ProgressSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
+{
+	m_mediaPlayer->seekToTime(static_cast<uint64_t>(e.NewValue() * 10000000));
 }

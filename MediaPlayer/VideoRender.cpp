@@ -18,7 +18,7 @@ VideoRender::~VideoRender()
 void VideoRender::loadVideo(const std::wstring& videoPath)
 {
     pause();
-    m_decoder.loadVideo(videoPath);
+    m_decoder.loadMedia(videoPath);
     m_videoWidth = m_decoder.getVideoWidth();
     m_videoHeight = m_decoder.getVideoHeight();
     m_frameDuration = m_decoder.getFrameDuration();
@@ -54,6 +54,11 @@ void VideoRender::update(const StepTimer& timer)
 void VideoRender::seekToTime(uint64_t timeInTicks)
 {
     m_decoder.seekToTime(timeInTicks);
+}
+
+uint64_t VideoRender::getVideoDuration()
+{
+    return m_decoder.getMediaDuration();
 }
 
 void VideoRender::updateTime()

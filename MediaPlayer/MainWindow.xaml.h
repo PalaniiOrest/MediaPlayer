@@ -20,17 +20,21 @@ namespace winrt::MediaPlayer::implementation
 
         void playButton_Click(IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const& args);
         void OnSelectVideoButtonClick(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::RoutedEventArgs const&);
-        
-    private:
         void OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args);
+    private:
         winrt::fire_and_forget PickVideoFileAsync();
 
-        
+
         std::shared_ptr<::MediaPlayerMain> m_mediaPlayer;
         std::shared_ptr<DeviceResources> m_deviceResources{ nullptr };
 
         bool m_isPlaying = false;
     public:
+        void ProgressSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e);
+
+    private:
+
+
     };
 }
 
