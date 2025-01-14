@@ -40,6 +40,8 @@ void AudioRender::update(const StepTimer& timer)
     }
 
     m_decoder.decodeAudioFrame(m_frame);
+
+    m_effectManager.addAudioEffects(m_frame);
 }
 
 void AudioRender::play()
@@ -57,5 +59,10 @@ void AudioRender::pause()
 void AudioRender::seekToTime(uint64_t timeInTicks)
 {
     m_decoder.seekToTime(timeInTicks);
+}
+
+void AudioRender::setAudioEffects(std::set<AudioEffects>& effectsList)
+{
+    m_effectManager.setAudioEffects(effectsList);
 }
 

@@ -33,6 +33,12 @@ void VideoRender::render()
     }
 }
 
+//The sampling rate is traditionally measured in hertz (Hz). Examples of standard frequencies:
+//
+//44100 Hz is the standard frequency for audio - CD.
+//48000 Hz is a frequency often used in video.
+//96000 Hz or 192000 Hz is for high-quality audio.
+
 void VideoRender::update(const StepTimer& timer)
 {
     if (!m_isPlaying)
@@ -42,18 +48,32 @@ void VideoRender::update(const StepTimer& timer)
 
     uint64_t currentTime = timer.GetTotalTicks();
 
-    if (currentTime - m_lastFrameTime < m_frameDuration)
-    {
+    XAUDIO2_VOICE_STATE state;
+    m_deviceResources->getSourceVoice()->GetState(&state);
+
+    uint64_t audioPlayTime = state.SamplesPlayed * 10000000 / 44100;
+
+    if (m_frameTime > audioPlayTime) {
         return;
     }
-    m_lastFrameTime = currentTime;
+
+
+    m_lastFrameTime = m_frameTime;
+    m_frameTime += m_frameDuration;
 
     m_decoder.decodeFrame(m_frame);
+
+    m_effectManager.addVideoEffects(m_frame);
 }
 
 void VideoRender::seekToTime(uint64_t timeInTicks)
 {
     m_decoder.seekToTime(timeInTicks);
+}
+
+void VideoRender::setVideoEffects(std::set<VideoEffects>& effectsList)
+{
+    m_effectManager.setVideoEffects(effectsList);
 }
 
 uint64_t VideoRender::getVideoDuration()

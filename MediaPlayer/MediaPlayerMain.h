@@ -21,7 +21,11 @@ public:
 	void selectVideo(const std::wstring& videoPath);
 	void seekToTime(uint64_t timeInTicks);
 
+	void setVideoEffects(std::set<VideoEffects>& effectsList);
+	void setAudioEffects(std::set<AudioEffects>& effectsList);
+
 	uint64_t getVideoDuration();
+	uint64_t getCurrentPosition();
 
 private:
 	void update();

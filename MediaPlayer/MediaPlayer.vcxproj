@@ -117,7 +117,14 @@
     <ClInclude Include="Converter.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="DXHelper.h" />
+    <ClInclude Include="EffectsControl.xaml.h">
+      <DependentUpon>EffectsControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="EffectsEnums.h" />
     <ClInclude Include="EffectsManager.h" />
+    <ClInclude Include="IAudioEffect.h" />
+    <ClInclude Include="IVideoEffect.h" />
     <ClInclude Include="MediaDecoder.h" />
     <ClInclude Include="StreamingVoiceContext.h" />
     <ClInclude Include="VideoDecoder.h" />
@@ -135,6 +142,9 @@
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
+    <Page Include="EffectsControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +154,10 @@
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="DXHelper.cpp" />
+    <ClCompile Include="EffectsControl.xaml.cpp">
+      <DependentUpon>EffectsControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="EffectsManager.cpp" />
     <ClCompile Include="MediaDecoder.cpp" />
     <ClCompile Include="StreamingVoiceContext.cpp" />
@@ -163,6 +177,10 @@
     <ClCompile Include="VideoFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Midl Include="EffectsControl.idl">
+      <DependentUpon>EffectsControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="MainWindow.idl">
       <SubType>Code</SubType>
       <DependentUpon>MainWindow.xaml</DependentUpon>

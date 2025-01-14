@@ -7,6 +7,7 @@ public:
     DeviceResources();
     virtual ~DeviceResources();
     void init(::winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel swapChainPanel);
+    void updateSizeDependentResources(uint32_t newWidth, uint32_t newHeight);
 
     winrt::com_ptr<::ID3D11Device> getD3DDevice() { return m_d3dDevice; }
     winrt::com_ptr<::ID3D11DeviceContext> getD3DDeviceContext() { return m_d3dDeviceContext; }
@@ -17,11 +18,11 @@ public:
     winrt::com_ptr<::IDXGIFactory2> getDXGIFactory() { return m_dxgiFactory; }
     winrt::com_ptr<::IDXGISwapChain1> getSwapChain() { return m_swapChain; }
 
-    void updateAudioResources(std::wstring mediaPath);
     IXAudio2SourceVoice* getSourceVoice() { return m_sourceVoice; }
     StreamingVoiceContext& getVoiceContext() { return m_voiceContext; }
 
-
+    uint32_t getWindowWidth() { return m_windowWidth; }
+    uint32_t getWindowHeight() { return m_windowHeight; }
 
 protected:
     void initAudioResources();
@@ -41,4 +42,7 @@ protected:
     IXAudio2MasteringVoice* m_masterVoice = nullptr;
     IXAudio2SourceVoice* m_sourceVoice = nullptr;
     StreamingVoiceContext m_voiceContext;
+
+    uint32_t m_windowWidth = 1920;
+    uint32_t m_windowHeight = 1080;
 };

@@ -3,6 +3,7 @@
 #include "StepTimer.h"
 #include "VideoDecoder.h"
 #include "VideoFrame.h"
+#include "EffectsManager.h"
 
 class VideoRender
 {
@@ -18,7 +19,10 @@ public:
     void pause() { m_isPlaying = false; }
     void seekToTime(uint64_t timeInTicks);
 
+    void setVideoEffects(std::set<VideoEffects>& effectsList);
+
     uint64_t getVideoDuration();
+    uint64_t getCurrentPosition() { return m_decoder.getCurrentPosition(); }
 
 
 private:
@@ -32,6 +36,9 @@ private:
     uint32_t m_videoHeight = 0;
     uint64_t m_frameDuration = 0;
     uint64_t m_lastFrameTime = 0;
+    uint64_t m_frameTime = 0;
+
+    EffectsManager m_effectManager;
 
 
     bool m_isPlaying = false;

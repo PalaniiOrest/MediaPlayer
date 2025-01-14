@@ -61,6 +61,12 @@ void VideoDecoder::decodeFrame(VideoFrame& frame)
         return;
     }
 
+    LONGLONG sampleTime = 0;
+    if (SUCCEEDED(sample->GetSampleTime(&sampleTime)))
+    {
+        m_currentPosition = static_cast<uint64_t>(sampleTime);
+    }
+
     winrt::com_ptr<IMFMediaBuffer> buffer;
     winrt::check_hresult(sample->ConvertToContiguousBuffer(buffer.put()));
 

@@ -1,10 +1,47 @@
 #pragma once
+#include "IVideoEffect.h"
+#include "IAudioEffect.h"
+#include "EffectsEnums.h"
 
 #undef min
 
 class EffectsManager
 {
 public:
+    void addVideoEffects(VideoFrame& frame);
+    void addAudioEffects(AudioFrame& frame);
+
+    void setVideoEffects(std::set<VideoEffects>& effectsList);
+    void setAudioEffects(std::set<AudioEffects>& effectsList);
+    class NegativeEffect : public IVideoEffect
+    {
+    public:
+        void addTo(VideoFrame& frame) override;
+    };
+    class SepiaEffect : public IVideoEffect
+    {
+    public:
+        void addTo(VideoFrame& frame) override;
+    };
+    class GrayscaleEffect : public IVideoEffect
+    {
+    public:
+        void addTo(VideoFrame& frame) override;
+    };
+    class ReverseEffect : public IAudioEffect
+    {
+    public:
+        void addTo(AudioFrame& frame) override;
+    };
+    class GainEffect : public IAudioEffect
+    {
+    public:
+        void addTo(AudioFrame& frame) override;
+    };
+    class EchoEffect : public IAudioEffect
+    {
+        void addTo(AudioFrame& frame) override;
+    };
     static void applyNegativeEffect(BYTE* data, DWORD length) {
         for (DWORD i = 0; i < length; i += 4) {
             data[i] = 255 - data[i];
@@ -80,7 +117,9 @@ public:
         }
     }
 
-
+private:
+    std::set<std::unique_ptr<IVideoEffect>> m_videoEffects;
+    std::set<std::unique_ptr<IAudioEffect>> m_audioEffects;
 
 };
 

@@ -3,6 +3,7 @@
 #include "StepTimer.h"
 #include "AudioDecoder.h"
 #include "AudioFrame.h"
+#include "EffectsManager.h"
 
 class AudioRender
 {
@@ -18,6 +19,8 @@ public:
     void pause();
     void seekToTime(uint64_t timeInTicks);
 
+    void setAudioEffects(std::set<AudioEffects>& effectsList);
+
 private:
 	std::shared_ptr<DeviceResources> m_deviceResources;
     AudioDecoder m_decoder;
@@ -26,6 +29,7 @@ private:
     uint64_t m_frameDuration = 0;
     uint64_t m_lastFrameTime = 0;
 
+    EffectsManager m_effectManager;
 
     bool m_isPlaying = false;
     bool isVideoEnd = false;

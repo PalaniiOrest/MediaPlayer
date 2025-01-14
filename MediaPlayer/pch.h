@@ -40,6 +40,7 @@
 #include <microsoft.ui.xaml.media.dxinterop.h>
 #include <winrt/Windows.UI.Xaml.Media.Imaging.h>
 #include <winrt/Windows.System.Threading.h>
+#include <winrt/Windows.System.h>
 
 #include <mfapi.h>
 #include <mfplay.h>
@@ -54,3 +55,4 @@
 #include <xaudio2.h>
 
 #include <algorithm>
+#include <set>

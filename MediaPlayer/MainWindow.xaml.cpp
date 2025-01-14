@@ -5,6 +5,7 @@
 #include <Microsoft.UI.Xaml.Window.h>
 #endif
 #include <iostream>
+#include <EffectsControl.xaml.h>
 
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
@@ -29,6 +30,8 @@ namespace winrt::MediaPlayer::implementation
 
 		m_mediaPlayer = std::make_shared<MediaPlayerMain>(m_deviceResources);
 		m_mediaPlayer->startRenderLoop();
+
+		UpdateProgressLoopAsync();
 	}
 
 	void MainWindow::playButton_Click(IInspectable const&, RoutedEventArgs const&)
@@ -59,7 +62,7 @@ namespace winrt::MediaPlayer::implementation
 	{
 		auto newSize = args.NewSize();
 
-		//m_deviceResources->SetLogicalSize(newSize);
+		//m_deviceResources->updateSizeDependentResources(newSize.Width, newSize.Height);
 	}
 
 	winrt::fire_and_forget MainWindow::PickVideoFileAsync()
@@ -69,6 +72,7 @@ namespace winrt::MediaPlayer::implementation
 		picker.FileTypeFilter().Append(L".mp4");
 		picker.FileTypeFilter().Append(L".avi");
 		picker.FileTypeFilter().Append(L".mkv");
+		picker.FileTypeFilter().Append(L".mov");
 
 		auto initializeWithWindow = picker.as<::IInitializeWithWindow>();
 		HWND hwnd = GetActiveWindow();
@@ -89,6 +93,45 @@ namespace winrt::MediaPlayer::implementation
 		m_mediaPlayer->pause();
 	}
 
+	winrt::fire_and_forget MainWindow::UpdateProgressLoopAsync()
+	{
+		using namespace std::chrono_literals;
+
+		auto dispatcherQueue = winrt::Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread();
+		if (!dispatcherQueue)
+		{
+			co_return;
+		}
+
+		while (true)
+		{
+			co_await winrt::resume_background();
+
+			if (m_isPlaying && m_mediaPlayer && !m_isSliderUpdate)
+			{
+				uint64_t currentPosition = m_mediaPlayer->getCurrentPosition();
+				uint64_t duration = m_mediaPlayer->getVideoDuration();
+
+				if (duration > 0)
+				{
+					float progress = static_cast<float>(currentPosition) / duration;
+
+					dispatcherQueue.TryEnqueue([this, progress]()
+						{
+							m_isSliderUpdate = true;
+							ProgressSlider().Value(progress * ProgressSlider().Maximum());
+							m_isSliderUpdate = false;
+						});
+				}
+			}
+
+			co_await winrt::resume_after(std::chrono::milliseconds(100));
+		}
+	}
+
+
+
+
 
 
 	int32_t MainWindow::MyProperty()
@@ -104,5 +147,16 @@ namespace winrt::MediaPlayer::implementation
 
 void winrt::MediaPlayer::implementation::MainWindow::ProgressSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
 {
+	if (m_isSliderUpdate)
+	{
+		return;
+	}
 	m_mediaPlayer->seekToTime(static_cast<uint64_t>(e.NewValue() * 10000000));
+}
+
+
+void winrt::MediaPlayer::implementation::MainWindow::ApplyEffects_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+{
+	m_mediaPlayer->setVideoEffects(EffectsControlInstance().as<winrt::MediaPlayer::implementation::EffectsControl>()->getVideoEffects());
+	m_mediaPlayer->setAudioEffects(EffectsControlInstance().as<winrt::MediaPlayer::implementation::EffectsControl>()->getAudioEffects());
 }

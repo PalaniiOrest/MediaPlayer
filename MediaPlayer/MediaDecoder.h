@@ -10,10 +10,10 @@ public:
     void seekToTime(uint64_t timeInTicks);
     uint64_t getMediaDuration() const { return m_mediaDuration; }
     uint64_t getFrameDuration() { return m_frameDuration; }
-    uint64_t getLastFrameTime() { return m_lastFrameTime; }
+
 
 protected:
-    void calculateMediaDuration();
+    void calculateMediaDuration();  
 
     std::shared_ptr<DeviceResources> m_deviceResources;
     winrt::com_ptr<IMFSourceReader> m_sourceReader;

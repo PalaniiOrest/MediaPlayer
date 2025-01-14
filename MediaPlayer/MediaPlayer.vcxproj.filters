@@ -5,6 +5,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainWindow.xaml" />
+    <Page Include="EffectsControl.xaml">
+      <Filter>Effects</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl" />
@@ -90,6 +93,15 @@
       <Filter>Content</Filter>
     </ClInclude>
     <ClInclude Include="EffectsManager.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="IAudioEffect.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectsEnums.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="IVideoEffect.h">
       <Filter>Effects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,9 @@ DeviceResources::~DeviceResources()
 
 void DeviceResources::init(Controls::SwapChainPanel swapChainPanel)
 {
+	m_windowWidth = swapChainPanel.ActualWidth();
+	m_windowHeight = swapChainPanel.ActualHeight();
+
 	uint32_t creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 	D3D_FEATURE_LEVEL featureLevels[] =
@@ -103,6 +106,46 @@ void DeviceResources::init(Controls::SwapChainPanel swapChainPanel)
 
 
 	m_swapChain->GetBuffer(0, __uuidof(m_dxgiBackBuffer), m_dxgiBackBuffer.put_void());
+
+	winrt::check_hresult(
+		m_d2dDeviceContext->CreateBitmapFromDxgiSurface(
+			m_dxgiBackBuffer.get(),
+			&bitmapProperties,
+			m_targetBitmap.put()
+		)
+	);
+
+	m_d2dDeviceContext->SetTarget(m_targetBitmap.get());
+}
+
+void DeviceResources::updateSizeDependentResources(uint32_t newWidth, uint32_t newHeight)
+{
+	m_windowWidth = newWidth;
+	m_windowHeight = newHeight;
+
+	m_d2dDeviceContext->SetTarget(nullptr);
+	m_targetBitmap = nullptr;
+	m_dxgiBackBuffer = nullptr;
+
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
+	m_swapChain->GetDesc1(&swapChainDesc);
+	winrt::check_hresult(m_swapChain->ResizeBuffers(
+		swapChainDesc.BufferCount,
+		m_windowWidth,
+		m_windowHeight,
+		swapChainDesc.Format,
+		swapChainDesc.Flags
+	));
+
+	m_swapChain->GetBuffer(0, __uuidof(m_dxgiBackBuffer), m_dxgiBackBuffer.put_void());
+
+	D2D1_BITMAP_PROPERTIES1 bitmapProperties =
+		D2D1::BitmapProperties1(
+			D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
+			D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+			96.0f,
+			96.0f
+		);
 
 	winrt::check_hresult(
 		m_d2dDeviceContext->CreateBitmapFromDxgiSurface(

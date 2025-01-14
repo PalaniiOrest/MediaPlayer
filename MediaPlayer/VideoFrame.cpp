@@ -39,7 +39,7 @@ void VideoFrame::createBitmapFromBuffer(winrt::com_ptr<ID2D1Bitmap>& frameBitmap
 	winrt::check_hresult(context->CreateBitmap(
 		size,
 		m_buffer.data(),
-		m_frameWidth * 4,
+		size.width * 4,
 		&bitmapProperties,
 		frameBitmap.put()
 	));
@@ -54,7 +54,9 @@ void VideoFrame::render()
 	auto context = m_deviceResources->getD2DDeviceContext();
 	context->BeginDraw();
 	context->Clear(D2D1::ColorF(D2D1::ColorF::Black));
-	context->DrawBitmap(frameBitmap.get(), D2D1::RectF(0, 0, static_cast<float>(m_frameWidth), static_cast<float>(m_frameHeight)));
+	context->DrawBitmap(
+		frameBitmap.get(),
+		D2D1::RectF(0, 0, static_cast<float>(m_frameWidth), static_cast<float>(m_frameHeight)));
 	winrt::check_hresult(context->EndDraw());
 	m_deviceResources->getSwapChain()->Present(1, 0);
 }

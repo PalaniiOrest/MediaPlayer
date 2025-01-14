@@ -100,7 +100,22 @@ void MediaPlayerMain::seekToTime(uint64_t timeInTicks)
 	m_audio->seekToTime(timeInTicks);
 }
 
+void MediaPlayerMain::setVideoEffects(std::set<VideoEffects>& effectsList)
+{
+	m_video->setVideoEffects(effectsList);
+}
+
+void MediaPlayerMain::setAudioEffects(std::set<AudioEffects>& effectsList)
+{
+	m_audio->setAudioEffects(effectsList);
+}
+
 uint64_t MediaPlayerMain::getVideoDuration()
 {
 	return m_video->getVideoDuration();
+}
+
+uint64_t MediaPlayerMain::getCurrentPosition()
+{
+	return m_video->getCurrentPosition();
 }
