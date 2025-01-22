@@ -114,6 +114,7 @@
     <ClInclude Include="AudioDecoder.h" />
     <ClInclude Include="AudioFrame.h" />
     <ClInclude Include="AudioRender.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="DXHelper.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="EffectsManager.h" />
     <ClInclude Include="IAudioEffect.h" />
     <ClInclude Include="IVideoEffect.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="MediaDecoder.h" />
     <ClInclude Include="StreamingVoiceContext.h" />
     <ClInclude Include="VideoDecoder.h" />
@@ -159,6 +161,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="EffectsManager.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MediaDecoder.cpp" />
     <ClCompile Include="StreamingVoiceContext.cpp" />
     <ClCompile Include="VideoDecoder.cpp" />

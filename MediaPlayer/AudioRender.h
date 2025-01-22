@@ -18,6 +18,8 @@ public:
     void play();
     void pause();
     void seekToTime(uint64_t timeInTicks);
+    void setVolume(double volume);
+    double getCurrentVolume() { return m_frame.getCurrentVolume(); }
 
     void setAudioEffects(std::set<AudioEffects>& effectsList);
 

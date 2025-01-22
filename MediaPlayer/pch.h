@@ -21,6 +21,7 @@
 #include <winrt/Microsoft.UI.Xaml.Media.h>
 #include <winrt/Microsoft.UI.Xaml.Navigation.h>
 #include <winrt/Microsoft.UI.Xaml.Shapes.h>
+#include <winrt/Microsoft.UI.Xaml.Input.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <winrt/Windows.Graphics.Display.h>
 #include <winrt/Windows.Storage.h>
@@ -41,6 +42,7 @@
 #include <winrt/Windows.UI.Xaml.Media.Imaging.h>
 #include <winrt/Windows.System.Threading.h>
 #include <winrt/Windows.System.h>
+
 
 #include <mfapi.h>
 #include <mfplay.h>

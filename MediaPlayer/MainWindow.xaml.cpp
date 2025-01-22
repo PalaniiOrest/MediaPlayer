@@ -10,6 +10,8 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
+#undef max
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -18,7 +20,7 @@ namespace winrt::MediaPlayer::implementation
 
 	MainWindow::MainWindow()
 	{
-
+		
 	}
 
 	void MainWindow::init()
@@ -32,29 +34,33 @@ namespace winrt::MediaPlayer::implementation
 		m_mediaPlayer->startRenderLoop();
 
 		UpdateProgressLoopAsync();
+
+		RootGrid().KeyDown({ this, &MainWindow::OnKeyDown });
 	}
 
 	void MainWindow::playButton_Click(IInspectable const&, RoutedEventArgs const&)
 	{
-		auto currentContent = unbox_value<hstring>(playButton().Content());
-
-		if (currentContent == L"Play")
+		if (m_isVideoSelected)
 		{
-			playButton().Content(box_value(L"Pause"));
-			m_isPlaying = true;
-			m_mediaPlayer->play();
+
+			if (!m_isPlaying)
+			{
+				playMedia();
+			}
+			else
+			{
+				pauseMedia();
+			}
 		}
 		else
 		{
-			playButton().Content(box_value(L"Play"));
-			m_isPlaying = false;
-			m_mediaPlayer->pause();
+			PickVideoFileAsync();
 		}
-
 	}
 
 	void MainWindow::OnSelectVideoButtonClick(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::RoutedEventArgs const&)
 	{
+		pauseMedia();
 		PickVideoFileAsync();
 	}
 
@@ -62,7 +68,7 @@ namespace winrt::MediaPlayer::implementation
 	{
 		auto newSize = args.NewSize();
 
-		//m_deviceResources->updateSizeDependentResources(newSize.Width, newSize.Height);
+		m_mediaPlayer->updateSizeDependentResources(newSize.Width, newSize.Height);
 	}
 
 	winrt::fire_and_forget MainWindow::PickVideoFileAsync()
@@ -83,6 +89,7 @@ namespace winrt::MediaPlayer::implementation
 		{
 			auto videoPath = file.Path();
 			m_mediaPlayer->selectVideo(videoPath.c_str());
+			m_isVideoSelected = true;
 		}
 
 		ProgressSlider().Value(0);
@@ -116,22 +123,30 @@ namespace winrt::MediaPlayer::implementation
 				{
 					float progress = static_cast<float>(currentPosition) / duration;
 
-					dispatcherQueue.TryEnqueue([this, progress]()
-						{
-							m_isSliderUpdate = true;
-							ProgressSlider().Value(progress * ProgressSlider().Maximum());
-							m_isSliderUpdate = false;
-						});
+					co_await wil::resume_foreground(dispatcherQueue);;
+					m_isSliderUpdate = true;
+					ProgressSlider().Value(progress * ProgressSlider().Maximum());
+					m_isSliderUpdate = false;
 				}
 			}
 
-			co_await winrt::resume_after(std::chrono::milliseconds(100));
+			co_await winrt::resume_after(std::chrono::milliseconds(1000));
 		}
 	}
 
+	void MainWindow::playMedia()
+	{
+		playButton().Content(box_value(L"Pause"));
+		m_isPlaying = true;
+		m_mediaPlayer->play();
+	}
 
-
-
+	void MainWindow::pauseMedia()
+	{
+		playButton().Content(box_value(L"Play"));
+		m_isPlaying = false;
+		m_mediaPlayer->pause();
+	}
 
 
 	int32_t MainWindow::MyProperty()
@@ -159,4 +174,51 @@ void winrt::MediaPlayer::implementation::MainWindow::ApplyEffects_Click(winrt::W
 {
 	m_mediaPlayer->setVideoEffects(EffectsControlInstance().as<winrt::MediaPlayer::implementation::EffectsControl>()->getVideoEffects());
 	m_mediaPlayer->setAudioEffects(EffectsControlInstance().as<winrt::MediaPlayer::implementation::EffectsControl>()->getAudioEffects());
+}
+
+void winrt::MediaPlayer::implementation::MainWindow::OnKeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& e)
+{
+	if (e.Key() == winrt::Windows::System::VirtualKey::Space)
+    {
+		if (m_isVideoSelected)
+		{
+
+			if (!m_isPlaying)
+			{
+				playMedia();
+			}
+			else
+			{
+				pauseMedia();
+			}
+		}
+		else
+		{
+			PickVideoFileAsync();
+		}
+
+        e.Handled(true);
+    }
+	else if (e.Key() == winrt::Windows::System::VirtualKey::Up)
+	{
+		double newVolume = m_mediaPlayer->getCurrentVolume() + 0.05;
+
+		newVolume = std::min(newVolume, VolumeSlider().Maximum());
+		VolumeSlider().Value(newVolume);
+	}
+	else if (e.Key() == winrt::Windows::System::VirtualKey::Down)
+	{
+		double newVolume = m_mediaPlayer->getCurrentVolume() - 0.05;
+
+		newVolume = std::max(newVolume, VolumeSlider().Minimum());
+		VolumeSlider().Value(newVolume);
+	}
+}
+
+void winrt::MediaPlayer::implementation::MainWindow::VolumeSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
+{
+	if (m_isPlaying)
+	{
+		m_mediaPlayer->setVolume(static_cast<double>(e.NewValue()));
+	}
 }

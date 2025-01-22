@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "VideoDecoder.h"
 #include <iostream>
+#include "Constants.h"
 
 
 VideoDecoder::VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
@@ -27,10 +28,13 @@ void VideoDecoder::configureVideoStream()
     winrt::check_hresult(m_sourceReader->GetNativeMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, nativeVideoType.put()));
     winrt::check_hresult(MFGetAttributeSize(nativeVideoType.get(), MF_MT_FRAME_SIZE, &m_videoWidth, &m_videoHeight));
 
+    m_sourceReader->SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, FALSE);
+    m_sourceReader->SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, TRUE);
+
     uint32_t frameRateNumerator = 0, frameRateDenominator = 0;
     winrt::check_hresult(MFGetAttributeRatio(nativeVideoType.get(), MF_MT_FRAME_RATE, &frameRateNumerator, &frameRateDenominator));
     if (frameRateDenominator != 0) {
-        m_frameDuration = 10'000'000 * frameRateDenominator / frameRateNumerator;
+        m_frameDuration = TICKS_PER_SECOND * frameRateDenominator / frameRateNumerator;
     }
 }
 

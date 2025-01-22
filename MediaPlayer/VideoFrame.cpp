@@ -56,7 +56,11 @@ void VideoFrame::render()
 	context->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 	context->DrawBitmap(
 		frameBitmap.get(),
-		D2D1::RectF(0, 0, static_cast<float>(m_frameWidth), static_cast<float>(m_frameHeight)));
+		D2D1::RectF(
+			0,
+			0,
+			static_cast<float>(m_deviceResources->getVideoWidth()),
+			static_cast<float>(m_deviceResources->getVideoHeight())));
 	winrt::check_hresult(context->EndDraw());
 	m_deviceResources->getSwapChain()->Present(1, 0);
 }

@@ -20,8 +20,9 @@ public:
 protected:
 	std::shared_ptr<DeviceResources> m_deviceResources;
 
+	winrt::com_ptr< ID2D1Bitmap> m_frameBitmap;
 	std::vector<byte> m_buffer;
 	uint32_t m_frameWidth;
 	uint32_t m_frameHeight;
-	
+
 };

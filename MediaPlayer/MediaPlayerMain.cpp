@@ -34,7 +34,7 @@ void MediaPlayerMain::startRenderLoop()
 		{
 			while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
 			{
-				std::lock_guard lock(m_mutex);
+				std::lock_guard lock(m_criticalSection);
 
 				update();
 				render();
@@ -78,44 +78,70 @@ bool MediaPlayerMain::render() const
 
 void MediaPlayerMain::play()
 {
+	std::lock_guard lock(m_criticalSection);
 	m_video->play();
 	m_audio->play();
 }
 
 void MediaPlayerMain::pause()
 {
+	std::lock_guard lock(m_criticalSection);
 	m_video->pause();
 	m_audio->pause();
 }
 
 void MediaPlayerMain::selectVideo(const std::wstring& videoPath)
 {
+	std::lock_guard lock(m_criticalSection);
 	m_video->loadVideo(videoPath);
 	m_audio->loadVideo(videoPath);
 }
 
 void MediaPlayerMain::seekToTime(uint64_t timeInTicks)
 {
+	std::lock_guard lock(m_criticalSection);
 	m_video->seekToTime(timeInTicks);
 	m_audio->seekToTime(timeInTicks);
 }
 
+void MediaPlayerMain::setVolume(double volume)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_audio->setVolume(volume);
+}
+
 void MediaPlayerMain::setVideoEffects(std::set<VideoEffects>& effectsList)
 {
+	std::lock_guard lock(m_criticalSection);
 	m_video->setVideoEffects(effectsList);
 }
 
 void MediaPlayerMain::setAudioEffects(std::set<AudioEffects>& effectsList)
 {
+	std::lock_guard lock(m_criticalSection);
 	m_audio->setAudioEffects(effectsList);
 }
 
 uint64_t MediaPlayerMain::getVideoDuration()
 {
+	std::lock_guard lock(m_criticalSection);
 	return m_video->getVideoDuration();
 }
 
 uint64_t MediaPlayerMain::getCurrentPosition()
 {
+	std::lock_guard lock(m_criticalSection);
 	return m_video->getCurrentPosition();
+}
+
+double MediaPlayerMain::getCurrentVolume()
+{
+	std::lock_guard lock(m_criticalSection);
+	return m_audio->getCurrentVolume();
+}
+
+void MediaPlayerMain::updateSizeDependentResources(uint32_t width, uint32_t height)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_deviceResources->updateSizeDependentResources(width, height);
 }

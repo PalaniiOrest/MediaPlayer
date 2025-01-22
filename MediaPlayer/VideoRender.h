@@ -25,7 +25,7 @@ public:
     uint64_t getCurrentPosition() { return m_decoder.getCurrentPosition(); }
 
 
-private:
+private:    
     void updateTime();
 
     std::shared_ptr<DeviceResources> m_deviceResources;

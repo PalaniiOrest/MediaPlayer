@@ -65,3 +65,19 @@ bool AudioFrame::isPlaying()
     }
     return state.BuffersQueued > 0;
 }
+
+void AudioFrame::setVolume(double volume)
+{
+    if (m_deviceResources->getSourceVoice())
+    {
+        HRESULT hr = m_deviceResources->getSourceVoice()->SetVolume(volume);
+        if (FAILED(hr))
+        {
+            throw std::runtime_error("Failed to set volume.");
+        }
+        else
+        {
+            m_volume = volume;
+        }
+    }
+}

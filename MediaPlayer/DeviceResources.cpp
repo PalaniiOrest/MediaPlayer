@@ -23,8 +23,8 @@ DeviceResources::~DeviceResources()
 
 void DeviceResources::init(Controls::SwapChainPanel swapChainPanel)
 {
-	m_windowWidth = swapChainPanel.ActualWidth();
-	m_windowHeight = swapChainPanel.ActualHeight();
+	m_videoWidth = 1140;
+	m_videoHeight = 590;
 
 	uint32_t creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -120,8 +120,8 @@ void DeviceResources::init(Controls::SwapChainPanel swapChainPanel)
 
 void DeviceResources::updateSizeDependentResources(uint32_t newWidth, uint32_t newHeight)
 {
-	m_windowWidth = newWidth;
-	m_windowHeight = newHeight;
+	m_videoWidth = newWidth;
+	m_videoHeight = newHeight;
 
 	m_d2dDeviceContext->SetTarget(nullptr);
 	m_targetBitmap = nullptr;
@@ -131,8 +131,8 @@ void DeviceResources::updateSizeDependentResources(uint32_t newWidth, uint32_t n
 	m_swapChain->GetDesc1(&swapChainDesc);
 	winrt::check_hresult(m_swapChain->ResizeBuffers(
 		swapChainDesc.BufferCount,
-		m_windowWidth,
-		m_windowHeight,
+		m_videoWidth,
+		m_videoHeight,
 		swapChainDesc.Format,
 		swapChainDesc.Flags
 	));
@@ -158,6 +158,20 @@ void DeviceResources::updateSizeDependentResources(uint32_t newWidth, uint32_t n
 	m_d2dDeviceContext->SetTarget(m_targetBitmap.get());
 }
 
+void DeviceResources::updateAudioDependentResources()
+{
+	winrt::check_hresult(m_xAudio2->CreateSourceVoice(&m_sourceVoice, &m_waveFormat, 0, 1.0f, &m_voiceContext));
+}
+
+void DeviceResources::setWaveFormat(const WAVEFORMATEX* waveFormat, UINT32 waveFormatSize)
+{
+	if (waveFormatSize > sizeof(m_waveFormat)) {
+		throw std::runtime_error("Wave format size exceeds buffer size.");
+	}
+
+	memcpy_s(&m_waveFormat, sizeof(m_waveFormat), waveFormat, waveFormatSize);
+}
+
 void DeviceResources::initAudioResources()
 {
 	winrt::com_ptr<IXAudio2> xAudio2;
@@ -170,18 +184,5 @@ void DeviceResources::initAudioResources()
 	hr = m_xAudio2->CreateMasteringVoice(&m_masterVoice);
 	if (FAILED(hr)) {
 		throw std::runtime_error("Failed to create mastering voice.");
-	}
-
-	WAVEFORMATEX waveFormat = {};
-	waveFormat.wFormatTag = WAVE_FORMAT_PCM;
-	waveFormat.nChannels = 2;
-	waveFormat.nSamplesPerSec = 44100;
-	waveFormat.wBitsPerSample = 16;
-	waveFormat.nBlockAlign = (waveFormat.nChannels * waveFormat.wBitsPerSample) / 8;
-	waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign;
-
-	hr = m_xAudio2->CreateSourceVoice(&m_sourceVoice, &waveFormat, 0, 1.0f, &m_voiceContext);
-	if (FAILED(hr)) {
-		throw std::runtime_error("Failed to create source voice.");
 	}
 }

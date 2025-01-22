@@ -10,6 +10,7 @@ AudioRender::AudioRender(const std::shared_ptr<DeviceResources>& deviceResources
 
 AudioRender::~AudioRender()
 {
+
 }
 
 void AudioRender::loadVideo(const std::wstring& videoPath)
@@ -21,7 +22,7 @@ void AudioRender::loadVideo(const std::wstring& videoPath)
 
 void AudioRender::render()
 {
-    if (!m_isPlaying)
+    if (!m_isPlaying || m_decoder.getIsEndOfAudioStream())
     {
         return;
     }
@@ -59,6 +60,12 @@ void AudioRender::pause()
 void AudioRender::seekToTime(uint64_t timeInTicks)
 {
     m_decoder.seekToTime(timeInTicks);
+    m_decoder.setIsEndOfAudioStream(false);
+}
+
+void AudioRender::setVolume(double volume)
+{
+    m_frame.setVolume(volume);
 }
 
 void AudioRender::setAudioEffects(std::set<AudioEffects>& effectsList)

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "VideoRender.h"
 #include <iostream>
+#include "Constants.h"
+#include "Logger.h"
 
 VideoRender::VideoRender(const std::shared_ptr<DeviceResources>& deviceResources)
     : m_deviceResources(deviceResources)
@@ -51,19 +53,22 @@ void VideoRender::update(const StepTimer& timer)
     XAUDIO2_VOICE_STATE state;
     m_deviceResources->getSourceVoice()->GetState(&state);
 
-    uint64_t audioPlayTime = state.SamplesPlayed * 10000000 / 44100;
+    uint64_t audioPlayTime = state.SamplesPlayed * TICKS_PER_SECOND / m_deviceResources->getWaveFormat().nSamplesPerSec;
 
-    if (m_frameTime > audioPlayTime) {
+
+    uint64_t delta = audioPlayTime - m_frameTime;
+
+    if (m_frameTime > audioPlayTime) 
+    {
         return;
     }
 
-
-    m_lastFrameTime = m_frameTime;
     m_frameTime += m_frameDuration;
 
-    m_decoder.decodeFrame(m_frame);
-
-    m_effectManager.addVideoEffects(m_frame);
+    std::thread decodingThread([this]() {
+        m_decoder.decodeFrame(m_frame);
+        });
+    decodingThread.detach();
 }
 
 void VideoRender::seekToTime(uint64_t timeInTicks)

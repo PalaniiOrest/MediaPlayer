@@ -52,6 +52,7 @@
     <ClCompile Include="EffectsManager.cpp">
       <Filter>Effects</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -104,6 +105,10 @@
     <ClInclude Include="IVideoEffect.h">
       <Filter>Effects</Filter>
     </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

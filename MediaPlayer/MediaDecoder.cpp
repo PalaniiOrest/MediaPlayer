@@ -28,6 +28,7 @@ void MediaDecoder::seekToTime(uint64_t timeInTicks)
     winrt::check_hresult(m_sourceReader->SetCurrentPosition(GUID_NULL, var));
 }
 
+
 void MediaDecoder::calculateMediaDuration()
 {
     PROPVARIANT varDuration;

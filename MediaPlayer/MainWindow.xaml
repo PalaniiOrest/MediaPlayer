@@ -9,9 +9,8 @@
     mc:Ignorable="d"
     Title="MediaPlayer">
 
-    <Grid>
-        <SwapChainPanel x:Name="swapChainPanel">
-        </SwapChainPanel>
+    <Grid x:Name="RootGrid">
+        <SwapChainPanel x:Name="swapChainPanel"></SwapChainPanel>
         <local:EffectsControl x:Name="EffectsControlInstance" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <Button Content="Apply Effects" Width="120" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ApplyEffects_Click"/>
@@ -23,6 +22,18 @@
                 VerticalAlignment="Bottom"
                 Margin="20"
                 ValueChanged="ProgressSlider_ValueChanged"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+            <Slider x:Name="VolumeSlider"
+                Minimum="0"
+                Maximum="1.25"
+                Value="0.5"
+                TickFrequency="0.05"
+                StepFrequency="0.05"
+                IsThumbToolTipEnabled="True"
+                Width="150"
+                ValueChanged="VolumeSlider_ValueChanged"/>
+        </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <Button Click="OnSelectVideoButtonClick"
