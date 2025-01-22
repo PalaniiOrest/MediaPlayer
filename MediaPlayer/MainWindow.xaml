@@ -9,7 +9,40 @@
     mc:Ignorable="d"
     Title="MediaPlayer">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid x:Name="RootGrid">
+        <SwapChainPanel x:Name="swapChainPanel"></SwapChainPanel>
+        <local:EffectsControl x:Name="EffectsControlInstance" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Button Content="Apply Effects" Width="120" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ApplyEffects_Click"/>
+        
+        <Slider x:Name="ProgressSlider"
+                Minimum="0" Maximum="100"
+                TickFrequency="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Margin="20"
+                ValueChanged="ProgressSlider_ValueChanged"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+            <Slider x:Name="VolumeSlider"
+                Minimum="0"
+                Maximum="1.25"
+                Value="0.5"
+                TickFrequency="0.05"
+                StepFrequency="0.05"
+                IsThumbToolTipEnabled="True"
+                Width="150"
+                ValueChanged="VolumeSlider_ValueChanged"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Button Click="OnSelectVideoButtonClick"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="10">
+                Select Video</Button>
+
+            <Button x:Name="playButton" Click="playButton_Click">Play</Button>
+        </StackPanel>
+    </Grid>
 </Window>

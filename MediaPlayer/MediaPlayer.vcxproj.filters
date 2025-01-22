@@ -5,6 +5,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainWindow.xaml" />
+    <Page Include="EffectsControl.xaml">
+      <Filter>Effects</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl" />
@@ -12,9 +15,100 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="VideoRender.cpp">
+      <Filter>Video</Filter>
+    </ClCompile>
+    <ClCompile Include="Converter.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaPlayerMain.cpp" />
+    <ClCompile Include="DeviceResources.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="DXHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoFrame.cpp">
+      <Filter>Video</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoDecoder.cpp">
+      <Filter>Video</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioFrame.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioRender.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDecoder.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaDecoder.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamingVoiceContext.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectsManager.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="VideoRender.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="Converter.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DXHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaPlayerMain.h" />
+    <ClInclude Include="DeviceResources.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoFrame.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoDecoder.h">
+      <Filter>Video</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioFrame.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioRender.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDecoder.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaDecoder.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamingVoiceContext.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectsManager.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="IAudioEffect.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectsEnums.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="IVideoEffect.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -43,6 +137,21 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{0f71e644-3fa5-4603-bd50-bbf5c89dceb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Video">
+      <UniqueIdentifier>{96e1f3b1-c529-4cf8-add0-329b05c42ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{bb32f895-2fbe-4315-b23e-8373cfb45f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{17aed779-b974-48ec-89d2-c0db4fde88ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{3609aac3-4f49-4dbe-91b0-db936e66d4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{4d018d10-e65e-47b7-8672-dd04d721a7f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -55,5 +164,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
 </Project>
