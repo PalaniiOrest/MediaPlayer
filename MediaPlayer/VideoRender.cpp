@@ -65,10 +65,7 @@ void VideoRender::update(const StepTimer& timer)
 
     m_frameTime += m_frameDuration;
 
-    std::thread decodingThread([this]() {
-        m_decoder.decodeFrame(m_frame);
-        });
-    decodingThread.detach();
+    m_decoder.decodeFrame(m_frame);
 }
 
 void VideoRender::seekToTime(uint64_t timeInTicks)

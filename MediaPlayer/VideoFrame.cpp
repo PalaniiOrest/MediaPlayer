@@ -19,48 +19,58 @@ VideoFrame::~VideoFrame()
 {
 }
 
-void VideoFrame::setVideoData(std::vector<byte>& videoData)
+void VideoFrame::setVideoData(const winrt::com_ptr<ID3D11Texture2D>& texture)
 {
-	m_buffer = videoData;
+	D3D11_TEXTURE2D_DESC desc;
+	texture->GetDesc(&desc);
+
+	if (desc.Format != DXGI_FORMAT_B8G8R8A8_UNORM)
+	{
+		return;
+	}
+	m_texture = texture;
+
 }
 
-void VideoFrame::createBitmapFromBuffer(winrt::com_ptr<ID2D1Bitmap>& frameBitmap)
+void VideoFrame::createBitmapFromTexure()
 {
-	auto context = m_deviceResources->getD2DDeviceContext();
+	winrt::com_ptr<IDXGISurface> dxgiSurface;
+	winrt::check_hresult(m_texture->QueryInterface(dxgiSurface.put()));
 
-	D2D1_BITMAP_PROPERTIES bitmapProperties = {
-		{ DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE },
-		96.0f,
-		96.0f
-	};
+	D2D1_BITMAP_PROPERTIES1 bitmapProperties =
+		D2D1::BitmapProperties1(
+			D2D1_BITMAP_OPTIONS_TARGET,
+			D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+			96.0f,
+			96.0f
+		);
 
-	D2D1_SIZE_U size = { m_frameWidth, m_frameHeight };
-
-	winrt::check_hresult(context->CreateBitmap(
-		size,
-		m_buffer.data(),
-		size.width * 4,
+	winrt::com_ptr<ID2D1Bitmap1> d2dBitmap;
+	winrt::check_hresult(m_deviceResources->getD2DDeviceContext()->CreateBitmapFromDxgiSurface(
+		dxgiSurface.get(),
 		&bitmapProperties,
-		frameBitmap.put()
+		d2dBitmap.put()
 	));
+
+	m_frameBitmap = d2dBitmap;
 }
 
 void VideoFrame::render()
 {
-	winrt::com_ptr<ID2D1Bitmap> frameBitmap;
-
-	createBitmapFromBuffer(frameBitmap);
-
+	createBitmapFromTexure();
 	auto context = m_deviceResources->getD2DDeviceContext();
 	context->BeginDraw();
 	context->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 	context->DrawBitmap(
-		frameBitmap.get(),
+		m_frameBitmap.get(),
 		D2D1::RectF(
 			0,
 			0,
-			static_cast<float>(m_deviceResources->getVideoWidth()),
-			static_cast<float>(m_deviceResources->getVideoHeight())));
+			static_cast<float>(m_frameWidth),
+			static_cast<float>(m_frameHeight)
+		)
+	);
 	winrt::check_hresult(context->EndDraw());
-	m_deviceResources->getSwapChain()->Present(1, 0);
+	m_deviceResources->getSwapChain()->Present(0, 0);
+
 }
