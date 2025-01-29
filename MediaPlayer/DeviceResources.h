@@ -19,6 +19,7 @@ public:
     winrt::com_ptr<::IDXGIAdapter> getDXGIAdapter() { return m_dxgiAdapter; }
     winrt::com_ptr<::IDXGIFactory2> getDXGIFactory() { return m_dxgiFactory; }
     winrt::com_ptr<::IDXGISwapChain1> getSwapChain() { return m_swapChain; }
+    winrt::com_ptr<::ID3D11Multithread> getD3DMultithread() { return m_d3dMultithread; }
 
     IXAudio2SourceVoice* getSourceVoice() { return m_sourceVoice; }
     StreamingVoiceContext& getVoiceContext() { return m_voiceContext; }
@@ -40,6 +41,8 @@ protected:
     winrt::com_ptr<::IDXGISwapChain1> m_swapChain;
     winrt::com_ptr<::IDXGISurface> m_dxgiBackBuffer;
     winrt::com_ptr<::ID2D1Bitmap1> m_targetBitmap;
+
+    winrt::com_ptr<::ID3D11Multithread> m_d3dMultithread;
 
     winrt::com_ptr<IXAudio2> m_xAudio2 = nullptr;
     IXAudio2MasteringVoice* m_masterVoice = nullptr;

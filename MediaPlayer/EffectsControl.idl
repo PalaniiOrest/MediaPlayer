@@ -1,9 +1,0 @@
-namespace MediaPlayer
-{
-    [default_interface]
-    runtimeclass EffectsControl : Microsoft.UI.Xaml.Controls.UserControl
-    {
-        EffectsControl();
-        Int32 MyProperty;
-    }
-}

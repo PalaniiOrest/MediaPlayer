@@ -19,13 +19,10 @@ void VideoDecoder::loadMedia(const std::wstring& mediaPath)
     winrt::check_hresult(sourceReaderAttributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, TRUE));
     winrt::check_hresult(sourceReaderAttributes->SetUnknown(MF_SOURCE_READER_D3D_MANAGER, m_dxgiDeviceManager.get()));
 
-    winrt::check_hresult(MFCreateSourceReaderFromURL(mediaPath.c_str(), sourceReaderAttributes.get(), m_sourceReader.put()));
+    winrt::check_hresult( MFCreateSourceReaderFromURL(mediaPath.c_str(), sourceReaderAttributes.get(), m_sourceReader.put()));
     configureVideoStream();
 
-    if (isHardwareDecoderActive())
-    {
-
-    }
+    calculateMediaDuration();
 }
 
 void VideoDecoder::initializeD3DManager()
@@ -83,6 +80,12 @@ void VideoDecoder::decodeFrame(VideoFrame& frame)
     {
         std::cerr << "Failed to read video frame or end of stream." << std::endl;
         return;
+    }
+
+    LONGLONG sampleTime = 0;
+    if (SUCCEEDED(sample->GetSampleTime(&sampleTime)))
+    {
+        m_currentPosition = static_cast<uint64_t>(sampleTime);
     }
 
     winrt::com_ptr<IMFMediaBuffer> buffer;

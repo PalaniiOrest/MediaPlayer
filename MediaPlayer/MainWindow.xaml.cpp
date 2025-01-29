@@ -5,12 +5,12 @@
 #include <Microsoft.UI.Xaml.Window.h>
 #endif
 #include <iostream>
-#include <EffectsControl.xaml.h>
 
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
 #undef max
+#undef min
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -110,7 +110,7 @@ namespace winrt::MediaPlayer::implementation
 			co_return;
 		}
 
-		while (true)
+		while (true) //TODO: change while (true) on something because in the end of program we have exception
 		{
 			co_await winrt::resume_background();
 
@@ -130,7 +130,7 @@ namespace winrt::MediaPlayer::implementation
 				}
 			}
 
-			co_await winrt::resume_after(std::chrono::milliseconds(1000));
+			co_await winrt::resume_after(std::chrono::milliseconds(10));
 		}
 	}
 
@@ -167,13 +167,6 @@ void winrt::MediaPlayer::implementation::MainWindow::ProgressSlider_ValueChanged
 		return;
 	}
 	m_mediaPlayer->seekToTime(static_cast<uint64_t>(e.NewValue() * 10000000));
-}
-
-
-void winrt::MediaPlayer::implementation::MainWindow::ApplyEffects_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
-{
-	m_mediaPlayer->setVideoEffects(EffectsControlInstance().as<winrt::MediaPlayer::implementation::EffectsControl>()->getVideoEffects());
-	m_mediaPlayer->setAudioEffects(EffectsControlInstance().as<winrt::MediaPlayer::implementation::EffectsControl>()->getAudioEffects());
 }
 
 void winrt::MediaPlayer::implementation::MainWindow::OnKeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& e)

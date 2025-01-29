@@ -55,27 +55,21 @@ void VideoRender::update(const StepTimer& timer)
 
     uint64_t audioPlayTime = state.SamplesPlayed * TICKS_PER_SECOND / m_deviceResources->getWaveFormat().nSamplesPerSec;
 
-
-    uint64_t delta = audioPlayTime - m_frameTime;
-
-    if (m_frameTime > audioPlayTime) 
+    if (audioPlayTime <= m_frameTime)
     {
         return;
     }
 
-    m_frameTime += m_frameDuration;
-
-    m_decoder.decodeFrame(m_frame);
+    while (audioPlayTime > m_frameTime)
+    {
+        m_decoder.decodeFrame(m_frame);
+        m_frameTime += m_frameDuration;
+    }
 }
 
 void VideoRender::seekToTime(uint64_t timeInTicks)
 {
     m_decoder.seekToTime(timeInTicks);
-}
-
-void VideoRender::setVideoEffects(std::set<VideoEffects>& effectsList)
-{
-    m_effectManager.setVideoEffects(effectsList);
 }
 
 uint64_t VideoRender::getVideoDuration()

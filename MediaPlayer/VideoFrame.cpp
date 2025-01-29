@@ -1,17 +1,21 @@
 #include "pch.h"
 #include "VideoFrame.h"
 
+
 VideoFrame::VideoFrame(const std::shared_ptr<DeviceResources>& deviceResources)
 	: m_deviceResources(deviceResources)
 	, m_frameWidth(0)
 	, m_frameHeight(0)
+	, m_multithreadLock(deviceResources->getD3DMultithread())
 {
+
 }
 
 VideoFrame::VideoFrame(const std::shared_ptr<DeviceResources>& deviceResources, uint32_t width, uint32_t height)
 	: m_deviceResources(deviceResources)
 	, m_frameWidth(width)
 	, m_frameHeight(height)
+	, m_multithreadLock(deviceResources->getD3DMultithread())
 {
 }
 
@@ -21,19 +25,13 @@ VideoFrame::~VideoFrame()
 
 void VideoFrame::setVideoData(const winrt::com_ptr<ID3D11Texture2D>& texture)
 {
-	D3D11_TEXTURE2D_DESC desc;
-	texture->GetDesc(&desc);
-
-	if (desc.Format != DXGI_FORMAT_B8G8R8A8_UNORM)
-	{
-		return;
-	}
 	m_texture = texture;
-
 }
 
 void VideoFrame::createBitmapFromTexure()
 {
+	std::lock_guard<D3D11MultithreadLock> lock(m_multithreadLock);
+
 	winrt::com_ptr<IDXGISurface> dxgiSurface;
 	winrt::check_hresult(m_texture->QueryInterface(dxgiSurface.put()));
 
@@ -57,6 +55,8 @@ void VideoFrame::createBitmapFromTexure()
 
 void VideoFrame::render()
 {
+	std::lock_guard<D3D11MultithreadLock> lock(m_multithreadLock);
+
 	createBitmapFromTexure();
 	auto context = m_deviceResources->getD2DDeviceContext();
 	context->BeginDraw();
@@ -66,11 +66,10 @@ void VideoFrame::render()
 		D2D1::RectF(
 			0,
 			0,
-			static_cast<float>(m_frameWidth),
-			static_cast<float>(m_frameHeight)
+			static_cast<float>(m_deviceResources->getVideoWidth()),
+			static_cast<float>(m_deviceResources->getVideoHeight())
 		)
 	);
 	winrt::check_hresult(context->EndDraw());
 	m_deviceResources->getSwapChain()->Present(0, 0);
-
 }

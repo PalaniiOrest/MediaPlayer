@@ -11,9 +11,6 @@
 
     <Grid x:Name="RootGrid">
         <SwapChainPanel x:Name="swapChainPanel"></SwapChainPanel>
-        <local:EffectsControl x:Name="EffectsControlInstance" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
-        <Button Content="Apply Effects" Width="120" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ApplyEffects_Click"/>
         
         <Slider x:Name="ProgressSlider"
                 Minimum="0" Maximum="100"

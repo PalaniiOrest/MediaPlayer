@@ -22,9 +22,6 @@ public:
 	void seekToTime(uint64_t timeInTicks);
 	void setVolume(double volume);
 
-	void setVideoEffects(std::set<VideoEffects>& effectsList);
-	void setAudioEffects(std::set<AudioEffects>& effectsList);
-
 	uint64_t getVideoDuration();
 	uint64_t getCurrentPosition();
 	double getCurrentVolume();

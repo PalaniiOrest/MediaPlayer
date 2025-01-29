@@ -1,5 +1,6 @@
 #pragma once
 #include "DeviceResources.h"
+#include "D3D11MultithreadLock.h"
 
 class VideoFrame
 {
@@ -26,4 +27,5 @@ protected:
 	uint32_t m_frameWidth;
 	uint32_t m_frameHeight;
 
+	D3D11MultithreadLock m_multithreadLock;
 };

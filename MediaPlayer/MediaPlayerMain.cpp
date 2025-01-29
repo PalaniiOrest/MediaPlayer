@@ -110,18 +110,6 @@ void MediaPlayerMain::setVolume(double volume)
 	m_audio->setVolume(volume);
 }
 
-void MediaPlayerMain::setVideoEffects(std::set<VideoEffects>& effectsList)
-{
-	std::lock_guard lock(m_criticalSection);
-	m_video->setVideoEffects(effectsList);
-}
-
-void MediaPlayerMain::setAudioEffects(std::set<AudioEffects>& effectsList)
-{
-	std::lock_guard lock(m_criticalSection);
-	m_audio->setAudioEffects(effectsList);
-}
-
 uint64_t MediaPlayerMain::getVideoDuration()
 {
 	std::lock_guard lock(m_criticalSection);

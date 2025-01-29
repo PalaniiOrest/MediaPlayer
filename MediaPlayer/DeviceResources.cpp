@@ -54,6 +54,9 @@ void DeviceResources::init(Controls::SwapChainPanel swapChainPanel)
 		m_d3dDeviceContext.put())
 	);
 
+	m_d3dMultithread = m_d3dDevice.as<::ID3D11Multithread>();
+	m_d3dMultithread->SetMultithreadProtected(TRUE);
+
 	m_dxgiDevice = m_d3dDevice.as<::IDXGIDevice>();
 
 
@@ -71,8 +74,8 @@ void DeviceResources::init(Controls::SwapChainPanel swapChainPanel)
 	m_dxgiFactory.capture(m_dxgiAdapter, &IDXGIAdapter::GetParent);
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{ 0 };
-	swapChainDesc.Width = 1920;
-	swapChainDesc.Height = 1080;
+	swapChainDesc.Width = m_videoWidth;
+	swapChainDesc.Height = m_videoHeight;
 	swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	swapChainDesc.Stereo = false;
 	swapChainDesc.SampleDesc.Count = 1;

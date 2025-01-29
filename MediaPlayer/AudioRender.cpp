@@ -41,8 +41,6 @@ void AudioRender::update(const StepTimer& timer)
     }
 
     m_decoder.decodeAudioFrame(m_frame);
-
-    m_effectManager.addAudioEffects(m_frame);
 }
 
 void AudioRender::play()
@@ -67,9 +65,3 @@ void AudioRender::setVolume(double volume)
 {
     m_frame.setVolume(volume);
 }
-
-void AudioRender::setAudioEffects(std::set<AudioEffects>& effectsList)
-{
-    m_effectManager.setAudioEffects(effectsList);
-}
-

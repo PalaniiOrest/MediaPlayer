@@ -5,9 +5,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainWindow.xaml" />
-    <Page Include="EffectsControl.xaml">
-      <Filter>Effects</Filter>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl" />
@@ -49,10 +46,12 @@
     <ClCompile Include="StreamingVoiceContext.cpp">
       <Filter>Content</Filter>
     </ClCompile>
-    <ClCompile Include="EffectsManager.cpp">
-      <Filter>Effects</Filter>
+    <ClCompile Include="D3D11MultithreadLock.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Logger.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -93,22 +92,15 @@
     <ClInclude Include="StreamingVoiceContext.h">
       <Filter>Content</Filter>
     </ClInclude>
-    <ClInclude Include="EffectsManager.h">
-      <Filter>Effects</Filter>
-    </ClInclude>
-    <ClInclude Include="IAudioEffect.h">
-      <Filter>Effects</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectsEnums.h">
-      <Filter>Effects</Filter>
-    </ClInclude>
-    <ClInclude Include="IVideoEffect.h">
-      <Filter>Effects</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h" />
+    <ClInclude Include="D3D11MultithreadLock.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -148,9 +140,6 @@
     </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{3609aac3-4f49-4dbe-91b0-db936e66d4aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Effects">
-      <UniqueIdentifier>{4d018d10-e65e-47b7-8672-dd04d721a7f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
