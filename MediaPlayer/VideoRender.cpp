@@ -25,6 +25,8 @@ void VideoRender::loadVideo(const std::wstring& videoPath)
     m_videoHeight = m_decoder.getVideoHeight();
     m_frameDuration = m_decoder.getFrameDuration();
     m_frame.setFrameSize(m_videoWidth, m_videoHeight);
+    m_lastFrameTime = 0;
+    m_frameTime = 0;
 }
 
 void VideoRender::render()
@@ -63,6 +65,7 @@ void VideoRender::update(const StepTimer& timer)
     while (audioPlayTime > m_frameTime)
     {
         m_decoder.decodeFrame(m_frame);
+        m_decoder.getIsEndOfStream();
         m_frameTime += m_frameDuration;
     }
 }

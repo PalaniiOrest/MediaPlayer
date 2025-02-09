@@ -58,7 +58,6 @@ void AudioRender::pause()
 void AudioRender::seekToTime(uint64_t timeInTicks)
 {
     m_decoder.seekToTime(timeInTicks);
-    m_decoder.setIsEndOfAudioStream(false);
 }
 
 void AudioRender::setVolume(double volume)

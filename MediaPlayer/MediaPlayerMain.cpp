@@ -9,7 +9,7 @@ MediaPlayerMain::MediaPlayerMain(const std::shared_ptr<DeviceResources>& deviceR
 	: m_deviceResources(deviceResources)
 	, m_video(std::make_unique<VideoRender>(deviceResources))
 	, m_audio(std::make_unique<AudioRender>(deviceResources))
-	, m_pointerLocationX(0.0f)
+	, m_playQueue(std::make_shared<PlayQueue>())
 {
 	winrt::check_hresult(MFStartup(MF_VERSION));
 }
@@ -35,10 +35,28 @@ void MediaPlayerMain::startRenderLoop()
 			while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
 			{
 				std::lock_guard lock(m_criticalSection);
-
+				if (m_isFirstMediaInQueue)
+				{
+					if (!m_playQueue->isEmpty())
+					{
+						m_video->loadVideo(m_playQueue->getFirstMedia().m_filePath);
+						m_audio->loadVideo(m_playQueue->getFirstMedia().m_filePath);
+						m_playQueue->deleteFirstMedia();
+						m_video->play();
+						m_audio->play();
+						m_isFirstMediaInQueue = false;
+					}
+				}
+				if ((m_audio->getIsEndOfMedia() || m_video->getIsEndOfMedia()) && !m_playQueue->isEmpty())
+				{
+					m_video->loadVideo(m_playQueue->getFirstMedia().m_filePath);
+					m_audio->loadVideo(m_playQueue->getFirstMedia().m_filePath);
+					m_playQueue->deleteFirstMedia();
+					m_video->play();
+					m_audio->play();
+				}
 				update();
 				render();
-
 			}
 		});
 
@@ -110,6 +128,39 @@ void MediaPlayerMain::setVolume(double volume)
 	m_audio->setVolume(volume);
 }
 
+void MediaPlayerMain::setPlayQueue(const std::shared_ptr<PlayQueue>& playQueue)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_playQueue = playQueue;
+}
+
+void MediaPlayerMain::addToNextUp(const MediaFile& mediaFile)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_playQueue->addMediaFile(mediaFile);
+}
+
+void MediaPlayerMain::clearQueue()
+{
+	std::lock_guard lock(m_criticalSection);
+	m_playQueue->clear();
+}
+
+void MediaPlayerMain::playNextMedia()
+{
+	std::lock_guard lock(m_criticalSection);
+	if( !m_playQueue->isEmpty())
+	{
+		m_video->pause();
+		m_audio->pause();
+		m_video->loadVideo(m_playQueue->getFirstMedia().m_filePath);
+		m_audio->loadVideo(m_playQueue->getFirstMedia().m_filePath);
+		m_playQueue->deleteFirstMedia();
+		m_video->play();
+		m_audio->play();
+	}
+}
+
 uint64_t MediaPlayerMain::getVideoDuration()
 {
 	std::lock_guard lock(m_criticalSection);
@@ -126,6 +177,11 @@ double MediaPlayerMain::getCurrentVolume()
 {
 	std::lock_guard lock(m_criticalSection);
 	return m_audio->getCurrentVolume();
+}
+
+bool MediaPlayerMain::getIsEndOfMedia()
+{
+	return m_audio->getIsEndOfMedia() || m_video->getIsEndOfMedia();
 }
 
 void MediaPlayerMain::updateSizeDependentResources(uint32_t width, uint32_t height)

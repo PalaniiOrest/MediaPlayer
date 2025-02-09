@@ -8,11 +8,9 @@ public:
 
     virtual void loadMedia(const std::wstring& mediaPath) override;
     void decodeAudioFrame(AudioFrame& frame);
-    bool getIsEndOfAudioStream() { return m_isEndOfAudioStream; }
-    void setIsEndOfAudioStream(bool isEndOfAudioStream) { m_isEndOfAudioStream = isEndOfAudioStream; }
+    bool getIsEndOfAudioStream() { return m_isEndOfStream; }
 
 private:
+    std::shared_ptr<DeviceResources> m_deviceResources;
     void configureAudioStream();
-
-    bool m_isEndOfAudioStream = false;
 };

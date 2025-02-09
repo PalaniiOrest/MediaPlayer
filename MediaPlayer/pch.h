@@ -28,6 +28,8 @@
 #include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Windows.ApplicationModel.h>
 #include <winrt/Windows.Storage.Pickers.h>
+#include <winrt/Windows.UI.Xaml.Interop.h>
+
 #include <wil/cppwinrt_helpers.h>
 #include <dxgi1_4.h>
 #include <d3d11_3.h>
@@ -50,8 +52,10 @@
 #include <mfreadwrite.h>
 #include <mfobjects.h>
 #include <mfidl.h>
+#include <mferror.h>
 
 #include <ppltasks.h>
+#include <ppl.h>
 
 #include <shobjidl_core.h>
 

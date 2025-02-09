@@ -20,6 +20,7 @@ public:
 
     uint64_t getVideoDuration();
     uint64_t getCurrentPosition() { return m_decoder.getCurrentPosition(); }
+    bool getIsEndOfMedia() { return m_isEndOfMedia; }
 
 
 private:    
@@ -36,5 +37,5 @@ private:
     uint64_t m_frameTime = 0;
 
     bool m_isPlaying = false;
-    bool isVideoEnd = false;
+    bool m_isEndOfMedia = false;
 };

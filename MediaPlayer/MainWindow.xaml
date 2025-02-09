@@ -5,41 +5,72 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MediaPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Title="MediaPlayer">
 
     <Grid x:Name="RootGrid">
-        <SwapChainPanel x:Name="swapChainPanel"></SwapChainPanel>
-        
-        <Slider x:Name="ProgressSlider"
-                Minimum="0" Maximum="100"
-                TickFrequency="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Bottom"
-                Margin="20"
-                ValueChanged="ProgressSlider_ValueChanged"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
-            <Slider x:Name="VolumeSlider"
-                Minimum="0"
-                Maximum="1.25"
-                Value="0.5"
-                TickFrequency="0.05"
-                StepFrequency="0.05"
-                IsThumbToolTipEnabled="True"
-                Width="150"
-                ValueChanged="VolumeSlider_ValueChanged"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="120"/>
+        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <Button Click="OnSelectVideoButtonClick"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="10">
-                Select Video</Button>
+        <SwapChainPanel
+            x:Name="swapChainPanel"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"/>
 
-            <Button x:Name="playButton" Click="playButton_Click">Play</Button>
-        </StackPanel>
+
+        <Grid 
+            x:Name="NavigationGrid"
+            Grid.Column="0"
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            Opacity="1"
+            Background="Transparent"
+            Visibility="Collapsed">
+
+            <muxc:NavigationView 
+                x:Name="NavView"
+                IsSettingsVisible="True"
+                SelectionChanged="NavView_SelectionChanged"
+                Background="Transparent"
+                PaneDisplayMode="Left"
+                IsPaneToggleButtonVisible="False">
+
+                <muxc:NavigationView.MenuItems>
+                    <muxc:NavigationViewItem Content="Home" Tag="HomePage" Icon="Home"/>
+                    <muxc:NavigationViewItem Content="PlayLists" Tag="PlaylistsPage" Icon="Placeholder"/>
+                    <muxc:NavigationViewItem Content="PlayQueue" Tag="PlayQueuePage" Icon="List"/>
+                </muxc:NavigationView.MenuItems>
+            </muxc:NavigationView>
+        </Grid>
+
+        <Grid 
+            x:Name="FrameGrid" 
+            Grid.Column="1"
+            Grid.Row="0"
+            Visibility="Collapsed">
+            <Frame x:Name="ContentFrame"/>
+        </Grid>
+
+        <Grid 
+            x:Name="PlayerGrid" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2" 
+            Grid.Row="1" 
+            Height="120"
+            VerticalAlignment="Bottom"
+            Background="Transparent">
+        </Grid>
     </Grid>
+
 </Window>

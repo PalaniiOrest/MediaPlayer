@@ -19,6 +19,7 @@ public:
     void seekToTime(uint64_t timeInTicks);
     void setVolume(double volume);
     double getCurrentVolume() { return m_frame.getCurrentVolume(); }
+    bool getIsEndOfMedia() { return m_decoder.getIsEndOfAudioStream(); }
 
 private:
 	std::shared_ptr<DeviceResources> m_deviceResources;

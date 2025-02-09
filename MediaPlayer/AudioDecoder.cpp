@@ -8,7 +8,7 @@ namespace
 }
 
 AudioDecoder::AudioDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
-    : MediaDecoder(deviceResources)
+    : m_deviceResources(deviceResources)
 {
     
 }
@@ -49,6 +49,8 @@ void AudioDecoder::loadMedia(const std::wstring& mediaPath)
     configureAudioStream();
     m_deviceResources->updateAudioDependentResources();
     m_frameDuration = TICKS_PER_SECOND / m_deviceResources->getWaveFormat().nSamplesPerSec;
+    m_isEndOfStream = false;
+
 }
 
 void AudioDecoder::decodeAudioFrame(AudioFrame& frame)
@@ -65,13 +67,19 @@ void AudioDecoder::decodeAudioFrame(AudioFrame& frame)
         sample.put()
     );
 
-    if (flags & MF_SOURCE_READERF_ENDOFSTREAM) {
+    if (flags & MF_SOURCE_READERF_ENDOFSTREAM)
+    {
         std::cout << "End of audio stream reached." << std::endl;
-        m_isEndOfAudioStream = true;
+        m_isEndOfStream = true;
         return;
     }
+    else
+    {
+        m_isEndOfStream = false;
+    }
 
-    if (FAILED(hr) || !sample) {
+    if (FAILED(hr) || !sample) 
+    {
         std::cerr << "Failed to read audio frame or end of stream." << std::endl;
         return;
     }
@@ -79,7 +87,8 @@ void AudioDecoder::decodeAudioFrame(AudioFrame& frame)
 
     winrt::com_ptr<IMFMediaBuffer> mediaBuffer;
     hr = sample->ConvertToContiguousBuffer(mediaBuffer.put());
-    if (FAILED(hr)) {
+    if (FAILED(hr)) 
+    {
         std::cerr << "Failed to convert sample to contiguous buffer." << std::endl;
         return;
     }
@@ -88,7 +97,8 @@ void AudioDecoder::decodeAudioFrame(AudioFrame& frame)
     DWORD sampleBufferLenght = 0;
 
     hr = mediaBuffer->Lock(&data, nullptr, &sampleBufferLenght);
-    if (FAILED(hr)) {
+    if (FAILED(hr))
+    {
         std::cerr << "Failed to lock buffer." << std::endl;
         return;
     }

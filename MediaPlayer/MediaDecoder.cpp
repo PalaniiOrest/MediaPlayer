@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "MediaDecoder.h"
 
-MediaDecoder::MediaDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
-    : m_deviceResources(deviceResources)
+MediaDecoder::MediaDecoder()
 {
 }
 
@@ -26,6 +25,7 @@ void MediaDecoder::seekToTime(uint64_t timeInTicks)
     var.hVal.QuadPart = timeInTicks;
 
     winrt::check_hresult(m_sourceReader->SetCurrentPosition(GUID_NULL, var));
+    m_isEndOfStream = false;
 }
 
 
@@ -48,4 +48,3 @@ void MediaDecoder::calculateMediaDuration()
 
     PropVariantClear(&varDuration);
 }
-

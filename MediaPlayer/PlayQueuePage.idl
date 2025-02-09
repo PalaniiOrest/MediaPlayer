@@ -1,0 +1,9 @@
+namespace MediaPlayer
+{
+    [default_interface]
+    runtimeclass PlayQueuePage : Microsoft.UI.Xaml.Controls.Page
+    {
+        PlayQueuePage();
+        Int32 MyProperty;
+    }
+}

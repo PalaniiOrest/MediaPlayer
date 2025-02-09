@@ -6,7 +6,7 @@
 
 
 VideoDecoder::VideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
-    : MediaDecoder(deviceResources)
+    : m_deviceResources(deviceResources)
 {
     initializeD3DManager();
 }
@@ -23,6 +23,7 @@ void VideoDecoder::loadMedia(const std::wstring& mediaPath)
     configureVideoStream();
 
     calculateMediaDuration();
+    m_isEndOfStream = false;
 }
 
 void VideoDecoder::initializeD3DManager()
@@ -74,6 +75,10 @@ void VideoDecoder::decodeFrame(VideoFrame& frame)
     {
         m_isEndOfStream = true;
         return;
+    }
+    else
+    {
+        m_isEndOfStream = false;
     }
 
     if (!sample)

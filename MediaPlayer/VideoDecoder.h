@@ -11,10 +11,12 @@ public:
     uint32_t getVideoWidth() const { return m_videoWidth; }
     uint32_t getVideoHeight() const { return m_videoHeight; }
     uint64_t getCurrentPosition() { return m_currentPosition; }
+    bool getIsEndOfStream() { return m_isEndOfStream; }
 private:
     void configureVideoStream();
     bool isHardwareDecoderActive();
 
+    std::shared_ptr<DeviceResources> m_deviceResources;
 
     uint32_t m_videoWidth = 0;
     uint32_t m_videoHeight = 0;
