@@ -126,6 +126,10 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MediaDecoder.h" />
     <ClInclude Include="MediaFile.h" />
+    <ClInclude Include="MediaFileViewModel.h">
+      <DependentUpon>MediaFileViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="PlayerPage.xaml.h">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -186,6 +190,10 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MediaDecoder.cpp" />
     <ClCompile Include="MediaFile.cpp" />
+    <ClCompile Include="MediaFileViewModel.cpp">
+      <DependentUpon>MediaFileViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="PlayerPage.xaml.cpp">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -224,6 +232,9 @@
     <Midl Include="MainWindow.idl">
       <SubType>Code</SubType>
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="MediaFileViewModel.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="PlayerPage.idl">
       <DependentUpon>PlayerPage.xaml</DependentUpon>

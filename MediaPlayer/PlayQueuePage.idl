@@ -1,3 +1,5 @@
+import "MediaFileViewModel.idl";
+
 namespace MediaPlayer
 {
     [default_interface]
@@ -5,5 +7,7 @@ namespace MediaPlayer
     {
         PlayQueuePage();
         Int32 MyProperty;
+        Windows.Foundation.Collections.IObservableVector<MediaFileViewModel> MediaQueue{ get; };
+
     }
 }

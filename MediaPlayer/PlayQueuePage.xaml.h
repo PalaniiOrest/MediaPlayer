@@ -22,9 +22,18 @@ namespace winrt::MediaPlayer::implementation
 
         winrt::fire_and_forget PickVideoFileAsync();
 
+        void updateMediaQueue();
+
+        winrt::Windows::Foundation::Collections::IObservableVector<winrt::MediaPlayer::MediaFileViewModel> MediaQueue()
+        {
+            return m_mediaQueue;
+        }
+
     private:
         std::shared_ptr<MediaPlayerMain> m_mediaPlayer;
         std::shared_ptr<PlayQueue> m_playQueue;
+        winrt::Windows::Foundation::Collections::IObservableVector<winrt::MediaPlayer::MediaFileViewModel> m_mediaQueue{ winrt::single_threaded_observable_vector<winrt::MediaPlayer::MediaFileViewModel>() };
+
     };
 }
 

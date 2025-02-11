@@ -3,6 +3,7 @@
 #if __has_include("PlayQueuePage.g.cpp")
 #include "PlayQueuePage.g.cpp"
 #endif
+#include <MediaFileViewModel.h>
 
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
@@ -59,5 +60,15 @@ winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayQueuePage::PickVi
 	{
 		auto videoPath = file.Path();
 		m_mediaPlayer->addToNextUp(MediaFile(std::wstring(videoPath.c_str())));
+		updateMediaQueue();
+	}
+}
+
+void winrt::MediaPlayer::implementation::PlayQueuePage::updateMediaQueue()
+{
+	m_mediaQueue.Clear();
+	for (const auto& mediaFile : m_playQueue->getQueue())
+	{
+		m_mediaQueue.Append(winrt::make<winrt::MediaPlayer::implementation::MediaFileViewModel>());
 	}
 }

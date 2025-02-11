@@ -33,6 +33,11 @@ void PlayQueue::moveUp(int id)
 {
 }
 
+std::list<MediaFile> PlayQueue::getQueue()
+{
+    return m_queue;
+}
+
 MediaFile PlayQueue::getFirstMedia()
 {
     if (!m_queue.empty())
