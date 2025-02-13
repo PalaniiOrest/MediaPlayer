@@ -6,6 +6,7 @@ public:
 
     std::wstring m_filePath;
 
+    std::wstring m_id;
     std::wstring m_name;
     std::wstring m_creatorName;
     std::wstring m_albumTitle;

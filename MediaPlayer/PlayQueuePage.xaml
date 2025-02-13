@@ -15,7 +15,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Панель з кнопками -->
         <StackPanel 
             Orientation="Horizontal" 
             HorizontalAlignment="Right" 
@@ -39,17 +38,19 @@
             x:Name="MediaQueueListView"
             ItemsSource="{x:Bind MediaQueue, Mode=OneWay}"
             SelectionMode="Single"
-            Grid.Row="1">   
+            Grid.Row="1"
+            SelectionChanged="MediaQueueListView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:MediaFileViewModel">
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock Text="{x:Bind Title}" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="Bold"/>
                         <TextBlock Text="{x:Bind Year}" FontSize="14" Foreground="Gray"/>
                         <TextBlock Text="{x:Bind Duration}" FontSize="14"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
 
     </Grid>
 </Page>

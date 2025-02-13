@@ -27,6 +27,8 @@ namespace winrt::MediaPlayer::implementation
 		m_mediaPlayer = mediaPlayer;
 		m_playQueue = std::make_shared<PlayQueue>();
 		m_mediaPlayer->setPlayQueue(m_playQueue);
+		std::function endFunction = [this]() { updateMediaQueue();};
+		m_mediaPlayer->addActionOnEndMedia(endFunction);
 	}
 }
 
@@ -34,6 +36,7 @@ namespace winrt::MediaPlayer::implementation
 void winrt::MediaPlayer::implementation::PlayQueuePage::clearButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
 {
 	m_mediaPlayer->clearQueue();
+	updateMediaQueue();
 }
 
 
@@ -59,7 +62,8 @@ winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayQueuePage::PickVi
 	if (file != nullptr)
 	{
 		auto videoPath = file.Path();
-		m_mediaPlayer->addToNextUp(MediaFile(std::wstring(videoPath.c_str())));
+		MediaFile mediaFile(std::wstring(videoPath.c_str()));
+		m_mediaPlayer->addToNextUp(mediaFile);
 		updateMediaQueue();
 	}
 }
@@ -69,6 +73,23 @@ void winrt::MediaPlayer::implementation::PlayQueuePage::updateMediaQueue()
 	m_mediaQueue.Clear();
 	for (const auto& mediaFile : m_playQueue->getQueue())
 	{
-		m_mediaQueue.Append(winrt::make<winrt::MediaPlayer::implementation::MediaFileViewModel>());
+		m_mediaQueue.Append(winrt::make<winrt::MediaPlayer::implementation::MediaFileViewModel>(mediaFile));
+	}
+}
+
+void winrt::MediaPlayer::implementation::PlayQueuePage::MediaQueueListView_SelectionChanged(
+	winrt::Windows::Foundation::IInspectable const& sender,
+	winrt::Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const& e)
+{
+	auto listView = sender.as<winrt::Microsoft::UI::Xaml::Controls::ListView>();
+	auto selectedItem = listView.SelectedItem();
+	if (selectedItem)
+	{
+		auto mediaFileVM = selectedItem.as<winrt::MediaPlayer::MediaFileViewModel>();
+		if (mediaFileVM)
+		{
+			m_playQueue->setCurrentMedia(mediaFileVM.Id().c_str());
+			m_mediaPlayer->playCurrentMedia();
+		}
 	}
 }

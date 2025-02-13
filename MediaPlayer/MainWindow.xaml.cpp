@@ -37,10 +37,12 @@ namespace winrt::MediaPlayer::implementation
 		m_playerPage = winrt::MediaPlayer::PlayerPage();
 		PlayerGrid().Children().Append(m_playerPage);
 
+		swapChainPanel().SizeChanged({ this, &MainWindow::OnSwapChainPanelSizeChanged });
 
 
 		m_deviceResources = std::make_shared<DeviceResources>();
 		m_deviceResources->init(swapChainPanel());
+
 
 		m_mediaPlayer = std::make_shared<MediaPlayerMain>(m_deviceResources);
 		m_mediaPlayer->startRenderLoop();
@@ -55,6 +57,8 @@ namespace winrt::MediaPlayer::implementation
 		{
 			playQueuePageImpl->initialize(m_mediaPlayer);
 		}
+
+		RootGrid().KeyDown({ this, &MainWindow::OnKeyDown });
 
 		m_current = this;
 	}
@@ -93,6 +97,19 @@ void winrt::MediaPlayer::implementation::MainWindow::NavView_SelectionChanged(wi
 			ContentFrame().Content(m_playQueuePage);
 		}
 	}
+}
+
+void winrt::MediaPlayer::implementation::MainWindow::OnKeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& e)
+{
+	auto playerImpl = m_playerPage.as<winrt::MediaPlayer::implementation::PlayerPage>();
+	playerImpl->OnKeyDown(e);
+}
+
+void winrt::MediaPlayer::implementation::MainWindow::OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args)
+{
+	auto playerImpl = m_playerPage.as<winrt::MediaPlayer::implementation::PlayerPage>();
+	playerImpl->OnSwapChainPanelSizeChanged(sender, args);
+
 }
 
 

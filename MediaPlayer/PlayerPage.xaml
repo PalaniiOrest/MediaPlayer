@@ -26,6 +26,33 @@
                 VideoName
             </TextBlock>
         </Grid>
+
+        <Slider
+            x:Name="ProgressSlider"
+            Minimum="0" Maximum="100"
+            TickFrequency="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Margin="50, 0, 50, 0"
+            ValueChanged="ProgressSlider_ValueChanged"/>
+
+        <StackPanel 
+            Orientation="Horizontal"
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Bottom" 
+            Margin="10">
+            <Slider 
+                x:Name="VolumeSlider"
+                Minimum="0"
+                Maximum="1.25"
+                Value="0.5"
+                TickFrequency="0.05"
+                StepFrequency="0.05"
+                IsThumbToolTipEnabled="True"
+                Width="150"
+                ValueChanged="VolumeSlider_ValueChanged"/>
+        </StackPanel>
+        
         <StackPanel
             Orientation="Horizontal" 
             HorizontalAlignment="Center" 
@@ -36,8 +63,13 @@
                     Margin="10">
                     Select Video
             </Button>
-
+            <Button x:Name="prevButton" Click="prevButton_Click">
+                <FontIcon Glyph="&#xE892;" />
+            </Button>
             <Button x:Name="playButton" Click="playButton_Click">Play</Button>
+            <Button x:Name="nextButton" Click="nextButton_Click">
+                <FontIcon Glyph="&#xE893;" />
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

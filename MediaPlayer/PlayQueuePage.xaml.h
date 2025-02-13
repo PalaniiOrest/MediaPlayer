@@ -34,6 +34,8 @@ namespace winrt::MediaPlayer::implementation
         std::shared_ptr<PlayQueue> m_playQueue;
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::MediaPlayer::MediaFileViewModel> m_mediaQueue{ winrt::single_threaded_observable_vector<winrt::MediaPlayer::MediaFileViewModel>() };
 
+    public:
+        void MediaQueueListView_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const& e);
     };
 }
 

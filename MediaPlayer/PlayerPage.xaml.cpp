@@ -4,6 +4,10 @@
 #include "PlayerPage.g.cpp"
 #endif
 #include "MainWindow.xaml.h"
+#include "Constants.h"
+
+#undef min
+#undef max
 
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
@@ -29,6 +33,60 @@ namespace winrt::MediaPlayer::implementation
         m_deviceResources = deviceResources;
         m_mediaPlayer = mediaPlayer;
         m_swapChainPanel = swapChainPanel;
+    }
+    void PlayerPage::OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args)
+    {
+        auto newSize = args.NewSize();
+
+        m_mediaPlayer->updateSizeDependentResources(newSize.Width, newSize.Height);
+    }
+    void PlayerPage::OnKeyDown(winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& e)
+    {
+        if (e.Key() == winrt::Windows::System::VirtualKey::Space)
+        {
+            if (m_isVideoSelected)
+            {
+
+                if (!m_isPlaying)
+                {
+                    playMedia();
+                    RootGrid().Visibility(Visibility::Collapsed);
+                }
+                else
+                {
+                    pauseMedia();
+                    RootGrid().Visibility(Visibility::Visible);
+                }
+            }
+            else
+            {
+                PickVideoFileAsync();
+            }
+
+            e.Handled(true);
+        }
+        else if (e.Key() == winrt::Windows::System::VirtualKey::Up)
+        {
+            double newVolume = m_mediaPlayer->getCurrentVolume() + 0.05;
+
+            newVolume = std::min(newVolume, VolumeSlider().Maximum());
+            VolumeSlider().Value(newVolume);
+        }
+        else if (e.Key() == winrt::Windows::System::VirtualKey::Down)
+        {
+            double newVolume = m_mediaPlayer->getCurrentVolume() - 0.05;
+
+            newVolume = std::max(newVolume, VolumeSlider().Minimum());
+            VolumeSlider().Value(newVolume);
+        }
+        else if (e.Key() == winrt::Windows::System::VirtualKey::Right)
+        {
+            
+        }
+        else if (e.Key() == winrt::Windows::System::VirtualKey::Left)
+        {
+            
+        }
     }
 }
 
@@ -156,6 +214,11 @@ void winrt::MediaPlayer::implementation::PlayerPage::playButton_Click(IInspectab
     }
 }
 
+winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayerPage::UpdateProgressLoopAsync()
+{
+    return winrt::fire_and_forget();
+}
+
 winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayerPage::PickVideoFileAsync()
 {
     winrt::Windows::Storage::Pickers::FileOpenPicker picker;
@@ -177,7 +240,39 @@ winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayerPage::PickVideo
         m_isVideoSelected = true;
     }
 
+    ProgressSlider().Value(0);
+    ProgressSlider().Maximum(m_mediaPlayer->getVideoDuration() / TICKS_PER_SECOND);
+
     playButton().Content(box_value(L"Play"));
     m_isPlaying = false;
     m_mediaPlayer->pause();
+}
+void winrt::MediaPlayer::implementation::PlayerPage::ProgressSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
+{
+    if (m_isSliderUpdate)
+    {
+        return;
+    }
+    m_mediaPlayer->pause();
+    m_mediaPlayer->seekToTime(static_cast<uint64_t>(e.NewValue() * 10000000));
+    m_mediaPlayer->play();
+
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::VolumeSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
+{
+    if (m_isPlaying)
+    {
+        m_mediaPlayer->setVolume(static_cast<double>(e.NewValue()));
+    }
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::prevButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+{
+    m_mediaPlayer->playPreviousMedia();
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::nextButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+{
+    m_mediaPlayer->playNextMedia();
 }

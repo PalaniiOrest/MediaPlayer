@@ -27,7 +27,8 @@ public:
 	void addToNextUp(const MediaFile& mediaFile);
 	void clearQueue();
 	void playNextMedia();
-
+	void playPreviousMedia();
+	void playCurrentMedia();
 
 	uint64_t getVideoDuration();
 	uint64_t getCurrentPosition();
@@ -35,8 +36,10 @@ public:
 	bool getIsEndOfMedia();
 
 	void updateSizeDependentResources(uint32_t width, uint32_t height);
+	void addActionOnEndMedia(std::function<void()> func);
 
 private:
+	void queueLogicUpdate();
 	void update();
 	bool render() const;
 
@@ -53,4 +56,6 @@ private:
 	winrt::Windows::Foundation::IAsyncAction m_renderLoopWorker;
 
 	StepTimer m_timer;
+
+	std::function<void()> m_endMediaFunction;
 };
