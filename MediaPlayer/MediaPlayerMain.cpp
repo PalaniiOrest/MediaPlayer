@@ -199,6 +199,11 @@ void MediaPlayerMain::playCurrentMedia()
 	}
 }
 
+bool MediaPlayerMain::isQueueEmpty()
+{
+	return m_playQueue->isEmpty();
+}
+
 uint64_t MediaPlayerMain::getVideoDuration()
 {
 	std::lock_guard lock(m_criticalSection);

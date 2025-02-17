@@ -9,9 +9,6 @@ namespace winrt::MediaPlayer::implementation
     {
         PlayerPage() { InitializeComponent(); }
 
-        int32_t MyProperty();
-        void MyProperty(int32_t value);
-
         void initialize(std::shared_ptr<MediaPlayerMain>& mediaPlayer, std::shared_ptr<DeviceResources>& deviceResources, winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel swapChainPanel);
         void OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args);
         void OnKeyDown(winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& e);
@@ -21,12 +18,10 @@ namespace winrt::MediaPlayer::implementation
         void VolumeSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e);
 
         winrt::fire_and_forget UpdateProgressLoopAsync();
-        winrt::fire_and_forget PickVideoFileAsync();
 
         void pauseMedia();
         void playMedia();
 
-        void OnSelectVideoButtonClick(winrt::Windows::Foundation::IInspectable const&, winrt::Microsoft::UI::Xaml::RoutedEventArgs const&);
         void MinimizedPlayerPresenter_Tapped(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::TappedRoutedEventArgs const& e);
 
     private:
@@ -38,9 +33,9 @@ namespace winrt::MediaPlayer::implementation
         bool m_isPlaying = false;
         bool m_isSliderUpdate = false;
         bool m_isVideoSelected = false;
-        
+
     public:
-        
+
         void prevButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e);
         void nextButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e);
     };

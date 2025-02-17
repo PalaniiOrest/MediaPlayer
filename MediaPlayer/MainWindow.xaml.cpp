@@ -7,6 +7,7 @@
 #include <iostream>
 #include <PlayerPage.xaml.h>
 #include <PlayQueuePage.xaml.h>
+#include <PlaylistsPage.xaml.h>
 
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
@@ -56,6 +57,11 @@ namespace winrt::MediaPlayer::implementation
 		if (playQueuePageImpl)
 		{
 			playQueuePageImpl->initialize(m_mediaPlayer);
+		}
+		auto playlistsPageImpl = m_playlistsPage.as<winrt::MediaPlayer::implementation::PlaylistsPage>();
+		if (playlistsPageImpl)
+		{
+			playlistsPageImpl->initialize(m_mediaPlayer, ContentFrame());
 		}
 
 		RootGrid().KeyDown({ this, &MainWindow::OnKeyDown });

@@ -29,6 +29,7 @@
 #include <winrt/Windows.ApplicationModel.h>
 #include <winrt/Windows.Storage.Pickers.h>
 #include <winrt/Windows.UI.Xaml.Interop.h>
+#include <winrt/Windows.UI.Xaml.Navigation.h>
 
 #include <wil/cppwinrt_helpers.h>
 #include <dxgi1_4.h>

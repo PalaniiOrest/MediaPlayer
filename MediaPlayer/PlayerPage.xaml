@@ -52,17 +52,11 @@
                 Width="150"
                 ValueChanged="VolumeSlider_ValueChanged"/>
         </StackPanel>
-        
+
         <StackPanel
             Orientation="Horizontal" 
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom">
-            <Button Click="OnSelectVideoButtonClick"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="10">
-                    Select Video
-            </Button>
             <Button x:Name="prevButton" Click="prevButton_Click">
                 <FontIcon Glyph="&#xE892;" />
             </Button>

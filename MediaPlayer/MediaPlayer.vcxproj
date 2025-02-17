@@ -134,8 +134,17 @@
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="PlaylistItem.h" />
+    <ClInclude Include="PlaylistItemViewModel.h">
+      <DependentUpon>PlaylistItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="PlaylistsPage.xaml.h">
       <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PlaylistViewPage.xaml.h">
+      <DependentUpon>PlaylistViewPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="PlayQueue.h" />
@@ -170,6 +179,9 @@
     <Page Include="PlaylistsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PlaylistViewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PlayQueuePage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -198,8 +210,17 @@
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="PlaylistItem.cpp" />
+    <ClCompile Include="PlaylistItemViewModel.cpp">
+      <DependentUpon>PlaylistItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="PlaylistsPage.xaml.cpp">
       <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PlaylistViewPage.xaml.cpp">
+      <DependentUpon>PlaylistViewPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PlayQueue.cpp" />
@@ -240,8 +261,15 @@
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="PlaylistItemViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="PlaylistsPage.idl">
       <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="PlaylistViewPage.idl">
+      <DependentUpon>PlaylistViewPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="PlayQueuePage.idl">

@@ -29,6 +29,7 @@ public:
 	void playNextMedia();
 	void playPreviousMedia();
 	void playCurrentMedia();
+	bool isQueueEmpty();
 
 	uint64_t getVideoDuration();
 	uint64_t getCurrentPosition();
@@ -49,7 +50,6 @@ private:
 	std::unique_ptr<AudioRender> m_audio;
 
 	std::shared_ptr<PlayQueue> m_playQueue;
-	std::vector<std::wstring> m_queue;
 	bool m_isFirstMediaInQueue = true;
 
 	concurrency::critical_section m_criticalSection;

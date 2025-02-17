@@ -4,6 +4,5 @@ namespace MediaPlayer
     runtimeclass PlayerPage : Microsoft.UI.Xaml.Controls.Page
     {
         PlayerPage();
-        Int32 MyProperty;
     }
 }

@@ -18,11 +18,17 @@
     <Page Include="PlayerPage.xaml">
       <Filter>UI\PlayerController</Filter>
     </Page>
+    <Page Include="PlaylistViewPage.xaml">
+      <Filter>UI\Playlist</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl" />
     <Midl Include="MediaFileViewModel.idl">
       <Filter>UI\PlayQueue</Filter>
+    </Midl>
+    <Midl Include="PlaylistItemViewModel.idl">
+      <Filter>UI\Playlist</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +81,9 @@
     </ClCompile>
     <ClCompile Include="PreviewMediaDecoder.cpp" />
     <ClCompile Include="PlayQueue.cpp">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaylistItem.cpp">
       <Filter>MediaPlayerAPI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -133,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="PreviewMediaDecoder.h" />
     <ClInclude Include="PlayQueue.h">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaylistItem.h">
       <Filter>MediaPlayerAPI</Filter>
     </ClInclude>
   </ItemGroup>

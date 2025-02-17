@@ -8,38 +8,54 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="RootGrid">
+    <Grid
+        x:Name="RootGrid"
+        Padding="20">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <TextBlock 
+            Text="Play Queue" 
+            FontSize="32" 
+            FontWeight="Bold" 
+            HorizontalAlignment="Left"
+            Margin="0,0,0,10"/>
+
         <StackPanel 
+            Grid.Row="1"
             Orientation="Horizontal" 
-            HorizontalAlignment="Right" 
-            VerticalAlignment="Center" 
-            Grid.Row="0">
-            <Button 
-                x:Name="clearButton"
-                Click="clearButton_Click"
-                HorizontalAlignment="Left">
-                Clear
-            </Button>
+            HorizontalAlignment="Left"
+            Spacing="20"
+            Margin="0,0,0,10">
+
             <Button 
                 x:Name="addMediaButton"
                 Click="addMediaButton_Click"
-                HorizontalAlignment="Right">
-                Add Media
-            </Button>
+                Content="Add Media"
+                Width="100"
+                Height="40"/>
+
+            <Button 
+                x:Name="clearButton"
+                Click="clearButton_Click"
+                Content="Clear"
+                Width="100"
+                Height="40"/>
+
         </StackPanel>
 
         <ListView 
+            Grid.Row="2"
             x:Name="MediaQueueListView"
             ItemsSource="{x:Bind MediaQueue, Mode=OneWay}"
             SelectionMode="Single"
-            Grid.Row="1"
-            SelectionChanged="MediaQueueListView_SelectionChanged">
+            SelectionChanged="MediaQueueListView_SelectionChanged"
+            Margin="0,10,0,0">
+
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:MediaFileViewModel">
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -49,8 +65,8 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
 
+        </ListView>
 
     </Grid>
 </Page>
