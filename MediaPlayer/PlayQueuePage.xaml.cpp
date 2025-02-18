@@ -28,7 +28,7 @@ namespace winrt::MediaPlayer::implementation
 		m_playQueue = std::make_shared<PlayQueue>();
 		m_mediaPlayer->setPlayQueue(m_playQueue);
 		std::function endFunction = [this]() { updateMediaQueue();};
-		m_mediaPlayer->addActionOnEndMedia(endFunction);
+		m_mediaPlayer->setUpdateQueueUIAction(endFunction);
 	}
 }
 
@@ -88,8 +88,7 @@ void winrt::MediaPlayer::implementation::PlayQueuePage::MediaQueueListView_Selec
 		auto mediaFileVM = selectedItem.as<winrt::MediaPlayer::MediaFileViewModel>();
 		if (mediaFileVM)
 		{
-			m_playQueue->setCurrentMedia(mediaFileVM.Id().c_str());
-			m_mediaPlayer->playCurrentMedia();
+			m_mediaPlayer->playMediaById(mediaFileVM.Id().c_str());
 		}
 	}
 }

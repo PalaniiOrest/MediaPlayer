@@ -49,7 +49,7 @@ void PlayQueue::moveUp(int id)
     }
 }
 
-std::vector<MediaFile> PlayQueue::getQueue()
+std::vector<MediaFile> PlayQueue::getQueue() const
 {
     return m_queue;
 }
@@ -73,6 +73,18 @@ void PlayQueue::setCurrentMedia(const std::wstring& mediaId)
             return;
         }
     }
+}
+
+MediaFile PlayQueue::getMediaByIndex(const std::wstring& mediaId)
+{
+    for (size_t i = 0; i < m_queue.size(); ++i)
+    {
+        if (m_queue[i].m_id == mediaId)
+        {
+            return m_queue[i];
+        }
+    }
+    return MediaFile(L"");
 }
 
 size_t PlayQueue::getCurrentIndex() const

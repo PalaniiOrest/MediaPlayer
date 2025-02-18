@@ -61,8 +61,6 @@ void MediaPlayerMain::queueLogicUpdate()
 		{
 			m_video->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
 			m_audio->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
-			m_video->play();
-			m_audio->play();
 			m_isFirstMediaInQueue = false;
 		}
 	}
@@ -80,7 +78,7 @@ void MediaPlayerMain::queueLogicUpdate()
 			m_audio->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
 			m_video->play();
 			m_audio->play();
-			m_endMediaFunction();
+			m_updateQueueUI();
 		}
 	}
 }
@@ -151,12 +149,24 @@ void MediaPlayerMain::addToNextUp(const MediaFile& mediaFile)
 {
 	std::lock_guard lock(m_criticalSection);
 	m_playQueue->addMediaFile(mediaFile);
+	m_updateQueueUI();
+}
+
+void MediaPlayerMain::addToNextUp(const PlaylistItem& playlist)
+{
+	std::lock_guard lock(m_criticalSection);
+	for (const auto& media : playlist.getPlaylist())
+	{
+		m_playQueue->addMediaFile(media);
+	}
+	m_updateQueueUI();
 }
 
 void MediaPlayerMain::clearQueue()
 {
 	std::lock_guard lock(m_criticalSection);
 	m_playQueue->clear();
+	m_updateQueueUI();
 }
 
 void MediaPlayerMain::playNextMedia()
@@ -169,7 +179,7 @@ void MediaPlayerMain::playNextMedia()
 		m_audio->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
 		m_video->play();
 		m_audio->play();
-		m_endMediaFunction();
+		m_updateQueueUI();
 	}
 }
 
@@ -183,8 +193,16 @@ void MediaPlayerMain::playPreviousMedia()
 		m_audio->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
 		m_video->play();
 		m_audio->play();
-		m_endMediaFunction();
+		m_updateQueueUI();
 	}
+}
+
+void MediaPlayerMain::playMediaById(const std::wstring& id)
+{
+	MediaFile media = m_playQueue->getMediaByIndex(id);
+	//TODO: if media empty do nothing
+	m_playQueue->setCurrentMedia(id);
+	playCurrentMedia();
 }
 
 void MediaPlayerMain::playCurrentMedia()
@@ -194,13 +212,12 @@ void MediaPlayerMain::playCurrentMedia()
 		auto currentMedia = m_playQueue->getCurrentMedia();
 		m_video->loadVideo(currentMedia.m_filePath);
 		m_audio->loadVideo(currentMedia.m_filePath);
-		m_video->play();
-		m_audio->play();
 	}
 }
 
 bool MediaPlayerMain::isQueueEmpty()
 {
+	std::lock_guard lock(m_criticalSection);
 	return m_playQueue->isEmpty();
 }
 
@@ -224,6 +241,7 @@ double MediaPlayerMain::getCurrentVolume()
 
 bool MediaPlayerMain::getIsEndOfMedia()
 {
+	std::lock_guard lock(m_criticalSection);
 	return m_audio->getIsEndOfMedia() || m_video->getIsEndOfMedia();
 }
 
@@ -233,7 +251,8 @@ void MediaPlayerMain::updateSizeDependentResources(uint32_t width, uint32_t heig
 	m_deviceResources->updateSizeDependentResources(width, height);
 }
 
-void MediaPlayerMain::addActionOnEndMedia(std::function<void()> func)
+void MediaPlayerMain::setUpdateQueueUIAction(std::function<void()> func)
 {
-	m_endMediaFunction = func;
+	std::lock_guard lock(m_criticalSection);
+	m_updateQueueUI = func;
 }

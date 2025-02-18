@@ -6,5 +6,8 @@
 
 namespace winrt::MediaPlayer::implementation
 {
-
+    void PlaylistItemViewModel::addMedia(const MediaFile& media)
+    {
+        m_playlist.addFile(media);
+    }
 }

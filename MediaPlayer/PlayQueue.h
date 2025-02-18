@@ -13,10 +13,11 @@ public:
     MediaFile getMediaFileByID(int id);
     void removeMediaFileByID(int id);
     void moveUp(int id);
-    std::vector<MediaFile> getQueue();
+    std::vector<MediaFile> getQueue() const;
 
     MediaFile getCurrentMedia();
     void setCurrentMedia(const std::wstring& mediaId);
+    MediaFile getMediaByIndex(const std::wstring& mediaId);
     size_t getCurrentIndex() const;
     bool isManualSelection() const { return m_manualSelection; }
     void resetManualSelection() { m_manualSelection = false; }

@@ -115,7 +115,7 @@ void winrt::MediaPlayer::implementation::PlayerPage::MinimizedPlayerPresenter_Ta
 					originalParent.Children().Append(m_swapChainPanel);
 				}
 
-				m_deviceResources->updateSizeDependentResources(size.Width, size.Height);
+				m_mediaPlayer->updateSizeDependentResources(size.Width, size.Height);
 
 				if (mainWindow)
 				{
@@ -142,7 +142,7 @@ void winrt::MediaPlayer::implementation::PlayerPage::MinimizedPlayerPresenter_Ta
 		if (!MinimizedPlayerPresenter().Children().IndexOf(m_swapChainPanel, dummyIndex))
 		{
 			MinimizedPlayerPresenter().Children().Append(m_swapChainPanel);
-			m_deviceResources->updateSizeDependentResources(MinimizedPlayerPresenter().Width(), MinimizedPlayerPresenter().Height());
+			m_mediaPlayer->updateSizeDependentResources(MinimizedPlayerPresenter().Width(), MinimizedPlayerPresenter().Height());
 			if (mainWindow)
 			{
 				mainWindow->NavigationGrid().Visibility(Visibility::Visible);

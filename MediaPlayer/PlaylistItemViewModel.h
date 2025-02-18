@@ -19,10 +19,11 @@ namespace winrt::MediaPlayer::implementation
         void Name(const hstring & value) { m_playlist.setName(value.c_str()); }
         hstring Name() { return hstring(m_playlist.getName()); }
 
-        PlaylistItem GetPlaylistItem() { return m_playlist; }
+        PlaylistItem& Playlist() { return m_playlist; }
+        void addMedia(const MediaFile& media);
+
         private:
             PlaylistItem m_playlist;
-        
     };
 }
 

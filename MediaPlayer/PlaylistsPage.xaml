@@ -11,7 +11,7 @@
     <Page.Resources>
         <DataTemplate x:Key="GridViewItemTemplate">
             <Border Background="LightGray" Padding="10" Margin="5">
-                <TextBlock Text="{Binding}" FontSize="16"/>
+                <TextBlock Text="{Binding Name}" FontSize="16"/>
             </Border>
         </DataTemplate>
     </Page.Resources>

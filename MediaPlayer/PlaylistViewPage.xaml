@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="MediaPlayer.PlaylistViewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,26 +6,79 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Grid 
-        x:Name="rootGrid"
-        Padding="10">
+
+    <Grid x:Name="rootGrid" Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,20">
+            <Button 
+                x:Name="BackButton"
+                Content="← Back"
+                Click="BackButton_Click"
+                Width="80"
+                Height="40"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,10"/>
+
+            <TextBlock 
+                x:Name="PlaylistTitle"
+                Text="Playlist Name"
+                FontSize="32"
+                FontWeight="Bold"
+                Margin="0,0,0,10"/>
+        </StackPanel>
+
+        <StackPanel 
+            Grid.Row="1" 
+            Orientation="Horizontal"
+            HorizontalAlignment="Center" 
+            Spacing="15"
+            Margin="0,0,0,20">
+            <Button 
+                x:Name="PlayAllButton"
+                Content="▶ Play all"
+                Click="PlayAllButton_Click"
+                Width="120"
+                Height="40"/>
+            <Button
+                x:Name="AddToButton"
+                Content="+ Add to"
+                Click="AddToButton_Click"
+                Width="120"
+                Height="40"/>
+            <Button
+                x:Name="RenameButton" 
+                Content="✏ Rename" 
+                Click="RenameButton_Click"
+                Width="120"
+                Height="40"/>
+            <Button
+                x:Name="DeleteButton"
+                Content="🗑 Delete"
+                Click="DeleteButton_Click"
+                Width="120"
+                Height="40"/>
+        </StackPanel>
+
         <ListView 
             x:Name="PlaylistListView"
             ItemsSource="{x:Bind PlaylistQueue, Mode=OneWay}"
             SelectionMode="Single"
             SelectionChanged="PlaylistListView_SelectionChanged"
-            Margin="0,10,0,0">
+            Grid.Row="2">
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:MediaFileViewModel">
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind Name}" FontSize="18" FontWeight="Bold"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
 
         </ListView>
     </Grid>
-    
 </Page>

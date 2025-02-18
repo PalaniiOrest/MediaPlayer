@@ -15,6 +15,7 @@ namespace winrt::MediaPlayer::implementation
 
         std::shared_ptr<MediaPlayerMain> m_mediaPlayer;
         winrt::Microsoft::UI::Xaml::Controls::Frame m_contentFrame;
+        std::unordered_map<hstring, winrt::MediaPlayer::PlaylistViewPage> m_playlistPages;
         
 
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::MediaPlayer::PlaylistItemViewModel> items = single_threaded_observable_vector<winrt::MediaPlayer::PlaylistItemViewModel>();

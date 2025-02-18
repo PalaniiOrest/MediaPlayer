@@ -5,6 +5,7 @@
 #include "VideoRender.h"
 #include "AudioRender.h"
 #include "PlayQueue.h"
+#include "PlaylistItem.h"
 
 class MediaPlayerMain
 {
@@ -25,10 +26,12 @@ public:
 	//PlayQueue
 	void setPlayQueue(const std::shared_ptr<PlayQueue>& playQueue);
 	void addToNextUp(const MediaFile& mediaFile);
+	void addToNextUp(const PlaylistItem& playlist);
 	void clearQueue();
+	void playCurrentMedia();
 	void playNextMedia();
 	void playPreviousMedia();
-	void playCurrentMedia();
+	void playMediaById(const std::wstring& id);
 	bool isQueueEmpty();
 
 	uint64_t getVideoDuration();
@@ -37,9 +40,10 @@ public:
 	bool getIsEndOfMedia();
 
 	void updateSizeDependentResources(uint32_t width, uint32_t height);
-	void addActionOnEndMedia(std::function<void()> func);
+	void setUpdateQueueUIAction(std::function<void()> func);
 
 private:
+
 	void queueLogicUpdate();
 	void update();
 	bool render() const;
@@ -57,5 +61,5 @@ private:
 
 	StepTimer m_timer;
 
-	std::function<void()> m_endMediaFunction;
+	std::function<void()> m_updateQueueUI;
 };
