@@ -3,6 +3,7 @@ class MediaFile
 {
 public:
 	MediaFile(const std::wstring& filePath);
+    std::wstring calculateVideoDuration(const std::wstring& filePath);
 
     std::wstring m_filePath;
 

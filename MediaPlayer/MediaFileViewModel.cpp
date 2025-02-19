@@ -6,5 +6,5 @@
 
 namespace winrt::MediaPlayer::implementation
 {
-
+    
 }

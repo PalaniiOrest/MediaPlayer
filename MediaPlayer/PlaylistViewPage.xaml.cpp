@@ -14,6 +14,7 @@ namespace winrt::MediaPlayer::implementation
     {
 
     }
+
     void PlaylistViewPage::initialize(winrt::MediaPlayer::PlaylistItemViewModel const& viewModel, const std::shared_ptr<MediaPlayerMain>& mediaPlayer, const winrt::Microsoft::UI::Xaml::Controls::Frame& frame)
     {
         m_viewModel = viewModel;
@@ -22,6 +23,7 @@ namespace winrt::MediaPlayer::implementation
 
         updatePlaylistQueue();
     }
+
     void PlaylistViewPage::OnNavigatedTo(winrt::Microsoft::UI::Xaml::Navigation::NavigationEventArgs const& e)
     {
         if (auto parameter = e.Parameter())
@@ -30,6 +32,7 @@ namespace winrt::MediaPlayer::implementation
         }
         updatePlaylistQueue();
     }
+
     void PlaylistViewPage::updatePlaylistQueue()
     {
         m_playlistQueue.Clear();
@@ -81,8 +84,8 @@ void winrt::MediaPlayer::implementation::PlaylistViewPage::DeleteButton_Click(wi
 {
     if (auto viewModel = m_viewModel.try_as<winrt::MediaPlayer::implementation::PlaylistItemViewModel>())
     {
-        PlaylistItem& playlist = viewModel->Playlist();
-        playlist.getPlaylist().clear();
+        PlaylistItem playlist = viewModel->Playlist();
+        playlist.clear();
     }
     updatePlaylistQueue();
 }

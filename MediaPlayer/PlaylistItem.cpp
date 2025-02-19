@@ -31,3 +31,8 @@ std::vector<MediaFile> PlaylistItem::getPlaylist() const
 {
     return m_fileList;
 }
+
+void PlaylistItem::clear()
+{
+    m_fileList.clear();
+}

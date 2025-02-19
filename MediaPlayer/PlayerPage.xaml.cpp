@@ -20,6 +20,7 @@ namespace winrt::MediaPlayer::implementation
 		m_deviceResources = deviceResources;
 		m_mediaPlayer = mediaPlayer;
 		m_swapChainPanel = swapChainPanel;
+		UpdateProgressLoopAsync();
 	}
 	void PlayerPage::OnSwapChainPanelSizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args)
 	{
@@ -184,11 +185,6 @@ void winrt::MediaPlayer::implementation::PlayerPage::playButton_Click(IInspectab
 	}
 }
 
-winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayerPage::UpdateProgressLoopAsync()
-{
-	return winrt::fire_and_forget();
-}
-
 void winrt::MediaPlayer::implementation::PlayerPage::ProgressSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
 {
 	if (m_isSliderUpdate)
@@ -217,4 +213,38 @@ void winrt::MediaPlayer::implementation::PlayerPage::prevButton_Click(winrt::Win
 void winrt::MediaPlayer::implementation::PlayerPage::nextButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
 {
 	m_mediaPlayer->playNextMedia();
+}
+
+winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayerPage::UpdateProgressLoopAsync()
+{
+	using namespace std::chrono_literals;
+
+	auto dispatcherQueue = winrt::Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread();
+	if (!dispatcherQueue)
+	{
+		co_return;
+	}
+
+	while (!m_mediaPlayer->getIsEndOfMedia())
+	{
+		co_await winrt::resume_background();
+
+		if (m_isPlaying && m_mediaPlayer && !m_isSliderUpdate)
+		{
+			uint64_t currentPosition = m_mediaPlayer->getCurrentPosition();
+			uint64_t duration = m_mediaPlayer->getVideoDuration();
+
+			if (duration > 0)
+			{
+				float progress = static_cast<float>(currentPosition) / duration;
+
+				co_await wil::resume_foreground(dispatcherQueue);;
+				m_isSliderUpdate = true;
+				ProgressSlider().Value(progress * ProgressSlider().Maximum());
+				m_isSliderUpdate = false;
+			}
+		}
+
+		co_await winrt::resume_after(std::chrono::milliseconds(1000));
+	}
 }

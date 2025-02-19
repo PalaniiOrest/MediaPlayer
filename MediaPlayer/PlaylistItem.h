@@ -13,6 +13,7 @@ public:
 	std::vector<MediaFile> getPlaylist() const;
 	std::wstring getName() { return m_name; }
 	void setName(const std::wstring& name) { m_name = name; }
+	void clear();
 
 private:
 	std::wstring m_name;

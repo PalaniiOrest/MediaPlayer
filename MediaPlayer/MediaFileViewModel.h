@@ -30,6 +30,7 @@ namespace winrt::MediaPlayer::implementation
         void MediaPath(hstring const& value) { m_mediaFile.m_filePath = value.c_str(); }
 
     private:
+        std::wstring calculateVideoDuration(const std::wstring& filePath);
         MediaFile m_mediaFile;
     };
 }
