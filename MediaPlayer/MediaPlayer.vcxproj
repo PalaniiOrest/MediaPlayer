@@ -89,6 +89,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpplatest</LanguageStandard>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
@@ -108,6 +111,52 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioDecoder.h" />
+    <ClInclude Include="AudioFrame.h" />
+    <ClInclude Include="AudioRender.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Converter.h" />
+    <ClInclude Include="D3D11MultithreadLock.h" />
+    <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="DXHelper.h" />
+    <ClInclude Include="HomePage.xaml.h">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="MediaDecoder.h" />
+    <ClInclude Include="MediaFile.h" />
+    <ClInclude Include="MediaFileViewModel.h">
+      <DependentUpon>MediaFileViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerPage.xaml.h">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PlaylistItem.h" />
+    <ClInclude Include="PlaylistItemViewModel.h">
+      <DependentUpon>PlaylistItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PlaylistsPage.xaml.h">
+      <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PlaylistViewPage.xaml.h">
+      <DependentUpon>PlaylistViewPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PlayQueue.h" />
+    <ClInclude Include="PlayQueuePage.xaml.h">
+      <DependentUpon>PlayQueuePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="PreviewMediaDecoder.h" />
+    <ClInclude Include="StreamingVoiceContext.h" />
+    <ClInclude Include="VideoDecoder.h" />
+    <ClInclude Include="VideoRender.h" />
+    <ClInclude Include="MediaPlayerMain.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -115,12 +164,75 @@
     <ClInclude Include="MainWindow.xaml.h">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="VideoFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
+    <Page Include="HomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml" />
+    <Page Include="PlayerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlaylistsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlaylistViewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlayQueuePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioDecoder.cpp" />
+    <ClCompile Include="AudioFrame.cpp" />
+    <ClCompile Include="AudioRender.cpp" />
+    <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="D3D11MultithreadLock.cpp" />
+    <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="DXHelper.cpp" />
+    <ClCompile Include="HomePage.xaml.cpp">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="MediaDecoder.cpp" />
+    <ClCompile Include="MediaFile.cpp" />
+    <ClCompile Include="MediaFileViewModel.cpp">
+      <DependentUpon>MediaFileViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerPage.xaml.cpp">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PlaylistItem.cpp" />
+    <ClCompile Include="PlaylistItemViewModel.cpp">
+      <DependentUpon>PlaylistItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PlaylistsPage.xaml.cpp">
+      <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PlaylistViewPage.xaml.cpp">
+      <DependentUpon>PlaylistViewPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PlayQueue.cpp" />
+    <ClCompile Include="PlayQueuePage.xaml.cpp">
+      <DependentUpon>PlayQueuePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="PreviewMediaDecoder.cpp" />
+    <ClCompile Include="StreamingVoiceContext.cpp" />
+    <ClCompile Include="VideoDecoder.cpp" />
+    <ClCompile Include="VideoRender.cpp" />
+    <ClCompile Include="MediaPlayerMain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -131,11 +243,38 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="VideoFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Midl Include="HomePage.idl">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="MainWindow.idl">
       <SubType>Code</SubType>
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="MediaFileViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="PlayerPage.idl">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="PlaylistItemViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="PlaylistsPage.idl">
+      <DependentUpon>PlaylistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="PlaylistViewPage.idl">
+      <DependentUpon>PlaylistViewPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="PlayQueuePage.idl">
+      <DependentUpon>PlayQueuePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Midl>
   </ItemGroup>
   <ItemGroup>

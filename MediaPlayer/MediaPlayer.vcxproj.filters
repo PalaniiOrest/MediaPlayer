@@ -5,16 +5,148 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainWindow.xaml" />
+    <Page Include="HomePage.xaml">
+      <Filter>UI\Home</Filter>
+    </Page>
+    <Page Include="PlaylistsPage.xaml">
+      <Filter>UI\Playlist</Filter>
+    </Page>
+    <Page Include="PlayQueuePage.xaml">
+      <Filter>UI\PlayQueue</Filter>
+    </Page>
+    <Page Include="Themes\Generic.xaml" />
+    <Page Include="PlayerPage.xaml">
+      <Filter>UI\PlayerController</Filter>
+    </Page>
+    <Page Include="PlaylistViewPage.xaml">
+      <Filter>UI\Playlist</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl" />
+    <Midl Include="MediaFileViewModel.idl">
+      <Filter>UI\PlayQueue</Filter>
+    </Midl>
+    <Midl Include="PlaylistItemViewModel.idl">
+      <Filter>UI\Playlist</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="VideoRender.cpp">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="Converter.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceResources.cpp">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="DXHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoFrame.cpp">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoDecoder.cpp">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioFrame.cpp">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioRender.cpp">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDecoder.cpp">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaDecoder.cpp">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamingVoiceContext.cpp">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11MultithreadLock.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaPlayerMain.cpp">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaFile.cpp">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="PreviewMediaDecoder.cpp" />
+    <ClCompile Include="PlayQueue.cpp">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaylistItem.cpp">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="VideoRender.h">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="Converter.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DXHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceResources.h">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoFrame.h">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoDecoder.h">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioFrame.h">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioRender.h">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDecoder.h">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaDecoder.h">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamingVoiceContext.h">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11MultithreadLock.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaPlayerMain.h">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaFile.h">
+      <Filter>MediaPlayerAPI\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="PreviewMediaDecoder.h" />
+    <ClInclude Include="PlayQueue.h">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaylistItem.h">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -43,6 +175,36 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{0f71e644-3fa5-4603-bd50-bbf5c89dceb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{bb32f895-2fbe-4315-b23e-8373cfb45f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayerAPI">
+      <UniqueIdentifier>{5f32cc42-1601-4367-8323-42903b46e778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayerAPI\Audio">
+      <UniqueIdentifier>{3609aac3-4f49-4dbe-91b0-db936e66d4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayerAPI\Video">
+      <UniqueIdentifier>{96e1f3b1-c529-4cf8-add0-329b05c42ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayerAPI\Content">
+      <UniqueIdentifier>{17aed779-b974-48ec-89d2-c0db4fde88ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{52d76212-274a-4bf6-9ee8-5d5d0778d39f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Playlist">
+      <UniqueIdentifier>{8bd7f929-0dea-44ea-8e19-8c769e736180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\PlayQueue">
+      <UniqueIdentifier>{dcfd32c7-83f0-4a7f-8db3-9bc1332d3a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Home">
+      <UniqueIdentifier>{593c6895-655d-49dd-819c-f07bb515d799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\PlayerController">
+      <UniqueIdentifier>{a4b90560-c287-4efc-b654-40f20cdcb90f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -55,5 +217,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
 </Project>

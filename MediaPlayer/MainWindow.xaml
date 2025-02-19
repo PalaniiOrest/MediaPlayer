@@ -5,11 +5,72 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MediaPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Title="MediaPlayer">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid x:Name="RootGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="120"/>
+        </Grid.RowDefinitions>
+
+        <SwapChainPanel
+            x:Name="swapChainPanel"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"/>
+
+
+        <Grid 
+            x:Name="NavigationGrid"
+            Grid.Column="0"
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            Opacity="1"
+            Background="Transparent"
+            Visibility="Collapsed">
+
+            <muxc:NavigationView 
+                x:Name="NavView"
+                IsSettingsVisible="True"
+                SelectionChanged="NavView_SelectionChanged"
+                Background="Transparent"
+                PaneDisplayMode="Left"
+                IsPaneToggleButtonVisible="False">
+
+                <muxc:NavigationView.MenuItems>
+                    <muxc:NavigationViewItem Content="Home" Tag="HomePage" Icon="Home"/>
+                    <muxc:NavigationViewItem Content="PlayLists" Tag="PlaylistsPage" Icon="Placeholder"/>
+                    <muxc:NavigationViewItem Content="PlayQueue" Tag="PlayQueuePage" Icon="List"/>
+                </muxc:NavigationView.MenuItems>
+            </muxc:NavigationView>
+        </Grid>
+
+        <Grid 
+            x:Name="FrameGrid" 
+            Grid.Column="1"
+            Grid.Row="0"
+            Visibility="Collapsed">
+            <Frame x:Name="ContentFrame"/>
+        </Grid>
+
+        <Grid 
+            x:Name="PlayerGrid" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2" 
+            Grid.Row="1" 
+            Height="120"
+            VerticalAlignment="Bottom"
+            Background="Transparent">
+        </Grid>
+    </Grid>
+
 </Window>

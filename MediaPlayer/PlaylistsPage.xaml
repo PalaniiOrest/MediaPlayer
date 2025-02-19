@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MediaPlayer.PlaylistsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="GridViewItemTemplate">
+            <Border Background="LightGray" Padding="10" Margin="5">
+                <TextBlock Text="{Binding Name}" FontSize="16"/>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="RootGrid" Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Text="Playlists" 
+            FontSize="32" 
+            FontWeight="Bold" 
+            HorizontalAlignment="Left"
+            Margin="0,0,0,10"/>
+
+        <StackPanel 
+            Grid.Row="1"
+            Orientation="Horizontal" 
+            HorizontalAlignment="Left"
+            Spacing="20"
+            Margin="0,0,0,10">
+            <Button 
+                x:Name="addPlaylistButton"
+                Click="addPlaylistButton_Click"
+                Content="+ New Playlist"
+                Width="150"
+                Height="40"/>
+        </StackPanel>
+        
+        <ContentDialog 
+            x:Name="NewPlaylistDialog"
+            Title="New Playlist"
+            PrimaryButtonText="Create Playlist"
+            CloseButtonText="Cancel"
+            PrimaryButtonClick="NewPlaylistDialog_PrimaryButtonClick">
+            <StackPanel>
+                <TextBox 
+                    x:Name="PlaylistNameTextBox"
+                    PlaceholderText="Enter playlist name"
+                    Margin="0,10,0,0"/>
+            </StackPanel>
+        </ContentDialog>
+
+        <GridView 
+            x:Name="MyGridView" 
+            Grid.Row="2" 
+            ItemTemplate="{StaticResource GridViewItemTemplate}" 
+            IsItemClickEnabled="True"
+            SelectionMode="None"
+            ItemClick="MyGridView_ItemClick">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid MaximumRowsOrColumns="10" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+    </Grid>
+</Page>

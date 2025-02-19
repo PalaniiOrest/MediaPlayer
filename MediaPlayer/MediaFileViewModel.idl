@@ -1,0 +1,14 @@
+namespace MediaPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass MediaFileViewModel
+    {
+        MediaFileViewModel();
+        String Id;
+        String Name;
+        String Year;
+        String Duration;
+        String MediaPath;
+    }
+}

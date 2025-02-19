@@ -1,0 +1,8 @@
+namespace MediaPlayer
+{
+    [default_interface]
+    runtimeclass PlaylistsPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        PlaylistsPage();
+    }
+}
