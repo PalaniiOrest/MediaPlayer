@@ -3,6 +3,7 @@
 #include "StepTimer.h"
 #include "VideoDecoder.h"
 #include "VideoFrame.h"
+#include "IVideoDecoder.h"
 
 class VideoRender
 {
@@ -19,7 +20,7 @@ public:
     void seekToTime(uint64_t timeInTicks);
 
     uint64_t getVideoDuration();
-    uint64_t getCurrentPosition() { return m_decoder.getCurrentPosition(); }
+    uint64_t getCurrentPosition() { return m_decoder->getCurrentPosition(); }
     bool getIsEndOfMedia() { return m_isEndOfMedia; }
 
 
@@ -27,7 +28,7 @@ private:
     void updateTime();
 
     std::shared_ptr<DeviceResources> m_deviceResources;
-    VideoDecoder m_decoder;
+    std::unique_ptr<IVideoDecoder> m_decoder;
     VideoFrame m_frame;
 
     uint32_t m_videoWidth = 0;

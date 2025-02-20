@@ -1,6 +1,11 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "MediaPlayerMain.h"
 
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
+}
 
 using namespace winrt;
 using namespace Windows::Foundation;

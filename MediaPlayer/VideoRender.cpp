@@ -3,10 +3,11 @@
 #include <iostream>
 #include "Constants.h"
 #include "Logger.h"
+#include "MFVideoDecoder.h"
 
 VideoRender::VideoRender(const std::shared_ptr<DeviceResources>& deviceResources)
     : m_deviceResources(deviceResources)
-    , m_decoder(deviceResources)
+    , m_decoder(std::make_unique<MFVideoDecoder>(deviceResources))
     , m_frame(deviceResources)
 {
     winrt::check_hresult(MFStartup(MF_VERSION));
@@ -20,10 +21,10 @@ VideoRender::~VideoRender()
 void VideoRender::loadVideo(const std::wstring& videoPath)
 {
     pause();
-    m_decoder.loadMedia(videoPath);
-    m_videoWidth = m_decoder.getVideoWidth();
-    m_videoHeight = m_decoder.getVideoHeight();
-    m_frameDuration = m_decoder.getFrameDuration();
+    m_decoder->loadMedia(videoPath);
+    m_videoWidth = m_decoder->getVideoWidth();
+    m_videoHeight = m_decoder->getVideoHeight();
+    m_frameDuration = m_decoder->getFrameDuration();
     m_frame.setFrameSize(m_videoWidth, m_videoHeight);
     m_lastFrameTime = 0;
     m_frameTime = 0;
@@ -64,23 +65,23 @@ void VideoRender::update(const StepTimer& timer)
 
     while (audioPlayTime > m_frameTime)
     {
-        m_decoder.decodeFrame(m_frame);
-        m_decoder.getIsEndOfStream();
+        m_decoder->decodeFrame(m_frame);
+        m_decoder->getIsEndOfStream();
         m_frameTime += m_frameDuration;
     }
 }
 
 void VideoRender::seekToTime(uint64_t timeInTicks)
 {
-    m_decoder.seekToTime(timeInTicks);
+    m_decoder->seekToTime(timeInTicks);
 }
 
 uint64_t VideoRender::getVideoDuration()
 {
-    return m_decoder.getMediaDuration();
+    return m_decoder->getMediaDuration();
 }
 
 void VideoRender::updateTime()
 {
-    m_frameDuration = m_decoder.getFrameDuration();
+    m_frameDuration = m_decoder->getFrameDuration();
 }

@@ -90,7 +90,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;User32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -100,6 +100,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;User32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(WindowsPackageType)'!='None' and Exists('Package.appxmanifest')">
@@ -119,10 +120,12 @@
     <ClInclude Include="D3D11MultithreadLock.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="DXHelper.h" />
+    <ClInclude Include="FFMPEGVideoDecoder.h" />
     <ClInclude Include="HomePage.xaml.h">
       <DependentUpon>HomePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="IVideoDecoder.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MediaDecoder.h" />
     <ClInclude Include="MediaFile.h" />
@@ -130,6 +133,7 @@
       <DependentUpon>MediaFileViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="MFVideoDecoder.h" />
     <ClInclude Include="PlayerPage.xaml.h">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -152,7 +156,6 @@
       <DependentUpon>PlayQueuePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="PreviewMediaDecoder.h" />
     <ClInclude Include="StreamingVoiceContext.h" />
     <ClInclude Include="VideoDecoder.h" />
     <ClInclude Include="VideoRender.h" />
@@ -195,10 +198,12 @@
     <ClCompile Include="D3D11MultithreadLock.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="DXHelper.cpp" />
+    <ClCompile Include="FFMPEGVideoDecoder.cpp" />
     <ClCompile Include="HomePage.xaml.cpp">
       <DependentUpon>HomePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="IVideoDecoder.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MediaDecoder.cpp" />
     <ClCompile Include="MediaFile.cpp" />
@@ -206,6 +211,7 @@
       <DependentUpon>MediaFileViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="MFVideoDecoder.cpp" />
     <ClCompile Include="PlayerPage.xaml.cpp">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -228,7 +234,6 @@
       <DependentUpon>PlayQueuePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="PreviewMediaDecoder.cpp" />
     <ClCompile Include="StreamingVoiceContext.cpp" />
     <ClCompile Include="VideoDecoder.cpp" />
     <ClCompile Include="VideoRender.cpp" />
@@ -309,6 +314,14 @@
   -->
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\ffmpeg\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ffmpeg\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\ffmpeg\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ffmpeg\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

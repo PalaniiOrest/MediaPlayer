@@ -79,13 +79,19 @@
     <ClCompile Include="MediaFile.cpp">
       <Filter>MediaPlayerAPI\Content</Filter>
     </ClCompile>
-    <ClCompile Include="PreviewMediaDecoder.cpp" />
     <ClCompile Include="PlayQueue.cpp">
       <Filter>MediaPlayerAPI</Filter>
     </ClCompile>
     <ClCompile Include="PlaylistItem.cpp">
       <Filter>MediaPlayerAPI</Filter>
     </ClCompile>
+    <ClCompile Include="IVideoDecoder.cpp">
+      <Filter>MediaPlayerAPI\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="MFVideoDecoder.cpp">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="FFMPEGVideoDecoder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -140,13 +146,19 @@
     <ClInclude Include="MediaFile.h">
       <Filter>MediaPlayerAPI\Content</Filter>
     </ClInclude>
-    <ClInclude Include="PreviewMediaDecoder.h" />
     <ClInclude Include="PlayQueue.h">
       <Filter>MediaPlayerAPI</Filter>
     </ClInclude>
     <ClInclude Include="PlaylistItem.h">
       <Filter>MediaPlayerAPI</Filter>
     </ClInclude>
+    <ClInclude Include="IVideoDecoder.h">
+      <Filter>MediaPlayerAPI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="MFVideoDecoder.h">
+      <Filter>MediaPlayerAPI\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="FFMPEGVideoDecoder.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -204,6 +216,9 @@
     </Filter>
     <Filter Include="UI\PlayerController">
       <UniqueIdentifier>{a4b90560-c287-4efc-b654-40f20cdcb90f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayerAPI\Interfaces">
+      <UniqueIdentifier>{e106fd2e-12e6-4359-b6a8-c53b9dcd34de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
