@@ -4,7 +4,7 @@
 
 class FFMPEGVideoDecoder : public IVideoDecoder {
 public:
-    FFMPEGVideoDecoder();
+    FFMPEGVideoDecoder(const std::shared_ptr<DeviceResources>&);
     ~FFMPEGVideoDecoder();
 
     void loadMedia(const std::wstring& mediaPath) override;
@@ -20,13 +20,19 @@ public:
 
 private:
     void initializeHWDecoder();
-    AVPixelFormat getHWFormat(AVCodecContext* ctx, const enum AVPixelFormat* pix_fmts);
+
+    std::shared_ptr<DeviceResources> m_deviceResources;
+    D3D11MultithreadLock m_multithreadLock;
 
     AVFormatContext* m_formatCtx = nullptr;
     AVCodecContext* m_codecCtx = nullptr;
-    AVCodec* m_codec = nullptr;
+    const AVCodec* m_codec = nullptr;
     AVStream* m_videoStream = nullptr;
     AVBufferRef* m_hwDeviceCtx = nullptr;
+    SwsContext* m_swsCtx = nullptr;
+    AVFrame* m_hwFrame = nullptr;
+    AVFrame* m_swFrame = nullptr;
+    AVFrame* m_bgraFrame = nullptr;
     int m_videoStreamIndex = -1;
 
     uint32_t m_videoWidth = 0;

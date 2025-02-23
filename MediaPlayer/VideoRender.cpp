@@ -4,10 +4,11 @@
 #include "Constants.h"
 #include "Logger.h"
 #include "MFVideoDecoder.h"
+#include "FFMPEGVideoDecoder.h"
 
 VideoRender::VideoRender(const std::shared_ptr<DeviceResources>& deviceResources)
     : m_deviceResources(deviceResources)
-    , m_decoder(std::make_unique<MFVideoDecoder>(deviceResources))
+    , m_decoder(std::make_unique<FFMPEGVideoDecoder>(deviceResources))
     , m_frame(deviceResources)
 {
     winrt::check_hresult(MFStartup(MF_VERSION));
@@ -37,12 +38,6 @@ void VideoRender::render()
         m_frame.render();
     }
 }
-
-//The sampling rate is traditionally measured in hertz (Hz). Examples of standard frequencies:
-//
-//44100 Hz is the standard frequency for audio - CD.
-//48000 Hz is a frequency often used in video.
-//96000 Hz or 192000 Hz is for high-quality audio.
 
 void VideoRender::update(const StepTimer& timer)
 {

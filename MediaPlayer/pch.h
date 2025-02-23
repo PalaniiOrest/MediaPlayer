@@ -62,6 +62,7 @@
 
 #include <xaudio2.h>
 
+#include <iostream>
 #include <algorithm>
 #include <set>
 #include <deque>

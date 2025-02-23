@@ -32,6 +32,13 @@ void VideoFrame::createBitmapFromTexure()
 {
 	std::lock_guard<D3D11MultithreadLock> lock(m_multithreadLock);
 
+	D3D11_TEXTURE2D_DESC textureDesc;
+	m_texture->GetDesc(&textureDesc);
+	if (textureDesc.Format != DXGI_FORMAT_B8G8R8A8_UNORM)
+	{
+		return;
+	}
+
 	winrt::com_ptr<IDXGISurface> dxgiSurface;
 	winrt::check_hresult(m_texture->QueryInterface(dxgiSurface.put()));
 
