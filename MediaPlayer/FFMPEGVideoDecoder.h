@@ -30,6 +30,7 @@ private:
     AVStream* m_videoStream = nullptr;
     AVBufferRef* m_hwDeviceCtx = nullptr;
     SwsContext* m_swsCtx = nullptr;
+    AVPacket m_packet = { 0 };
     AVFrame* m_hwFrame = nullptr;
     AVFrame* m_swFrame = nullptr;
     AVFrame* m_bgraFrame = nullptr;
