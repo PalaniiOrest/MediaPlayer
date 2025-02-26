@@ -72,6 +72,9 @@ void MFVideoDecoder::decodeFrame(VideoFrame& frame)
 	frame.setVideoData(texture);
 }
 
+void MFVideoDecoder::skipFrame(uint32_t numFrames)
+{
+}
 
 void MFVideoDecoder::seekToTime(uint64_t timeInTicks)
 {

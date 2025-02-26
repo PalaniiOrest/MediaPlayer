@@ -7,6 +7,7 @@ public:
 	MFVideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources);
 	virtual void loadMedia(const std::wstring& mediaPath) override;
 	virtual void decodeFrame(VideoFrame& frame) override;
+	virtual void skipFrame(uint32_t numFrames = 1) override;
 	virtual void seekToTime(uint64_t timeInTicks) override;
 
 	virtual uint32_t getVideoWidth() const override;

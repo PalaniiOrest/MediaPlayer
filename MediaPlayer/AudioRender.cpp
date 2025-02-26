@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "AudioRender.h"
+#include "MFAudioDecoder.h"
+#include "FFMPEGAudioDecoder.h"
 
 AudioRender::AudioRender(const std::shared_ptr<DeviceResources>& deviceResources)
 	: m_deviceResources(deviceResources)
-    , m_decoder(deviceResources)
+    , m_decoder(std::make_unique<MFAudioDecoder>(deviceResources))
     , m_frame(deviceResources)
 {
 }
@@ -16,13 +18,12 @@ AudioRender::~AudioRender()
 void AudioRender::loadVideo(const std::wstring& videoPath)
 {
     pause();
-    m_decoder.loadMedia(videoPath);
-    m_frameDuration = m_decoder.getFrameDuration();
+    m_decoder->loadMedia(videoPath);
 }
 
 void AudioRender::render()
 {
-    if (!m_isPlaying || m_decoder.getIsEndOfAudioStream())
+    if (!m_isPlaying || m_decoder->getIsEndOfStream())
     {
         return;
     }
@@ -40,7 +41,7 @@ void AudioRender::update(const StepTimer& timer)
         return;
     }
 
-    m_decoder.decodeAudioFrame(m_frame);
+    m_decoder->decodeFrame(m_frame);
 }
 
 void AudioRender::play()
@@ -57,7 +58,7 @@ void AudioRender::pause()
 
 void AudioRender::seekToTime(uint64_t timeInTicks)
 {
-    m_decoder.seekToTime(timeInTicks);
+    m_decoder->seekToTime(timeInTicks);
 }
 
 void AudioRender::setVolume(double volume)

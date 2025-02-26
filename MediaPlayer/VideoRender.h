@@ -1,7 +1,6 @@
 #pragma once
 #include "DeviceResources.h"
 #include "StepTimer.h"
-#include "VideoDecoder.h"
 #include "VideoFrame.h"
 #include "IVideoDecoder.h"
 

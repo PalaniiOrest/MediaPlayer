@@ -90,7 +90,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;User32.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;User32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -100,7 +100,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;User32.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;User32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(WindowsPackageType)'!='None' and Exists('Package.appxmanifest')">
@@ -120,11 +120,13 @@
     <ClInclude Include="D3D11MultithreadLock.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="DXHelper.h" />
+    <ClInclude Include="FFMPEGAudioDecoder.h" />
     <ClInclude Include="FFMPEGVideoDecoder.h" />
     <ClInclude Include="HomePage.xaml.h">
       <DependentUpon>HomePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="IAudioDecoder.h" />
     <ClInclude Include="IVideoDecoder.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MediaDecoder.h" />
@@ -133,6 +135,7 @@
       <DependentUpon>MediaFileViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="MFAudioDecoder.h" />
     <ClInclude Include="MFVideoDecoder.h" />
     <ClInclude Include="PlayerPage.xaml.h">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
@@ -157,7 +160,6 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="StreamingVoiceContext.h" />
-    <ClInclude Include="VideoDecoder.h" />
     <ClInclude Include="VideoRender.h" />
     <ClInclude Include="MediaPlayerMain.h" />
     <ClInclude Include="pch.h" />
@@ -198,11 +200,13 @@
     <ClCompile Include="D3D11MultithreadLock.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="DXHelper.cpp" />
+    <ClCompile Include="FFMPEGAudioDecoder.cpp" />
     <ClCompile Include="FFMPEGVideoDecoder.cpp" />
     <ClCompile Include="HomePage.xaml.cpp">
       <DependentUpon>HomePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="IAudioDecoder.cpp" />
     <ClCompile Include="IVideoDecoder.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MediaDecoder.cpp" />
@@ -211,6 +215,7 @@
       <DependentUpon>MediaFileViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="MFAudioDecoder.cpp" />
     <ClCompile Include="MFVideoDecoder.cpp" />
     <ClCompile Include="PlayerPage.xaml.cpp">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
@@ -235,7 +240,6 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="StreamingVoiceContext.cpp" />
-    <ClCompile Include="VideoDecoder.cpp" />
     <ClCompile Include="VideoRender.cpp" />
     <ClCompile Include="MediaPlayerMain.cpp" />
     <ClCompile Include="pch.cpp">

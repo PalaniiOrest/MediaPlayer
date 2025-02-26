@@ -9,6 +9,7 @@ public:
 
     void loadMedia(const std::wstring& mediaPath) override;
     void decodeFrame(VideoFrame& frame) override;
+    void skipFrame(uint32_t numFrames = 1) override;
     void seekToTime(uint64_t timeInTicks) override;
 
     uint32_t getVideoWidth() const override { return m_videoWidth; }

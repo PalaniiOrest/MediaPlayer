@@ -3,6 +3,7 @@
 #include "StepTimer.h"
 #include "AudioDecoder.h"
 #include "AudioFrame.h"
+#include "IAudioDecoder.h"
 
 class AudioRender
 {
@@ -19,11 +20,11 @@ public:
     void seekToTime(uint64_t timeInTicks);
     void setVolume(double volume);
     double getCurrentVolume() { return m_frame.getCurrentVolume(); }
-    bool getIsEndOfMedia() { return m_decoder.getIsEndOfAudioStream(); }
+    bool getIsEndOfMedia() { return m_decoder->getIsEndOfStream(); }
 
 private:
 	std::shared_ptr<DeviceResources> m_deviceResources;
-    AudioDecoder m_decoder;
+    std::unique_ptr<IAudioDecoder> m_decoder;
     AudioFrame m_frame;
 
     uint64_t m_frameDuration = 0;

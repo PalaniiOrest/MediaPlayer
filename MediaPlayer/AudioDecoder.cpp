@@ -69,27 +69,19 @@ void AudioDecoder::decodeAudioFrame(AudioFrame& frame)
 
     if (flags & MF_SOURCE_READERF_ENDOFSTREAM)
     {
-        std::cout << "End of audio stream reached." << std::endl;
         m_isEndOfStream = true;
         return;
-    }
-    else
-    {
-        m_isEndOfStream = false;
     }
 
     if (FAILED(hr) || !sample) 
     {
-        std::cerr << "Failed to read audio frame or end of stream." << std::endl;
         return;
     }
-
 
     winrt::com_ptr<IMFMediaBuffer> mediaBuffer;
     hr = sample->ConvertToContiguousBuffer(mediaBuffer.put());
     if (FAILED(hr)) 
     {
-        std::cerr << "Failed to convert sample to contiguous buffer." << std::endl;
         return;
     }
 
@@ -99,7 +91,6 @@ void AudioDecoder::decodeAudioFrame(AudioFrame& frame)
     hr = mediaBuffer->Lock(&data, nullptr, &sampleBufferLenght);
     if (FAILED(hr))
     {
-        std::cerr << "Failed to lock buffer." << std::endl;
         return;
     }
 

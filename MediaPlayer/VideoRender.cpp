@@ -61,7 +61,6 @@ void VideoRender::update(const StepTimer& timer)
     while (audioPlayTime > m_frameTime)
     {
         m_decoder->decodeFrame(m_frame);
-        m_decoder->getIsEndOfStream();
         m_frameTime += m_frameDuration;
     }
 }
