@@ -8,7 +8,9 @@ MediaFile::MediaFile(const std::wstring& filePath)
 	, m_id(std::to_wstring(std::hash<std::wstring>{}(filePath) ^ (std::random_device{}() << 1)))
     , m_duration(calculateVideoDuration(filePath))
 {
-	m_name = std::filesystem::path(filePath.c_str()).filename().wstring();
+    std::filesystem::path path(filePath);
+    m_name = path.filename().wstring();
+    m_fileExtension = path.extension().wstring();
 }
 
 std::wstring MediaFile::calculateVideoDuration(const std::wstring& filePath)

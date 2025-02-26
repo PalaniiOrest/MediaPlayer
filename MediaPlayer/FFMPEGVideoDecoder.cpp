@@ -143,10 +143,10 @@ void FFMPEGVideoDecoder::decodeFrame(VideoFrame& frame) {
 
 		if (m_packet.stream_index == m_videoStreamIndex)
 		{
-			break; // Знайдено відеопакет, виходимо з циклу
+			break;
 		}
 
-		av_packet_unref(&m_packet); // Пропускаємо небажані пакети
+		av_packet_unref(&m_packet);
 	}
 
 	if (m_packet.stream_index == m_videoStreamIndex)

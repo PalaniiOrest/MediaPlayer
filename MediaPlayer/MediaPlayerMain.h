@@ -12,7 +12,6 @@ class MediaPlayerMain
 public:
 	MediaPlayerMain(const std::shared_ptr<DeviceResources>&);
 	~MediaPlayerMain();
-	void CreateWindowSizeDependentResources();
 	void startRenderLoop();
 	void stopRenderLoop() const;
 

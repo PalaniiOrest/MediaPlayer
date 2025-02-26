@@ -24,9 +24,6 @@ MediaPlayerMain::~MediaPlayerMain()
 	winrt::check_hresult(MFShutdown());
 }
 
-void MediaPlayerMain::CreateWindowSizeDependentResources()
-{
-}
 
 void MediaPlayerMain::startRenderLoop()
 {

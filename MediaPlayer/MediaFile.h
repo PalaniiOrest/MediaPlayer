@@ -6,6 +6,7 @@ public:
     std::wstring calculateVideoDuration(const std::wstring& filePath);
 
     std::wstring m_filePath;
+    std::wstring m_fileExtension;
 
     std::wstring m_id;
     std::wstring m_name;
