@@ -12,6 +12,7 @@ public:
 	void setVideoData(const winrt::com_ptr<ID3D11Texture2D>& texture);
 	void createBitmapFromTexure();
 	void render();
+	void saveScreenshot(const std::wstring& filePath, const GUID& format);
 	void setFrameSize(uint32_t width, uint32_t height) { m_frameWidth = width, m_frameHeight = height; }
 
 	std::vector<byte>& getBuffer() { return m_buffer; }

@@ -12,12 +12,12 @@ MFAudioDecoder::~MFAudioDecoder()
 {
 }
 
-void MFAudioDecoder::loadMedia(const std::wstring& mediaPath)
+void MFAudioDecoder::loadMedia(const MediaFile& mediaPath)
 {
     winrt::com_ptr<IMFAttributes> attributes;
     winrt::check_hresult(MFCreateAttributes(attributes.put(), 1));
     winrt::check_hresult(attributes->SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, TRUE));
-    winrt::check_hresult(MFCreateSourceReaderFromURL(mediaPath.c_str(), attributes.get(), m_sourceReader.put()));
+    winrt::check_hresult(MFCreateSourceReaderFromURL(mediaPath.m_filePath.c_str(), attributes.get(), m_sourceReader.put()));
 
     calculateMediaDuration();
     configureAudioStream();

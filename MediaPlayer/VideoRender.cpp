@@ -1,14 +1,13 @@
 #include "pch.h"
 #include "VideoRender.h"
 #include <iostream>
-#include "Constants.h"
 #include "Logger.h"
 #include "MFVideoDecoder.h"
 #include "FFMPEGVideoDecoder.h"
 
 VideoRender::VideoRender(const std::shared_ptr<DeviceResources>& deviceResources)
     : m_deviceResources(deviceResources)
-    , m_decoder(std::make_unique<FFMPEGVideoDecoder>(deviceResources))
+    , m_decoder(std::make_unique<MFVideoDecoder>(deviceResources))
     , m_frame(deviceResources)
 {
     winrt::check_hresult(MFStartup(MF_VERSION));
@@ -29,6 +28,24 @@ void VideoRender::loadVideo(const std::wstring& videoPath)
     m_frame.setFrameSize(m_videoWidth, m_videoHeight);
     m_lastFrameTime = 0;
     m_frameTime = 0;
+}
+
+void VideoRender::changeDecoder(DECODER decoder)
+{
+    m_decoder.reset();
+    if (decoder == DECODER::MEDIA_FOUNDATION)
+    {
+        m_decoder = std::make_unique<MFVideoDecoder>(m_deviceResources);
+    }
+    else if (decoder == DECODER::FFMPEG)
+    {
+        m_decoder = std::make_unique<FFMPEGVideoDecoder>(m_deviceResources);
+    }
+}
+
+void VideoRender::saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format)
+{
+    m_frame.saveScreenshot(path, format);
 }
 
 void VideoRender::render()

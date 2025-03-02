@@ -55,9 +55,6 @@
     <ClCompile Include="AudioRender.cpp">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="AudioDecoder.cpp">
-      <Filter>MediaPlayerAPI\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="MediaDecoder.cpp">
       <Filter>MediaPlayerAPI\Content</Filter>
     </ClCompile>
@@ -125,9 +122,6 @@
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClInclude>
     <ClInclude Include="AudioRender.h">
-      <Filter>MediaPlayerAPI\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioDecoder.h">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClInclude>
     <ClInclude Include="MediaDecoder.h">

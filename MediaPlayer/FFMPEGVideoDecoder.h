@@ -7,7 +7,7 @@ public:
     FFMPEGVideoDecoder(const std::shared_ptr<DeviceResources>&);
     ~FFMPEGVideoDecoder();
 
-    void loadMedia(const std::wstring& mediaPath) override;
+    void loadMedia(const MediaFile& mediaPath) override;
     void decodeFrame(VideoFrame& frame) override;
     void skipFrame(uint32_t numFrames = 1) override;
     void seekToTime(uint64_t timeInTicks) override;

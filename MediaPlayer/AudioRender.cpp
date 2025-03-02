@@ -2,6 +2,7 @@
 #include "AudioRender.h"
 #include "MFAudioDecoder.h"
 #include "FFMPEGAudioDecoder.h"
+#include <unordered_set>
 
 AudioRender::AudioRender(const std::shared_ptr<DeviceResources>& deviceResources)
 	: m_deviceResources(deviceResources)
@@ -15,10 +16,24 @@ AudioRender::~AudioRender()
 
 }
 
-void AudioRender::loadVideo(const std::wstring& videoPath)
+void AudioRender::loadVideo(const MediaFile& videoPath)
 {
     pause();
-    m_decoder->loadMedia(videoPath);
+    m_decoder->loadMedia(videoPath.m_filePath);
+}
+
+
+void AudioRender::changeDecoder(DECODER decoder)
+{
+    m_decoder.reset();
+    if (decoder == DECODER::MEDIA_FOUNDATION)
+    {
+        m_decoder = std::make_unique<MFAudioDecoder>(m_deviceResources);
+    }
+    else if (decoder == DECODER::FFMPEG)
+    {
+        m_decoder = std::make_unique<FFMPEGAudioDecoder>(m_deviceResources);
+    }
 }
 
 void AudioRender::render()

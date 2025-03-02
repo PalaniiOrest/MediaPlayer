@@ -3,6 +3,7 @@
 #include "StepTimer.h"
 #include "VideoFrame.h"
 #include "IVideoDecoder.h"
+#include "Constants.h"
 
 class VideoRender
 {
@@ -10,9 +11,11 @@ public:
     VideoRender(const std::shared_ptr<DeviceResources>& deviceResources);
     ~VideoRender();
 
-    void loadVideo(const std::wstring& videoPath);
     void render();
     void update(const StepTimer&);
+    void loadVideo(const std::wstring& videoPath);
+    void changeDecoder(DECODER decoder);
+    void saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format);
 
     void play() { m_isPlaying = true; }
     void pause() { m_isPlaying = false; }

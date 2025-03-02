@@ -1,12 +1,13 @@
 #pragma once
 #include "VideoFrame.h"
+#include "MediaFile.h"
 
 class IVideoDecoder
 {
 public:
     virtual ~IVideoDecoder() = default;
 
-    virtual void loadMedia(const std::wstring& mediaPath) = 0;
+    virtual void loadMedia(const MediaFile& media) = 0;
     virtual void decodeFrame(VideoFrame& frame) = 0;
     virtual void skipFrame(uint32_t numFrames = 1) = 0;
     virtual void seekToTime(uint64_t timeInTicks) = 0;

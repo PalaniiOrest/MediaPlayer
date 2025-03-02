@@ -9,7 +9,7 @@ MFVideoDecoder::MFVideoDecoder(const std::shared_ptr<DeviceResources>& deviceRes
 	initializeD3DManager();
 }
 
-void MFVideoDecoder::loadMedia(const std::wstring& mediaPath)
+void MFVideoDecoder::loadMedia(const MediaFile& mediaPath)
 {
 	winrt::com_ptr<IMFAttributes> sourceReaderAttributes;
 	winrt::check_hresult(MFCreateAttributes(sourceReaderAttributes.put(), 3));
@@ -17,7 +17,7 @@ void MFVideoDecoder::loadMedia(const std::wstring& mediaPath)
 	winrt::check_hresult(sourceReaderAttributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, TRUE));
 	winrt::check_hresult(sourceReaderAttributes->SetUnknown(MF_SOURCE_READER_D3D_MANAGER, m_dxgiDeviceManager.get()));
 
-	winrt::check_hresult(MFCreateSourceReaderFromURL(mediaPath.c_str(), sourceReaderAttributes.get(), m_sourceReader.put()));
+	winrt::check_hresult(MFCreateSourceReaderFromURL(mediaPath.m_filePath.c_str(), sourceReaderAttributes.get(), m_sourceReader.put()));
 	configureVideoStream();
 
 	calculateMediaDuration();

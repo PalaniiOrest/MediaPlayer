@@ -112,7 +112,6 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioDecoder.h" />
     <ClInclude Include="AudioFrame.h" />
     <ClInclude Include="AudioRender.h" />
     <ClInclude Include="Constants.h" />
@@ -193,7 +192,6 @@
     <Page Include="Themes\Generic.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioDecoder.cpp" />
     <ClCompile Include="AudioFrame.cpp" />
     <ClCompile Include="AudioRender.cpp" />
     <ClCompile Include="Converter.cpp" />

@@ -1,11 +1,6 @@
 ﻿#include "pch.h"
 #include "MediaPlayerMain.h"
-
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavutil/avutil.h>
-}
+#include <unordered_set>
 
 using namespace winrt;
 using namespace Windows::Foundation;
@@ -37,7 +32,6 @@ void MediaPlayerMain::startRenderLoop()
 			while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
 			{
 				std::lock_guard lock(m_criticalSection);
-				queueLogicUpdate();
 				update();
 				render();
 			}
@@ -55,38 +49,10 @@ void MediaPlayerMain::stopRenderLoop() const
 	m_renderLoopWorker.Cancel();
 }
 
-void MediaPlayerMain::queueLogicUpdate()
-{
-	if (m_isFirstMediaInQueue)
-	{
-		if (!m_playQueue->isEmpty())
-		{
-			m_video->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
-			m_audio->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
-			m_isFirstMediaInQueue = false;
-		}
-	}
-
-	if ((m_audio->getIsEndOfMedia() || m_video->getIsEndOfMedia()) && !m_playQueue->isEmpty())
-	{
-		if (m_playQueue->isManualSelection())
-		{
-			m_playQueue->resetManualSelection();
-		}
-		else
-		{
-			m_playQueue->nextMedia();
-			m_video->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
-			m_audio->loadVideo(m_playQueue->getCurrentMedia().m_filePath);
-			m_video->play();
-			m_audio->play();
-			m_updateQueueUI();
-		}
-	}
-}
-
 void MediaPlayerMain::update()
 {
+	queueLogicUpdate();
+
 	m_timer.Tick([&]()
 		{
 			m_video->update(m_timer);
@@ -105,6 +71,43 @@ bool MediaPlayerMain::render() const
 	m_audio->render();
 
 	return true;
+}
+
+
+void MediaPlayerMain::queueLogicUpdate()
+{
+	if (m_isFirstMediaInQueue)
+	{
+		if (!m_playQueue->isEmpty())
+		{
+			MediaFile currentMedia = m_playQueue->getCurrentMedia();
+			m_video->changeDecoder(getPreferredDecoder(currentMedia));
+			m_video->loadVideo(currentMedia.m_filePath);
+			m_audio->loadVideo(currentMedia.m_filePath);
+			m_isFirstMediaInQueue = false;
+		}
+	}
+
+	if ((m_audio->getIsEndOfMedia() || m_video->getIsEndOfMedia()) && !m_playQueue->isEmpty())
+	{
+		if (m_playQueue->isManualSelection())
+		{
+			m_playQueue->resetManualSelection();
+		}
+		else
+		{
+			m_playQueue->nextMedia();
+			m_video->pause();
+			m_audio->pause();
+			MediaFile currentMedia = m_playQueue->getCurrentMedia();
+			m_video->changeDecoder(getPreferredDecoder(currentMedia.m_fileExtension));
+			m_video->loadVideo(currentMedia.m_filePath);
+			m_audio->loadVideo(currentMedia.m_filePath);
+			m_video->play();
+			m_audio->play();
+			m_updateQueueUI();
+		}
+	}
 }
 
 void MediaPlayerMain::play()
@@ -139,6 +142,12 @@ void MediaPlayerMain::setVolume(double volume)
 {
 	std::lock_guard lock(m_criticalSection);
 	m_audio->setVolume(volume);
+}
+
+void MediaPlayerMain::saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_video->saveCurrentFrameAsScreenshot(path, format);
 }
 
 void MediaPlayerMain::setPlayQueue(const std::shared_ptr<PlayQueue>& playQueue)
@@ -257,4 +266,30 @@ void MediaPlayerMain::setUpdateQueueUIAction(std::function<void()> func)
 {
 	std::lock_guard lock(m_criticalSection);
 	m_updateQueueUI = func;
+}
+
+DECODER MediaPlayerMain::getPreferredDecoder(const MediaFile& media)
+{
+	static const std::unordered_set<std::wstring> mfSupportedExtensions =
+	{
+		L".mp3", L".wma", L".wav", L".aac", L".m4a",
+		L".mp4", L".wmv", L".asf"
+	};
+
+	static const std::unordered_set<std::wstring> ffmpegSupportedExtensions =
+	{
+		L".flac", L".ogg", L".opus", L".ac3", L".dts", L".alac", L".vob",
+		L".mkv", L".avi", L".mov", L".flv", L".webm", L".ts", L".m2ts"
+	};
+
+	if (mfSupportedExtensions.count(media.m_fileExtension))
+	{
+		return DECODER::MEDIA_FOUNDATION;
+	}
+	else if (ffmpegSupportedExtensions.count(media.m_fileExtension))
+	{
+		return DECODER::FFMPEG;
+	}
+
+	return DECODER::MEDIA_FOUNDATION;
 }

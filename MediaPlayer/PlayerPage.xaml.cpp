@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "PlayerPage.xaml.h"
 #if __has_include("PlayerPage.g.cpp")
 #include "PlayerPage.g.cpp"
@@ -247,4 +247,97 @@ winrt::fire_and_forget winrt::MediaPlayer::implementation::PlayerPage::UpdatePro
 
 		co_await winrt::resume_after(std::chrono::milliseconds(1000));
 	}
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::screenshotButton_Click(
+	winrt::Windows::Foundation::IInspectable const& sender,
+	winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+{
+	ShowScreenshotDialog();
+}
+
+winrt::fire_and_forget MediaPlayer::implementation::PlayerPage::ShowScreenshotDialog()
+{
+	pauseMedia();
+	auto strongThis = get_strong();
+	ContentDialog dialog;
+	dialog.Title(box_value(L"Screenshot"));
+
+	StackPanel panel;
+
+	TextBox fileNameBox;
+	fileNameBox.PlaceholderText(L"Enter name...");
+	panel.Children().Append(fileNameBox);
+
+	ComboBox formatBox;
+	formatBox.Items().Append(box_value(L"PNG"));
+	formatBox.Items().Append(box_value(L"JPEG"));
+	formatBox.SelectedIndex(0);
+	panel.Children().Append(formatBox);
+
+	StackPanel dirPanel;
+	dirPanel.Orientation(Orientation::Horizontal);
+
+	TextBox directoryBox;
+	directoryBox.IsReadOnly(true);
+	directoryBox.Width(250);
+
+	Button browseButton;
+	browseButton.Content(box_value(L"Select"));
+
+	browseButton.Click([this, &directoryBox](IInspectable const&, RoutedEventArgs const&) -> winrt::fire_and_forget
+		{
+			winrt::Windows::Storage::Pickers::FolderPicker folderPicker;
+			folderPicker.SuggestedStartLocation(winrt::Windows::Storage::Pickers::PickerLocationId::Desktop);
+			folderPicker.FileTypeFilter().Append(L"*");
+
+			auto initializeWithWindow = folderPicker.as<::IInitializeWithWindow>();
+			HWND hwnd = GetActiveWindow();
+			winrt::check_hresult(initializeWithWindow->Initialize(hwnd));
+
+			auto folder = co_await folderPicker.PickSingleFolderAsync();
+			if (folder)
+			{
+				directoryBox.Text(folder.Path());
+			}
+		});
+
+	dirPanel.Children().Append(directoryBox);
+	dirPanel.Children().Append(browseButton);
+	panel.Children().Append(dirPanel);
+
+	dialog.Content(panel);
+	dialog.PrimaryButtonText(L"OK");
+	dialog.CloseButtonText(L"Cancel");
+	dialog.XamlRoot(screenshotButton().XamlRoot());
+
+	auto result = co_await dialog.ShowAsync();
+
+	if (result == ContentDialogResult::Primary)
+	{
+		std::wstring fileName = fileNameBox.Text().c_str();
+		std::wstring directory = directoryBox.Text().c_str();
+
+		if (fileName.empty() || directory.empty())
+		{
+			ContentDialog errorDialog;
+			errorDialog.Title(box_value(L"Error"));
+			errorDialog.Content(box_value(L"Please, enter name and select directory."));
+			errorDialog.CloseButtonText(L"OK");
+			errorDialog.XamlRoot(screenshotButton().XamlRoot());
+			co_await errorDialog.ShowAsync();
+			co_return;
+		}
+
+		std::wstring formatStr = formatBox.SelectedIndex() == 0 ? L".png" : L".jpg";
+		GUID format = formatBox.SelectedIndex() == 0 ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
+
+		std::wstring filePath = directory + L"\\" + fileName + formatStr;
+
+		if (m_mediaPlayer)
+		{
+			m_mediaPlayer->saveCurrentFrameAsScreenshot(filePath, format);
+		}
+	}
+	playMedia();
 }

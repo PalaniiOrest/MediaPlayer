@@ -64,6 +64,9 @@
             <Button x:Name="nextButton" Click="nextButton_Click">
                 <FontIcon Glyph="&#xE893;" />
             </Button>
+            <Button x:Name="screenshotButton" Click="screenshotButton_Click">
+                <FontIcon Glyph="&#xE93C;" />
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

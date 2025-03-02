@@ -5,7 +5,7 @@ class MFVideoDecoder : public IVideoDecoder
 {
 public:
 	MFVideoDecoder(const std::shared_ptr<DeviceResources>& deviceResources);
-	virtual void loadMedia(const std::wstring& mediaPath) override;
+	virtual void loadMedia(const MediaFile& media) override;
 	virtual void decodeFrame(VideoFrame& frame) override;
 	virtual void skipFrame(uint32_t numFrames = 1) override;
 	virtual void seekToTime(uint64_t timeInTicks) override;

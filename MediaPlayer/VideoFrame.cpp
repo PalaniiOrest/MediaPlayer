@@ -1,6 +1,7 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "VideoFrame.h"
-
+#include <wincodec.h>
+#include <fstream>
 
 VideoFrame::VideoFrame(const std::shared_ptr<DeviceResources>& deviceResources)
 	: m_deviceResources(deviceResources)
@@ -26,6 +27,7 @@ VideoFrame::~VideoFrame()
 void VideoFrame::setVideoData(const winrt::com_ptr<ID3D11Texture2D>& texture)
 {
 	m_texture = texture;
+	
 }
 
 void VideoFrame::createBitmapFromTexure()
@@ -79,4 +81,65 @@ void VideoFrame::render()
 	);
 	winrt::check_hresult(context->EndDraw());
 	m_deviceResources->getSwapChain()->Present(0, 0);
+}
+
+
+void VideoFrame::saveScreenshot(const std::wstring& filePath, const GUID& format)
+{
+	std::lock_guard<D3D11MultithreadLock> lock(m_multithreadLock);
+
+	if (!m_texture)
+	{
+		return;
+	}
+
+	D3D11_TEXTURE2D_DESC textureDesc;
+	m_texture->GetDesc(&textureDesc);
+
+	D3D11_TEXTURE2D_DESC copyDesc = textureDesc;
+	copyDesc.Usage = D3D11_USAGE_STAGING;
+	copyDesc.BindFlags = 0;
+	copyDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	copyDesc.MiscFlags = 0;
+
+	winrt::com_ptr<ID3D11Texture2D> stagingTexture;
+	winrt::check_hresult(m_deviceResources->getD3DDevice()->CreateTexture2D(&copyDesc, nullptr, stagingTexture.put()));
+
+	m_deviceResources->getD3DDeviceContext()->CopyResource(stagingTexture.get(), m_texture.get());
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	winrt::check_hresult(m_deviceResources->getD3DDeviceContext()->Map(stagingTexture.get(), 0, D3D11_MAP_READ, 0, &mappedResource));
+
+	winrt::com_ptr<IWICImagingFactory> wicFactory;
+	winrt::check_hresult(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(wicFactory.put())));
+
+	winrt::com_ptr<IWICBitmapEncoder> encoder;
+	winrt::check_hresult(wicFactory->CreateEncoder(format, nullptr, encoder.put()));
+
+	winrt::com_ptr<IWICStream> stream;
+	winrt::check_hresult(wicFactory->CreateStream(stream.put()));
+	winrt::check_hresult(stream->InitializeFromFilename(filePath.c_str(), GENERIC_WRITE));
+
+	winrt::check_hresult(encoder->Initialize(stream.get(), WICBitmapEncoderNoCache));
+
+	winrt::com_ptr<IWICBitmapFrameEncode> frame;
+	winrt::com_ptr<IPropertyBag2> propertyBag;
+	winrt::check_hresult(encoder->CreateNewFrame(frame.put(), propertyBag.put()));
+	winrt::check_hresult(frame->Initialize(propertyBag.get()));
+	winrt::check_hresult(frame->SetSize(textureDesc.Width, textureDesc.Height));
+
+	WICPixelFormatGUID pixelFormat = GUID_WICPixelFormat32bppBGRA;
+	winrt::check_hresult(frame->SetPixelFormat(&pixelFormat));
+
+	winrt::check_hresult(frame->WritePixels(
+		textureDesc.Height,
+		mappedResource.RowPitch,
+		mappedResource.RowPitch * textureDesc.Height,
+		static_cast<BYTE*>(mappedResource.pData)
+	));
+
+	winrt::check_hresult(frame->Commit());
+	winrt::check_hresult(encoder->Commit());
+
+	m_deviceResources->getD3DDeviceContext()->Unmap(stagingTexture.get(), 0);
 }

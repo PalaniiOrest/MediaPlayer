@@ -9,8 +9,12 @@ MediaFile::MediaFile(const std::wstring& filePath)
     , m_duration(calculateVideoDuration(filePath))
 {
     std::filesystem::path path(filePath);
+
     m_name = path.filename().wstring();
+
     m_fileExtension = path.extension().wstring();
+    std::transform(m_fileExtension.begin(), m_fileExtension.end(), m_fileExtension.begin(), ::towlower);
+
 }
 
 std::wstring MediaFile::calculateVideoDuration(const std::wstring& filePath)

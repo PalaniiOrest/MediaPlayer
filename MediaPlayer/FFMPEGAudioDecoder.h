@@ -2,13 +2,13 @@
 #include "DeviceResources.h"
 #include "IAudioDecoder.h"
 
-class FFmpegAudioDecoder : public IAudioDecoder
+class FFMPEGAudioDecoder : public IAudioDecoder
 {
 public:
-    FFmpegAudioDecoder(const std::shared_ptr<DeviceResources>&);
-    ~FFmpegAudioDecoder();
+    FFMPEGAudioDecoder(const std::shared_ptr<DeviceResources>&);
+    ~FFMPEGAudioDecoder();
 
-    void loadMedia(const std::wstring& mediaPath) override;
+    void loadMedia(const MediaFile& mediaPath) override;
     void decodeFrame(AudioFrame& frame) override;
     void skipFrame(uint32_t numFrames = 1) override;
     void seekToTime(uint64_t timeInTicks) override;

@@ -1,9 +1,9 @@
 #pragma once
 #include "DeviceResources.h"
 #include "StepTimer.h"
-#include "AudioDecoder.h"
 #include "AudioFrame.h"
 #include "IAudioDecoder.h"
+#include "Constants.h"
 
 class AudioRender
 {
@@ -11,7 +11,8 @@ public:
 	AudioRender(const std::shared_ptr<DeviceResources>& deviceResources);
 	~AudioRender();
 
-    void loadVideo(const std::wstring& videoPath);
+    void loadVideo(const MediaFile&);
+    void changeDecoder(DECODER decoder);
     void render();
     void update(const StepTimer&);
 

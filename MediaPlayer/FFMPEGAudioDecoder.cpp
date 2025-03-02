@@ -2,21 +2,21 @@
 #include "FFmpegAudioDecoder.h"
 
 
-FFmpegAudioDecoder::FFmpegAudioDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
+FFMPEGAudioDecoder::FFMPEGAudioDecoder(const std::shared_ptr<DeviceResources>& deviceResources)
     : m_deviceResources(deviceResources)
 {
     avformat_network_init();
 }
 
-FFmpegAudioDecoder::~FFmpegAudioDecoder()
+FFMPEGAudioDecoder::~FFMPEGAudioDecoder()
 {
     cleanup();
 }
 
-void FFmpegAudioDecoder::loadMedia(const std::wstring& mediaPath)
+void FFMPEGAudioDecoder::loadMedia(const MediaFile& mediaPath)
 {
     cleanup();
-    std::string path(mediaPath.begin(), mediaPath.end());
+    std::string path(mediaPath.m_filePath.begin(), mediaPath.m_filePath.end());
 
     if (avformat_open_input(&m_formatContext, path.c_str(), nullptr, nullptr) != 0)
         throw std::runtime_error("Failed to open media file");
@@ -43,7 +43,7 @@ void FFmpegAudioDecoder::loadMedia(const std::wstring& mediaPath)
     m_isEndOfStream = false;
 }
 
-void FFmpegAudioDecoder::openCodecContext()
+void FFMPEGAudioDecoder::openCodecContext()
 {
     for (unsigned i = 0; i < m_formatContext->nb_streams; i++)
     {
@@ -104,7 +104,7 @@ void FFmpegAudioDecoder::openCodecContext()
 }
 
 
-void FFmpegAudioDecoder::decodeFrame(AudioFrame& frame)
+void FFMPEGAudioDecoder::decodeFrame(AudioFrame& frame)
 {
     while (true)
     {
@@ -137,7 +137,7 @@ void FFmpegAudioDecoder::decodeFrame(AudioFrame& frame)
 
                 int outBufferSize = av_samples_get_buffer_size(
                     nullptr,
-                    2, // Стерео
+                    2,
                     outSamples,
                     AV_SAMPLE_FMT_S16,
                     1
@@ -165,7 +165,7 @@ void FFmpegAudioDecoder::decodeFrame(AudioFrame& frame)
     }
 }
 
-void FFmpegAudioDecoder::skipFrame(uint32_t numFrames)
+void FFMPEGAudioDecoder::skipFrame(uint32_t numFrames)
 {
     for (uint32_t i = 0; i < numFrames; i++)
     {
@@ -178,7 +178,7 @@ void FFmpegAudioDecoder::skipFrame(uint32_t numFrames)
     }
 }
 
-void FFmpegAudioDecoder::seekToTime(uint64_t timeInTicks)
+void FFMPEGAudioDecoder::seekToTime(uint64_t timeInTicks)
 {
     int64_t timestamp = av_rescale_q(timeInTicks, AV_TIME_BASE_Q,
         m_formatContext->streams[m_audioStreamIndex]->time_base);
@@ -186,12 +186,12 @@ void FFmpegAudioDecoder::seekToTime(uint64_t timeInTicks)
     m_isEndOfStream = false;
 }
 
-bool FFmpegAudioDecoder::getIsEndOfStream()
+bool FFMPEGAudioDecoder::getIsEndOfStream()
 {
     return m_isEndOfStream;
 }
 
-void FFmpegAudioDecoder::cleanup()
+void FFMPEGAudioDecoder::cleanup()
 {
     if (m_packet) av_packet_free(&m_packet);
     if (m_frame) av_frame_free(&m_frame);

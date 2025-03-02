@@ -21,7 +21,7 @@ FFMPEGVideoDecoder::~FFMPEGVideoDecoder()
 
 }
 
-void FFMPEGVideoDecoder::loadMedia(const std::wstring& mediaPath)
+void FFMPEGVideoDecoder::loadMedia(const MediaFile& mediaPath)
 {
 	if (m_codecCtx) {
 		avcodec_free_context(&m_codecCtx);
@@ -40,7 +40,7 @@ void FFMPEGVideoDecoder::loadMedia(const std::wstring& mediaPath)
 		m_hwDeviceCtx = nullptr;
 	}
 
-	std::string path(mediaPath.begin(), mediaPath.end());
+	std::string path(mediaPath.m_filePath.begin(), mediaPath.m_filePath.end());
 
 	if (avformat_open_input(&m_formatCtx, path.c_str(), nullptr, nullptr) < 0)
 	{

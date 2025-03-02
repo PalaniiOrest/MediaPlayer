@@ -21,6 +21,7 @@ public:
 	void selectVideo(const std::wstring& videoPath);
 	void seekToTime(uint64_t timeInTicks);
 	void setVolume(double volume);
+	void saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format);
 
 	//PlayQueue
 	void setPlayQueue(const std::shared_ptr<PlayQueue>& playQueue);
@@ -41,11 +42,14 @@ public:
 	void updateSizeDependentResources(uint32_t width, uint32_t height);
 	void setUpdateQueueUIAction(std::function<void()> func);
 
+
 private:
 
 	void queueLogicUpdate();
 	void update();
 	bool render() const;
+	DECODER getPreferredDecoder(const MediaFile& media);
+
 
 
 	std::shared_ptr<DeviceResources> m_deviceResources;
