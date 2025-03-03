@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "VideoRender.h"
 #include <iostream>
 #include "Logger.h"
@@ -68,7 +68,10 @@ void VideoRender::update(const StepTimer& timer)
     XAUDIO2_VOICE_STATE state;
     m_deviceResources->getSourceVoice()->GetState(&state);
 
-    uint64_t audioPlayTime = state.SamplesPlayed * TICKS_PER_SECOND / m_deviceResources->getWaveFormat().nSamplesPerSec;
+    float playbackSpeed = m_deviceResources->getPlaybackSpeed();
+    uint64_t adjustedSamplesPlayed = static_cast<uint64_t>(state.SamplesPlayed * playbackSpeed);
+
+    uint64_t audioPlayTime = adjustedSamplesPlayed * TICKS_PER_SECOND / m_deviceResources->getWaveFormat().nSamplesPerSec;
 
     if (audioPlayTime <= m_frameTime)
     {
@@ -81,6 +84,7 @@ void VideoRender::update(const StepTimer& timer)
         m_frameTime += m_frameDuration;
     }
 }
+
 
 void VideoRender::seekToTime(uint64_t timeInTicks)
 {

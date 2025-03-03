@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "AudioFrame.h"
 
 namespace
@@ -8,6 +8,7 @@ namespace
 
 AudioFrame::AudioFrame(const std::shared_ptr<DeviceResources>& deviceResources)
 	: m_deviceResources(deviceResources)
+    , SoundTouchProcessor(deviceResources)
 {
     m_buffers.resize(MAX_BUFFERS_COUNT);
 }
@@ -16,7 +17,7 @@ AudioFrame::~AudioFrame()
 {
 }
 
-void AudioFrame::setAudioData(const std::vector<BYTE>& audioData)
+void AudioFrame::setAudioData(const std::vector<byte>& audioData)
 {
     if (audioData.empty()) 
     {
@@ -37,6 +38,8 @@ void AudioFrame::play()
 
         WaitForSingleObject(m_deviceResources->getVoiceContext().hBufferEndEvent, INFINITE);
     }
+
+    processAudio(m_buffers[m_currentStreamBuffer]);
 
     XAUDIO2_BUFFER buf = {};
     buf.AudioBytes = m_buffers[m_currentStreamBuffer].size();

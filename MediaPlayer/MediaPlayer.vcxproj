@@ -88,19 +88,23 @@
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\vcpkg\installed\x64-windows\include\soundtouch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;User32.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;User32.lib;SoundTouch.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\vcpkg\installed\x64-windows\include\soundtouch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;User32.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d11.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;mf.lib;mfplat.lib;mfuuid.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;User32.lib;SoundTouch.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(WindowsPackageType)'!='None' and Exists('Package.appxmanifest')">
@@ -158,6 +162,7 @@
       <DependentUpon>PlayQueuePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SoundTouchProcessor.h" />
     <ClInclude Include="StreamingVoiceContext.h" />
     <ClInclude Include="VideoRender.h" />
     <ClInclude Include="MediaPlayerMain.h" />
@@ -237,6 +242,7 @@
       <DependentUpon>PlayQueuePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="SoundTouchProcessor.cpp" />
     <ClCompile Include="StreamingVoiceContext.cpp" />
     <ClCompile Include="VideoRender.cpp" />
     <ClCompile Include="MediaPlayerMain.cpp" />

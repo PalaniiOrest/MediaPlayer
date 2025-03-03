@@ -24,6 +24,8 @@ public:
     IXAudio2SourceVoice* getSourceVoice() { return m_sourceVoice; }
     StreamingVoiceContext& getVoiceContext() { return m_voiceContext; }
     WAVEFORMATEX getWaveFormat() { return m_waveFormat; }
+    float getPlaybackSpeed() { return m_playbackSpeed; }
+    void setPlaybackSpeed(float speed) { m_playbackSpeed = speed; }
 
     uint32_t getVideoWidth() { return m_videoWidth; }
     uint32_t getVideoHeight() { return m_videoHeight; }
@@ -49,6 +51,7 @@ protected:
     IXAudio2SourceVoice* m_sourceVoice = nullptr;
     StreamingVoiceContext m_voiceContext;
     WAVEFORMATEX m_waveFormat {};
+    float m_playbackSpeed = 1.0f;
 
     uint32_t m_videoWidth = 1920;
     uint32_t m_videoHeight = 1080;

@@ -97,6 +97,7 @@
     <ClCompile Include="FFMPEGAudioDecoder.cpp">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="SoundTouchProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="FFMPEGAudioDecoder.h">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="SoundTouchProcessor.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

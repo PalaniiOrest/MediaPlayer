@@ -20,6 +20,7 @@ void AudioRender::loadVideo(const MediaFile& videoPath)
 {
     pause();
     m_decoder->loadMedia(videoPath.m_filePath);
+    m_frame.updateSoundTouchResources();
 }
 
 

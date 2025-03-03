@@ -1,7 +1,8 @@
 #pragma once
 #include "DeviceResources.h"
+#include "SoundTouchProcessor.h"
 
-class AudioFrame
+class AudioFrame : public SoundTouchProcessor
 {
 public:
 	AudioFrame(const std::shared_ptr<DeviceResources>& deviceResources);
@@ -14,7 +15,7 @@ public:
 	void setVolume(double volume);
 
 	double getCurrentVolume() { return m_volume; }
-	std::vector<uint8_t>& getBuffer() { return m_buffers[m_currentStreamBuffer]; }
+	std::vector<byte>& getBuffer() { return m_buffers[m_currentStreamBuffer]; }
 
 	operator bool() const { return m_buffers[m_currentStreamBuffer].size() > 0; }
 private:
