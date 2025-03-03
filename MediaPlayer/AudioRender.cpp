@@ -81,3 +81,8 @@ void AudioRender::setVolume(double volume)
 {
     m_frame.setVolume(volume);
 }
+
+void AudioRender::setTemp(float speed)
+{
+    m_frame.setPlaybackSpeed(speed);
+}

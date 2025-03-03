@@ -144,6 +144,12 @@ void MediaPlayerMain::setVolume(double volume)
 	m_audio->setVolume(volume);
 }
 
+void MediaPlayerMain::setTemp(float speed)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_audio->setTemp(speed);
+}
+
 void MediaPlayerMain::saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format)
 {
 	std::lock_guard lock(m_criticalSection);

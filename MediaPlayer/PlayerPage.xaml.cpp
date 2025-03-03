@@ -341,3 +341,13 @@ winrt::fire_and_forget MediaPlayer::implementation::PlayerPage::ShowScreenshotDi
 	}
 	playMedia();
 }
+
+void winrt::MediaPlayer::implementation::PlayerPage::TempoSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
+{
+	if (m_isPlaying)
+	{
+		pauseMedia();
+		m_mediaPlayer->setTemp(static_cast<float>(e.NewValue()));
+		playMedia();
+	}
+}

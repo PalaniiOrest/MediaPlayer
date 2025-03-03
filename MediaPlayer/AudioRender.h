@@ -20,6 +20,7 @@ public:
     void pause();
     void seekToTime(uint64_t timeInTicks);
     void setVolume(double volume);
+    void setTemp(float speed);
     double getCurrentVolume() { return m_frame.getCurrentVolume(); }
     bool getIsEndOfMedia() { return m_decoder->getIsEndOfStream(); }
 

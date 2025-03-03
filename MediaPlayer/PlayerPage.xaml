@@ -51,6 +51,16 @@
                 IsThumbToolTipEnabled="True"
                 Width="150"
                 ValueChanged="VolumeSlider_ValueChanged"/>
+            <Slider 
+                x:Name="TempoSlider"
+                Minimum="0.25"
+                Maximum="2.00"
+                Value="1.00"
+                TickFrequency="0.05"
+                StepFrequency="0.05"
+                IsThumbToolTipEnabled="True"
+                Width="150"
+                ValueChanged="TempoSlider_ValueChanged"/>
         </StackPanel>
 
         <StackPanel

@@ -9,11 +9,14 @@ SoundTouchProcessor::SoundTouchProcessor(const std::shared_ptr<DeviceResources>&
     m_soundTouch.setTempo(1.0f);
 }
 
-
 void SoundTouchProcessor::setPlaybackSpeed(float speed)
 {
-    m_deviceResources->setPlaybackSpeed(speed);
+    float roundedSpeed = std::round(speed / 0.05f) * 0.05f;
+
+    m_deviceResources->setPlaybackSpeed(roundedSpeed);
+    m_soundTouch.setTempo(roundedSpeed);
 }
+
 
 void SoundTouchProcessor::processAudio(std::vector<byte>& buffer)
 {
@@ -63,7 +66,5 @@ void SoundTouchProcessor::updateSoundTouchResources()
 
     m_soundTouch.setSampleRate(waveFormat.nSamplesPerSec);
     m_soundTouch.setChannels(waveFormat.nChannels);
-
-    m_deviceResources->setPlaybackSpeed(0.5f);
     m_soundTouch.setTempo(m_deviceResources->getPlaybackSpeed());
 }

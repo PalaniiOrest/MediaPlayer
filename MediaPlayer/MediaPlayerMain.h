@@ -21,6 +21,7 @@ public:
 	void selectVideo(const std::wstring& videoPath);
 	void seekToTime(uint64_t timeInTicks);
 	void setVolume(double volume);
+	void setTemp(float speed);
 	void saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format);
 
 	//PlayQueue
