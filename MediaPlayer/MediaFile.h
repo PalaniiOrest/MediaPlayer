@@ -3,7 +3,6 @@ class MediaFile
 {
 public:
 	MediaFile(const std::wstring& filePath);
-    std::wstring calculateVideoDuration(const std::wstring& filePath);
 
     std::wstring m_filePath;
     std::wstring m_fileExtension;
@@ -19,4 +18,13 @@ public:
     std::wstring m_language;
     std::wstring m_publisher;
     std::wstring m_duration;
+    std::wstring m_videoCodec;
+    std::wstring m_audioCodec;
+    std::wstring m_resolution;
+    std::wstring m_frameRate;
+    std::wstring m_bitRate;
+
+private:
+    std::wstring getMetadata(AVDictionary* metadata, const char* key);
+    std::wstring getVideoDuration(AVFormatContext* formatCtx);
 };

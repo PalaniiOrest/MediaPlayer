@@ -30,13 +30,12 @@ void FFMPEGAudioDecoder::loadMedia(const MediaFile& mediaPath)
     waveFormat.wFormatTag = WAVE_FORMAT_PCM;
     waveFormat.nChannels = m_codecContext->ch_layout.nb_channels;
     waveFormat.nSamplesPerSec = m_codecContext->sample_rate; 
-    waveFormat.wBitsPerSample = av_get_bytes_per_sample(m_codecContext->sample_fmt) * 8; 
+    waveFormat.wBitsPerSample = 16;
     waveFormat.nBlockAlign = (waveFormat.nChannels * waveFormat.wBitsPerSample) / 8; 
     waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign; 
     waveFormat.cbSize = 0;
 
     m_deviceResources->setWaveFormat(&waveFormat, sizeof(WAVEFORMATEX));
-    m_deviceResources->updateAudioDependentResources();
 
     m_packet = av_packet_alloc();
     m_frame = av_frame_alloc();

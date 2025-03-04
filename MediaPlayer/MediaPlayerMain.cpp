@@ -82,6 +82,7 @@ void MediaPlayerMain::queueLogicUpdate()
 		{
 			MediaFile currentMedia = m_playQueue->getCurrentMedia();
 			m_video->changeDecoder(getPreferredDecoder(currentMedia));
+			m_audio->changeDecoder(getPreferredDecoder(currentMedia));
 			m_video->loadVideo(currentMedia.m_filePath);
 			m_audio->loadVideo(currentMedia.m_filePath);
 			m_isFirstMediaInQueue = false;
@@ -100,7 +101,8 @@ void MediaPlayerMain::queueLogicUpdate()
 			m_video->pause();
 			m_audio->pause();
 			MediaFile currentMedia = m_playQueue->getCurrentMedia();
-			m_video->changeDecoder(getPreferredDecoder(currentMedia.m_fileExtension));
+			m_video->changeDecoder(getPreferredDecoder(currentMedia));
+			m_audio->changeDecoder(getPreferredDecoder(currentMedia));
 			m_video->loadVideo(currentMedia.m_filePath);
 			m_audio->loadVideo(currentMedia.m_filePath);
 			m_video->play();
@@ -290,7 +292,7 @@ DECODER MediaPlayerMain::getPreferredDecoder(const MediaFile& media)
 
 	if (mfSupportedExtensions.count(media.m_fileExtension))
 	{
-		return DECODER::MEDIA_FOUNDATION;
+		return DECODER::FFMPEG;
 	}
 	else if (ffmpegSupportedExtensions.count(media.m_fileExtension))
 	{

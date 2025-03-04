@@ -173,6 +173,7 @@ void DeviceResources::setWaveFormat(const WAVEFORMATEX* waveFormat, UINT32 waveF
 	}
 
 	memcpy_s(&m_waveFormat, sizeof(m_waveFormat), waveFormat, waveFormatSize);
+	updateAudioDependentResources();
 }
 
 void DeviceResources::initAudioResources()

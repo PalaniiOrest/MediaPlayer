@@ -97,7 +97,9 @@
     <ClCompile Include="FFMPEGAudioDecoder.cpp">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="SoundTouchProcessor.cpp" />
+    <ClCompile Include="SoundTouchProcessor.cpp">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -170,7 +172,9 @@
     <ClInclude Include="FFMPEGAudioDecoder.h">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="SoundTouchProcessor.h" />
+    <ClInclude Include="SoundTouchProcessor.h">
+      <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -231,6 +235,9 @@
     </Filter>
     <Filter Include="MediaPlayerAPI\Interfaces">
       <UniqueIdentifier>{e106fd2e-12e6-4359-b6a8-c53b9dcd34de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayerAPI\Subtitles">
+      <UniqueIdentifier>{1601ed2b-28bd-4e54-b74b-8471b7d4bcf0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
