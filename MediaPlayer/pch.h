@@ -66,6 +66,11 @@
 #include <algorithm>
 #include <set>
 #include <deque>
+#include <unordered_set>
+
+#include <thread>
+#include <future>
+#include <atomic>
 
 extern "C"
 {

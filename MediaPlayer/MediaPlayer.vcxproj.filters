@@ -100,6 +100,21 @@
     <ClCompile Include="SoundTouchProcessor.cpp">
       <Filter>MediaPlayerAPI\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="SubtitleFrame.cpp">
+      <Filter>MediaPlayerAPI\Subtitles</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtitleDecoder.cpp">
+      <Filter>MediaPlayerAPI\Subtitles</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtitleRender.cpp">
+      <Filter>MediaPlayerAPI\Subtitles</Filter>
+    </ClCompile>
+    <ClCompile Include="ISubtitleDecoder.cpp">
+      <Filter>MediaPlayerAPI\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaRecorder.cpp">
+      <Filter>MediaPlayerAPI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -174,6 +189,21 @@
     </ClInclude>
     <ClInclude Include="SoundTouchProcessor.h">
       <Filter>MediaPlayerAPI\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SubtitleFrame.h">
+      <Filter>MediaPlayerAPI\Subtitles</Filter>
+    </ClInclude>
+    <ClInclude Include="SubtitleDecoder.h">
+      <Filter>MediaPlayerAPI\Subtitles</Filter>
+    </ClInclude>
+    <ClInclude Include="SubtitleRender.h">
+      <Filter>MediaPlayerAPI\Subtitles</Filter>
+    </ClInclude>
+    <ClInclude Include="ISubtitleDecoder.h">
+      <Filter>MediaPlayerAPI\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaRecorder.h">
+      <Filter>MediaPlayerAPI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

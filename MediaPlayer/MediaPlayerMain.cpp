@@ -1,6 +1,5 @@
 ﻿#include "pch.h"
 #include "MediaPlayerMain.h"
-#include <unordered_set>
 
 using namespace winrt;
 using namespace Windows::Foundation;
@@ -10,8 +9,11 @@ MediaPlayerMain::MediaPlayerMain(const std::shared_ptr<DeviceResources>& deviceR
 	, m_video(std::make_unique<VideoRender>(deviceResources))
 	, m_audio(std::make_unique<AudioRender>(deviceResources))
 	, m_playQueue(std::make_shared<PlayQueue>())
+	, m_subtitle(std::make_unique<SubtitleRender>(deviceResources))
+	, m_recorder(std::make_unique<MediaRecorder>())
 {
 	winrt::check_hresult(MFStartup(MF_VERSION));
+
 }
 
 MediaPlayerMain::~MediaPlayerMain()
@@ -49,18 +51,30 @@ void MediaPlayerMain::stopRenderLoop() const
 	m_renderLoopWorker.Cancel();
 }
 
+void MediaPlayerMain::setUpdateUpdateSubtitleUIAction(std::function<void(std::wstring)> func)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_subtitle->setUpdateTextCallback(func);
+}
+
+void MediaPlayerMain::loadSubtitlesFromSrt(const std::wstring& subtitlePath)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_subtitle->loadSubtitles(subtitlePath);
+}
+
 void MediaPlayerMain::update()
 {
 	queueLogicUpdate();
-
 	m_timer.Tick([&]()
 		{
 			m_video->update(m_timer);
 			m_audio->update(m_timer);
+			m_subtitle->update(m_timer);
 		});
 }
 
-bool MediaPlayerMain::render() const
+bool MediaPlayerMain::render() 
 {
 	if (m_timer.GetFrameCount() == 0)
 	{
@@ -69,6 +83,7 @@ bool MediaPlayerMain::render() const
 
 	m_video->render();
 	m_audio->render();
+	m_subtitle->render();
 
 	return true;
 }
@@ -85,6 +100,8 @@ void MediaPlayerMain::queueLogicUpdate()
 			m_audio->changeDecoder(getPreferredDecoder(currentMedia));
 			m_video->loadVideo(currentMedia.m_filePath);
 			m_audio->loadVideo(currentMedia.m_filePath);
+			m_subtitle->loadMedia(currentMedia);
+			m_recorder->loadMedia(currentMedia);
 			m_isFirstMediaInQueue = false;
 		}
 	}
@@ -105,12 +122,16 @@ void MediaPlayerMain::queueLogicUpdate()
 			m_audio->changeDecoder(getPreferredDecoder(currentMedia));
 			m_video->loadVideo(currentMedia.m_filePath);
 			m_audio->loadVideo(currentMedia.m_filePath);
+			m_subtitle->loadMedia(currentMedia);
+			m_recorder->loadMedia(currentMedia);
 			m_video->play();
 			m_audio->play();
 			m_updateQueueUI();
 		}
 	}
 }
+
+
 
 void MediaPlayerMain::play()
 {
@@ -131,6 +152,7 @@ void MediaPlayerMain::selectVideo(const std::wstring& videoPath)
 	std::lock_guard lock(m_criticalSection);
 	m_video->loadVideo(videoPath);
 	m_audio->loadVideo(videoPath);
+	m_subtitle->loadMedia(videoPath);
 }
 
 void MediaPlayerMain::seekToTime(uint64_t timeInTicks)
@@ -156,6 +178,12 @@ void MediaPlayerMain::saveCurrentFrameAsScreenshot(const std::wstring& path, con
 {
 	std::lock_guard lock(m_criticalSection);
 	m_video->saveCurrentFrameAsScreenshot(path, format);
+}
+
+void MediaPlayerMain::recordMadiaFrame(double timeStart, double timeEnd, const std::string outFile)
+{
+	std::lock_guard lock(m_criticalSection);
+	m_recorder->start(timeStart, timeEnd, outFile);
 }
 
 void MediaPlayerMain::setPlayQueue(const std::shared_ptr<PlayQueue>& playQueue)
@@ -292,7 +320,7 @@ DECODER MediaPlayerMain::getPreferredDecoder(const MediaFile& media)
 
 	if (mfSupportedExtensions.count(media.m_fileExtension))
 	{
-		return DECODER::FFMPEG;
+		return DECODER::MEDIA_FOUNDATION;
 	}
 	else if (ffmpegSupportedExtensions.count(media.m_fileExtension))
 	{

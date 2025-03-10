@@ -19,6 +19,17 @@ namespace winrt::MediaPlayer::implementation
 	{
 		m_deviceResources = deviceResources;
 		m_mediaPlayer = mediaPlayer;
+		m_mediaPlayer->setUpdateUpdateSubtitleUIAction([this](std::wstring text)
+			{
+				auto dispatcher = DispatcherQueue();
+				if (dispatcher)
+				{
+					dispatcher.TryEnqueue([this, text]()
+						{
+							SubtitleTextBlock().Text(text);
+						});
+				}
+			});
 		m_swapChainPanel = swapChainPanel;
 		UpdateProgressLoopAsync();
 	}
@@ -349,5 +360,57 @@ void winrt::MediaPlayer::implementation::PlayerPage::TempoSlider_ValueChanged(wi
 		pauseMedia();
 		m_mediaPlayer->setTemp(static_cast<float>(e.NewValue()));
 		playMedia();
+	}
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::subtitleButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+{
+	
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::recordButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& e)
+{
+	auto visibility = recordPanel().Visibility();
+	recordPanel().Visibility(visibility == winrt::Microsoft::UI::Xaml::Visibility::Visible ?
+		winrt::Microsoft::UI::Xaml::Visibility::Collapsed :
+		winrt::Microsoft::UI::Xaml::Visibility::Visible);
+}
+
+void winrt::MediaPlayer::implementation::PlayerPage::confirmRecordButton_Click(
+	winrt::Windows::Foundation::IInspectable const&,
+	winrt::Microsoft::UI::Xaml::RoutedEventArgs const&)
+{
+	std::wstring startTimeStr = startTimeBox().Text().c_str();
+	std::wstring endTimeStr = endTimeBox().Text().c_str();
+	std::wstring outputFile = outputFileBox().Text().c_str();
+
+	if (startTimeStr.empty() || endTimeStr.empty() || outputFile.empty())
+	{
+		// Тут можна показати повідомлення про помилку
+		return;
+	}
+
+	try
+	{
+		double startTime = std::stod(startTimeStr);
+		double endTime = std::stod(endTimeStr);
+
+		if (startTime >= endTime)
+		{
+			// Тут можна показати повідомлення про невірний діапазон
+			return;
+		}
+
+		confirmRecordButton().IsEnabled(false); // Блокуємо кнопку
+
+		// Викликаємо функцію запису
+		m_mediaPlayer->recordMadiaFrame(startTime, endTime, winrt::to_string(outputFile));
+
+		// Розблокуємо кнопку після завершення (опціонально)
+		confirmRecordButton().IsEnabled(true);
+	}
+	catch (const std::exception&)
+	{
+		// Тут можна показати повідомлення про помилку конвертації
 	}
 }

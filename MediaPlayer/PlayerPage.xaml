@@ -25,6 +25,7 @@
                 FontSize="16">
                 VideoName
             </TextBlock>
+            
         </Grid>
 
         <Slider
@@ -35,6 +36,13 @@
             VerticalAlignment="Top"
             Margin="50, 0, 50, 0"
             ValueChanged="ProgressSlider_ValueChanged"/>
+
+        <TextBlock
+            x:Name="SubtitleTextBlock"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="16">
+        </TextBlock>
 
         <StackPanel 
             Orientation="Horizontal"
@@ -70,13 +78,33 @@
             <Button x:Name="prevButton" Click="prevButton_Click">
                 <FontIcon Glyph="&#xE892;" />
             </Button>
-            <Button x:Name="playButton" Click="playButton_Click">Play</Button>
+            <Button x:Name="playButton" Click="playButton_Click">
+                Play
+            </Button>
             <Button x:Name="nextButton" Click="nextButton_Click">
                 <FontIcon Glyph="&#xE893;" />
             </Button>
             <Button x:Name="screenshotButton" Click="screenshotButton_Click">
                 <FontIcon Glyph="&#xE93C;" />
             </Button>
+            <Button x:Name="subtitleButton" Click="subtitleButton_Click">
+                Subt
+            </Button>
+            
+            <StackPanel>
+                <StackPanel x:Name="recordPanel" Visibility="Collapsed" Margin="0,5,0,0">
+                    <TextBox x:Name="startTimeBox" PlaceholderText="Start Time (hh:mm:ss)" />
+                    <TextBox x:Name="endTimeBox" PlaceholderText="End Time (hh:mm:ss)" />
+                    <TextBox x:Name="outputFileBox" PlaceholderText="Output File (example.mp4)" />
+                    <Button x:Name="confirmRecordButton" Click="confirmRecordButton_Click" IsEnabled="True">
+                        Confirm
+                    </Button>
+                </StackPanel>
+                <Button x:Name="recordButton" Click="recordButton_Click">
+                    Record
+                </Button>
+            </StackPanel>
+
         </StackPanel>
     </Grid>
 </Page>

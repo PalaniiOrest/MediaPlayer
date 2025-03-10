@@ -130,6 +130,7 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="IAudioDecoder.h" />
+    <ClInclude Include="ISubtitleDecoder.h" />
     <ClInclude Include="IVideoDecoder.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MediaDecoder.h" />
@@ -138,6 +139,7 @@
       <DependentUpon>MediaFileViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="MediaRecorder.h" />
     <ClInclude Include="MFAudioDecoder.h" />
     <ClInclude Include="MFVideoDecoder.h" />
     <ClInclude Include="PlayerPage.xaml.h">
@@ -164,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="SoundTouchProcessor.h" />
     <ClInclude Include="StreamingVoiceContext.h" />
+    <ClInclude Include="SubtitleDecoder.h" />
+    <ClInclude Include="SubtitleFrame.h" />
+    <ClInclude Include="SubtitleRender.h" />
     <ClInclude Include="VideoRender.h" />
     <ClInclude Include="MediaPlayerMain.h" />
     <ClInclude Include="pch.h" />
@@ -210,6 +215,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="IAudioDecoder.cpp" />
+    <ClCompile Include="ISubtitleDecoder.cpp" />
     <ClCompile Include="IVideoDecoder.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MediaDecoder.cpp" />
@@ -218,6 +224,7 @@
       <DependentUpon>MediaFileViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="MediaRecorder.cpp" />
     <ClCompile Include="MFAudioDecoder.cpp" />
     <ClCompile Include="MFVideoDecoder.cpp" />
     <ClCompile Include="PlayerPage.xaml.cpp">
@@ -244,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="SoundTouchProcessor.cpp" />
     <ClCompile Include="StreamingVoiceContext.cpp" />
+    <ClCompile Include="SubtitleDecoder.cpp" />
+    <ClCompile Include="SubtitleFrame.cpp" />
+    <ClCompile Include="SubtitleRender.cpp" />
     <ClCompile Include="VideoRender.cpp" />
     <ClCompile Include="MediaPlayerMain.cpp" />
     <ClCompile Include="pch.cpp">

@@ -6,6 +6,9 @@
 #include "AudioRender.h"
 #include "PlayQueue.h"
 #include "PlaylistItem.h"
+#include <SubtitleRender.h>
+#include "MediaRecorder.h"
+
 
 class MediaPlayerMain
 {
@@ -15,6 +18,10 @@ public:
 	void startRenderLoop();
 	void stopRenderLoop() const;
 
+	//Subtitles
+	void setUpdateUpdateSubtitleUIAction(std::function<void(std::wstring)> func);
+	void loadSubtitlesFromSrt(const std::wstring& subtitlePath);
+
 	//MediaPlayer
 	void play();
 	void pause();
@@ -23,6 +30,7 @@ public:
 	void setVolume(double volume);
 	void setTemp(float speed);
 	void saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format);
+	void recordMadiaFrame(double timeStart, double timeEnd, const std::string outFile);
 
 	//PlayQueue
 	void setPlayQueue(const std::shared_ptr<PlayQueue>& playQueue);
@@ -48,7 +56,7 @@ private:
 
 	void queueLogicUpdate();
 	void update();
-	bool render() const;
+	bool render();
 	DECODER getPreferredDecoder(const MediaFile& media);
 
 
@@ -56,6 +64,8 @@ private:
 	std::shared_ptr<DeviceResources> m_deviceResources;
 	std::unique_ptr<VideoRender> m_video;
 	std::unique_ptr<AudioRender> m_audio;
+	std::unique_ptr<SubtitleRender> m_subtitle;
+	std::unique_ptr<MediaRecorder> m_recorder;
 
 	std::shared_ptr<PlayQueue> m_playQueue;
 	bool m_isFirstMediaInQueue = true;
