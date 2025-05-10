@@ -1,0 +1,44 @@
+#pragma once
+#include "DeviceResources.h"
+#include "StepTimer.h"
+#include "VideoFrame.h"
+#include "IVideoDecoder.h"
+#include "Constants.h"
+
+class VideoRender
+{
+public:
+    VideoRender(const std::shared_ptr<DeviceResources>& deviceResources);
+    ~VideoRender();
+
+    void render();
+    void update(const StepTimer&);
+    void loadVideo(const std::wstring& videoPath);
+    void changeDecoder(DECODER decoder);
+    void saveCurrentFrameAsScreenshot(const std::wstring& path, const GUID& format);
+
+    void play() { m_isPlaying = true; }
+    void pause() { m_isPlaying = false; }
+    void seekToTime(uint64_t timeInTicks);
+
+    uint64_t getVideoDuration();
+    uint64_t getCurrentPosition() { return m_decoder->getCurrentPosition(); }
+    bool getIsEndOfMedia() { return m_isEndOfMedia; }
+
+
+private:    
+    void updateTime();
+
+    std::shared_ptr<DeviceResources> m_deviceResources;
+    std::unique_ptr<IVideoDecoder> m_decoder;
+    VideoFrame m_frame;
+
+    uint32_t m_videoWidth = 0;
+    uint32_t m_videoHeight = 0;
+    uint64_t m_frameDuration = 0;
+    uint64_t m_lastFrameTime = 0;
+    uint64_t m_frameTime = 0;
+
+    bool m_isPlaying = false;
+    bool m_isEndOfMedia = false;
+};

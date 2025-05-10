@@ -1,0 +1,12 @@
+namespace MediaPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass PlaylistItemViewModel
+    {
+        PlaylistItemViewModel();
+        PlaylistItemViewModel(String name);
+
+        String Name { get; set; };
+    }
+}

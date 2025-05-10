@@ -5,8 +5,6 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace winrt::MediaPlayer::implementation
 {
@@ -16,8 +14,6 @@ namespace winrt::MediaPlayer::implementation
     /// </summary>
     App::App()
     {
-        // Xaml objects should not call InitializeComponent during construction.
-        // See https://github.com/microsoft/cppwinrt/tree/master/nuget#initializecomponent
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
         UnhandledException([](IInspectable const&, UnhandledExceptionEventArgs const& e)
@@ -37,7 +33,13 @@ namespace winrt::MediaPlayer::implementation
     /// <param name="e">Details about the launch request and process.</param>
     void App::OnLaunched([[maybe_unused]] LaunchActivatedEventArgs const& e)
     {
-        window = make<MainWindow>();
+        winrt::Microsoft::UI::Xaml::Window baseWindow = winrt::make<MainWindow>();
+
+        auto mainWindowImpl = baseWindow.as<winrt::MediaPlayer::implementation::MainWindow>();
+
+        mainWindowImpl->init();
+
+        window = baseWindow;
         window.Activate();
     }
 }

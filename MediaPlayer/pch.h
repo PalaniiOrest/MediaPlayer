@@ -21,5 +21,64 @@
 #include <winrt/Microsoft.UI.Xaml.Media.h>
 #include <winrt/Microsoft.UI.Xaml.Navigation.h>
 #include <winrt/Microsoft.UI.Xaml.Shapes.h>
+#include <winrt/Microsoft.UI.Xaml.Input.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
+#include <winrt/Windows.Graphics.Display.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Storage.Streams.h>
+#include <winrt/Windows.ApplicationModel.h>
+#include <winrt/Windows.Storage.Pickers.h>
+#include <winrt/Windows.UI.Xaml.Interop.h>
+#include <winrt/Windows.UI.Xaml.Navigation.h>
+
 #include <wil/cppwinrt_helpers.h>
+#include <dxgi1_4.h>
+#include <d3d11_3.h>
+#include <d3d11_4.h>
+#include <d3dcompiler.h>
+#include <d2d1_3.h>
+#include <d2d1effects_2.h>
+#include <dwrite_3.h>
+#include <DirectXMath.h>
+#include <wincodec.h>
+#include <DirectXColors.h>
+#include <microsoft.ui.xaml.media.dxinterop.h>
+#include <winrt/Windows.UI.Xaml.Media.Imaging.h>
+#include <winrt/Windows.System.Threading.h>
+#include <winrt/Windows.System.h>
+
+
+#include <mfapi.h>
+#include <mfplay.h>
+#include <mfreadwrite.h>
+#include <mfobjects.h>
+#include <mfidl.h>
+#include <mferror.h>
+
+#include <ppltasks.h>
+#include <ppl.h>
+
+#include <shobjidl_core.h>
+
+#include <xaudio2.h>
+
+#include <iostream>
+#include <algorithm>
+#include <set>
+#include <deque>
+#include <unordered_set>
+
+#include <thread>
+#include <future>
+#include <atomic>
+
+extern "C"
+{
+	#include <libavcodec/avcodec.h>
+	#include <libavformat/avformat.h>
+	#include <libavutil/hwcontext.h>
+	#include <libavutil/imgutils.h>
+	#include <libavutil/opt.h>
+	#include <libswscale/swscale.h>
+	#include <libswresample/swresample.h>
+}

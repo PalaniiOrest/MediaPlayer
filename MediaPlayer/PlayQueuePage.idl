@@ -1,0 +1,13 @@
+import "MediaFileViewModel.idl";
+
+namespace MediaPlayer
+{
+    [default_interface]
+    runtimeclass PlayQueuePage : Microsoft.UI.Xaml.Controls.Page
+    {
+        PlayQueuePage();
+        Int32 MyProperty;
+        Windows.Foundation.Collections.IObservableVector<MediaFileViewModel> MediaQueue{ get; };
+
+    }
+}
